@@ -4,8 +4,11 @@ import (
 	"errors"
 	"reflect"
 	"testing"
+	"time"
 	"truck-management/truck-management/domain"
 )
+
+var timeNow = time.Now().Format(time.RFC3339)
 
 func TestCreateTruckService_CreateNewTruck(t *testing.T) {
 	type fields struct {
@@ -65,7 +68,7 @@ func TestCreateTruckService_CreateNewTruck(t *testing.T) {
 					GetTruckByLicensePlateAndEldIDMock: func(licensePlate, eldID string) (domain.Truck, error) {
 						return domain.Truck{}, nil
 					},
-					CreateTruckMock: func(domain.Truck) error {
+					CreateTruckMock: func(*domain.Truck) error {
 						return errors.New("failed to create truck")
 					},
 				},
@@ -86,7 +89,10 @@ func TestCreateTruckService_CreateNewTruck(t *testing.T) {
 					GetTruckByLicensePlateAndEldIDMock: func(licensePlate, eldID string) (domain.Truck, error) {
 						return domain.Truck{}, nil
 					},
-					CreateTruckMock: func(domain.Truck) error {
+					CreateTruckMock: func(truck *domain.Truck) error {
+						truck.ID = "f4bd8a69-372f-4d4b-92ca-5c2424a3a539"
+						truck.CreatedAt = timeNow
+						truck.UpdatedAt = timeNow
 						return nil
 					},
 				},
@@ -107,6 +113,7 @@ func TestCreateTruckService_CreateNewTruck(t *testing.T) {
 				},
 			},
 			want: domain.Truck{
+				ID:           "f4bd8a69-372f-4d4b-92ca-5c2424a3a539",
 				LicensePlate: "ABC1234",
 				EldID:        "00001234",
 				Carrier:      "Third Carrier",
@@ -115,6 +122,8 @@ func TestCreateTruckService_CreateNewTruck(t *testing.T) {
 				Make:         "any-make",
 				Model:        "any-model",
 				Year:         2020,
+				CreatedAt:    timeNow,
+				UpdatedAt:    timeNow,
 			},
 			wantErr: false,
 		},
@@ -141,13 +150,13 @@ type GetTruckByLicensePlateAndEldIDMock func(licensePlate, eldID string) (domain
 
 type TruckRepositoryMock struct {
 	GetTruckByLicensePlateAndEldIDMock func(licensePlate, eldID string) (domain.Truck, error)
-	CreateTruckMock                    func(domain.Truck) error
+	CreateTruckMock                    func(*domain.Truck) error
 }
 
 func (t TruckRepositoryMock) GetTruckByLicensePlateAndEldID(licensePlate, eldID string) (domain.Truck, error) {
 	return t.GetTruckByLicensePlateAndEldIDMock(licensePlate, eldID)
 }
 
-func (t TruckRepositoryMock) CreateTruck(truck domain.Truck) error {
+func (t TruckRepositoryMock) CreateTruck(truck *domain.Truck) error {
 	return t.CreateTruckMock(truck)
 }

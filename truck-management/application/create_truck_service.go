@@ -6,7 +6,7 @@ import (
 
 type TruckRepository interface {
 	GetTruckByLicensePlateAndEldID(licensePlate, eldID string) (domain.Truck, error)
-	CreateTruck(truck domain.Truck) error
+	CreateTruck(truck *domain.Truck) error
 }
 
 type TruckValidator func(newTruck domain.Truck, possibleExistingTruck domain.Truck) error
@@ -27,7 +27,7 @@ func (c *CreateTruckService) CreateNewTruck(newTruck domain.Truck) (domain.Truck
 		return newTruck, tErr
 	}
 
-	if cErr := c.TruckRepository.CreateTruck(newTruck); cErr != nil {
+	if cErr := c.TruckRepository.CreateTruck(&newTruck); cErr != nil {
 		return newTruck, cErr
 	}
 
