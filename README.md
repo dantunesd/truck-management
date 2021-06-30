@@ -1,5 +1,5 @@
 # Trucks Management
 
-This application is reponsible for managing trucks
+This application is responsible for managing trucks
 
 ---
