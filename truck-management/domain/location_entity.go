@@ -9,6 +9,7 @@ const (
 
 type Location struct {
 	ID           int         `json:"id"`
+	TruckID      string      `json:"truck_id"`
 	EldID        string      `json:"eld_id"`
 	EngineState  EngineState `json:"engine_state"`
 	CurrentSpeed float64     `json:"current_speed"`

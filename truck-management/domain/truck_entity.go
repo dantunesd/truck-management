@@ -1,6 +1,7 @@
 package domain
 
 type Truck struct {
+	ID           string `json:"id"`
 	LicensePlate string `json:"license_plate"`
 	EldID        string `json:"eld_id"`
 	Carrier      string `json:"carrier"`
@@ -8,7 +9,7 @@ type Truck struct {
 	Color        string `json:"color"`
 	Make         string `json:"make"`
 	Model        string `json:"model"`
-	Year         string `json:"year"`
+	Year         int    `json:"year"`
 	CreatedAt    string `json:"created_at"`
 	UpdatedAt    string `json:"updated_at"`
 }

@@ -9,7 +9,7 @@ const (
 
 type Trip struct {
 	ID           int    `json:"id"`
-	EldID        string `json:"eld_id"`
+	TruckID      string `json:"truck_id"`
 	Origin       int    `json:"origin"`
 	Destination  int    `json:"destination"`
 	State        string `json:"state"`
