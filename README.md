@@ -14,10 +14,20 @@ Before running this application, you must to install:
 
 ---
 
+# Unit Tests
+
+Run the following command to run all unit tests:
+
+```bash
+docker-compose up unit-tests
+```
+
+---
+
 # Start
 
 Run the following command to start the application:
 
 ```bash
-docker-compose up
+docker-compose up app
 ```
