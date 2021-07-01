@@ -4,17 +4,17 @@ import (
 	"truck-management/truck-management/domain"
 )
 
-type TruckRepository interface {
+type ITruckRepository interface {
 	CreateTruck(truck *domain.Truck) error
 }
 
-type TruckValidator interface {
+type ITruckValidator interface {
 	IsValidTruck(truck domain.Truck) error
 }
 
 type CreateTruckService struct {
-	TruckRepository TruckRepository
-	TruckValidator  TruckValidator
+	TruckRepository ITruckRepository
+	TruckValidator  ITruckValidator
 }
 
 func (c *CreateTruckService) CreateNewTruck(newTruck domain.Truck) (domain.Truck, error) {

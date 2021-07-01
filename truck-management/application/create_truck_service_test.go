@@ -12,8 +12,8 @@ var timeNow = time.Now().Format(time.RFC3339)
 
 func TestCreateTruckService_CreateNewTruck(t *testing.T) {
 	type fields struct {
-		TruckRepository TruckRepository
-		TruckValidator  TruckValidator
+		TruckRepository ITruckRepository
+		TruckValidator  ITruckValidator
 	}
 	type args struct {
 		newTruck domain.Truck
