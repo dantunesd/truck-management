@@ -1,7 +1,20 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"truck-management/truck-management/domain"
+	"truck-management/truck-management/infrastructure"
+)
 
 func main() {
-	fmt.Println("hello loadsmart")
+	createTruckService := infrastructure.CreateTruckServiceFactory()
+
+	fromRequest := domain.Truck{
+		LicensePlate: "ABC1234",
+	}
+
+	created, err := createTruckService.CreateNewTruck(fromRequest)
+
+	fmt.Println(err)
+	fmt.Printf("%+v", created)
 }
