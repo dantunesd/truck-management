@@ -9,7 +9,7 @@ type TruckRepository interface {
 }
 
 type TruckValidator interface {
-	IsValidTruck(newTruck domain.Truck) error
+	IsValidTruck(truck domain.Truck) error
 }
 
 type CreateTruckService struct {
