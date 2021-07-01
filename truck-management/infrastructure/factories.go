@@ -1,6 +1,8 @@
 package infrastructure
 
 import (
+	"net/http"
+	"truck-management/truck-management/api"
 	"truck-management/truck-management/application"
 	"truck-management/truck-management/domain"
 )
@@ -29,4 +31,8 @@ func LicensePlateCheckerFactory() domain.LicensePlateChecker {
 
 func EldCheckerFactory() domain.EldChecker {
 	return &EldChecker{}
+}
+
+func HandlerFactory() http.Handler {
+	return api.Router(CreateTruckServiceFactory())
 }

@@ -1,20 +1,14 @@
 package main
 
 import (
-	"fmt"
-	"truck-management/truck-management/domain"
+	"log"
+	"net/http"
 	"truck-management/truck-management/infrastructure"
 )
 
 func main() {
-	createTruckService := infrastructure.CreateTruckServiceFactory()
 
-	fromRequest := domain.Truck{
-		LicensePlate: "ABC1234",
-	}
+	http.ListenAndServe(":3000", infrastructure.HandlerFactory())
 
-	created, err := createTruckService.CreateNewTruck(fromRequest)
-
-	fmt.Println(err)
-	fmt.Printf("%+v", created)
+	log.Println("server running at port :3000")
 }
