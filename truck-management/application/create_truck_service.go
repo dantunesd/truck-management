@@ -5,11 +5,12 @@ import (
 )
 
 type TruckRepository interface {
-	GetTruckByLicensePlateAndEldID(licensePlate, eldID string) (domain.Truck, error)
 	CreateTruck(truck *domain.Truck) error
 }
 
-type TruckValidator func(newTruck domain.Truck, possibleExistingTruck domain.Truck) error
+type TruckValidator interface {
+	IsValidTruck(newTruck domain.Truck) error
+}
 
 type CreateTruckService struct {
 	TruckRepository TruckRepository
@@ -17,13 +18,7 @@ type CreateTruckService struct {
 }
 
 func (c *CreateTruckService) CreateNewTruck(newTruck domain.Truck) (domain.Truck, error) {
-	possibleExistingTruck, gErr := c.TruckRepository.GetTruckByLicensePlateAndEldID(newTruck.LicensePlate, newTruck.EldID)
-
-	if gErr != nil {
-		return newTruck, gErr
-	}
-
-	if tErr := c.TruckValidator(newTruck, possibleExistingTruck); tErr != nil {
+	if tErr := c.TruckValidator.IsValidTruck(newTruck); tErr != nil {
 		return newTruck, tErr
 	}
 

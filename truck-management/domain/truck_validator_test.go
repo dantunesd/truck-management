@@ -3,22 +3,35 @@ package domain
 import "testing"
 
 func TestIsValidTruck(t *testing.T) {
+	type fields struct {
+		LicensePlateChecker LicensePlateChecker
+		EldChecker          EldChecker
+	}
 	type args struct {
-		truck         Truck
-		existingTruck Truck
+		truck Truck
 	}
 	tests := []struct {
 		name    string
+		fields  fields
 		args    args
 		wantErr bool
 	}{
 		{
 			name: "should return error when exists a truck with the same lisence plate",
+			fields: fields{
+				LicensePlateChecker: &LicensePlateCheckerMock{
+					IsAlreadyInUseMock: func(string) bool {
+						return true
+					},
+				},
+				EldChecker: &EldCheckerMock{
+					IsAlreadyInUseMock: func(string) bool {
+						return false
+					},
+				},
+			},
 			args: args{
 				truck: Truck{
-					LicensePlate: "ABC1234",
-				},
-				existingTruck: Truck{
 					LicensePlate: "ABC1234",
 				},
 			},
@@ -26,36 +39,63 @@ func TestIsValidTruck(t *testing.T) {
 		},
 		{
 			name: "should return error when exists a truck with the same eld id",
+			fields: fields{
+				LicensePlateChecker: &LicensePlateCheckerMock{
+					IsAlreadyInUseMock: func(string) bool {
+						return false
+					},
+				},
+				EldChecker: &EldCheckerMock{
+					IsAlreadyInUseMock: func(string) bool {
+						return true
+					},
+				},
+			},
 			args: args{
 				truck: Truck{
 					EldID:        "00001234",
 					LicensePlate: "NEW1234",
-				},
-				existingTruck: Truck{
-					EldID:        "00001234",
-					LicensePlate: "OLD1234",
 				},
 			},
 			wantErr: true,
 		},
 		{
 			name: "should return error when trucks are empty",
-			args: args{
-				truck:         Truck{},
-				existingTruck: Truck{},
+			fields: fields{
+				LicensePlateChecker: &LicensePlateCheckerMock{
+					IsAlreadyInUseMock: func(string) bool {
+						return false
+					},
+				},
+				EldChecker: &EldCheckerMock{
+					IsAlreadyInUseMock: func(string) bool {
+						return false
+					},
+				},
 			},
-			wantErr: true,
+			args: args{
+				truck: Truck{},
+			},
+			wantErr: false,
 		},
 		{
 			name: "should return nil when it's a new truck",
+			fields: fields{
+				LicensePlateChecker: &LicensePlateCheckerMock{
+					IsAlreadyInUseMock: func(string) bool {
+						return false
+					},
+				},
+				EldChecker: &EldCheckerMock{
+					IsAlreadyInUseMock: func(string) bool {
+						return false
+					},
+				},
+			},
 			args: args{
 				truck: Truck{
 					EldID:        "00001234",
 					LicensePlate: "NEW1234",
-				},
-				existingTruck: Truck{
-					EldID:        "",
-					LicensePlate: "",
 				},
 			},
 			wantErr: false,
@@ -63,9 +103,29 @@ func TestIsValidTruck(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if err := IsValidTruck(tt.args.truck, tt.args.existingTruck); (err != nil) != tt.wantErr {
+			v := &TruckValidator{
+				LicensePlateChecker: tt.fields.LicensePlateChecker,
+				EldChecker:          tt.fields.EldChecker,
+			}
+			if err := v.IsValidTruck(tt.args.truck); (err != nil) != tt.wantErr {
 				t.Errorf("IsValidTruck() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
 	}
+}
+
+type LicensePlateCheckerMock struct {
+	IsAlreadyInUseMock func(string) bool
+}
+
+func (l *LicensePlateCheckerMock) IsAlreadyInUse(licensePlate string) bool {
+	return l.IsAlreadyInUseMock(licensePlate)
+}
+
+type EldCheckerMock struct {
+	IsAlreadyInUseMock func(string) bool
+}
+
+func (l *EldCheckerMock) IsAlreadyInUse(eldID string) bool {
+	return l.IsAlreadyInUseMock(eldID)
 }

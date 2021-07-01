@@ -26,33 +26,12 @@ func TestCreateTruckService_CreateNewTruck(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name: "should return an error when Get returns any error",
-			fields: fields{
-				TruckRepository: &TruckRepositoryMock{
-					GetTruckByLicensePlateAndEldIDMock: func(licensePlate, eldID string) (domain.Truck, error) {
-						return domain.Truck{}, errors.New("something went wrong")
-					},
-				},
-				TruckValidator: func(newTruck domain.Truck, existingTruck domain.Truck) error {
-					return nil
-				},
-			},
-			args: args{
-				newTruck: domain.Truck{},
-			},
-			want:    domain.Truck{},
-			wantErr: true,
-		},
-		{
 			name: "should return an error when Validator returns any error",
 			fields: fields{
-				TruckRepository: &TruckRepositoryMock{
-					GetTruckByLicensePlateAndEldIDMock: func(licensePlate, eldID string) (domain.Truck, error) {
-						return domain.Truck{}, nil
+				TruckValidator: TruckValidatorMock{
+					IsValidTruckMock: func(newTruck domain.Truck) error {
+						return errors.New("license plate is already in use")
 					},
-				},
-				TruckValidator: func(newTruck domain.Truck, existingTruck domain.Truck) error {
-					return errors.New("license plate is already in use")
 				},
 			},
 			args: args{
@@ -65,15 +44,14 @@ func TestCreateTruckService_CreateNewTruck(t *testing.T) {
 			name: "should return an error when CreateTruck returns any error",
 			fields: fields{
 				TruckRepository: &TruckRepositoryMock{
-					GetTruckByLicensePlateAndEldIDMock: func(licensePlate, eldID string) (domain.Truck, error) {
-						return domain.Truck{}, nil
-					},
 					CreateTruckMock: func(*domain.Truck) error {
 						return errors.New("failed to create truck")
 					},
 				},
-				TruckValidator: func(newTruck domain.Truck, existingTruck domain.Truck) error {
-					return nil
+				TruckValidator: TruckValidatorMock{
+					IsValidTruckMock: func(newTruck domain.Truck) error {
+						return nil
+					},
 				},
 			},
 			args: args{
@@ -86,9 +64,6 @@ func TestCreateTruckService_CreateNewTruck(t *testing.T) {
 			name: "should return TruckEntity when creating with success",
 			fields: fields{
 				TruckRepository: &TruckRepositoryMock{
-					GetTruckByLicensePlateAndEldIDMock: func(licensePlate, eldID string) (domain.Truck, error) {
-						return domain.Truck{}, nil
-					},
 					CreateTruckMock: func(truck *domain.Truck) error {
 						truck.ID = "f4bd8a69-372f-4d4b-92ca-5c2424a3a539"
 						truck.CreatedAt = timeNow
@@ -96,8 +71,10 @@ func TestCreateTruckService_CreateNewTruck(t *testing.T) {
 						return nil
 					},
 				},
-				TruckValidator: func(newTruck domain.Truck, existingTruck domain.Truck) error {
-					return nil
+				TruckValidator: TruckValidatorMock{
+					IsValidTruckMock: func(newTruck domain.Truck) error {
+						return nil
+					},
 				},
 			},
 			args: args{
@@ -149,14 +126,17 @@ func TestCreateTruckService_CreateNewTruck(t *testing.T) {
 type GetTruckByLicensePlateAndEldIDMock func(licensePlate, eldID string) (domain.Truck, error)
 
 type TruckRepositoryMock struct {
-	GetTruckByLicensePlateAndEldIDMock func(licensePlate, eldID string) (domain.Truck, error)
-	CreateTruckMock                    func(*domain.Truck) error
-}
-
-func (t TruckRepositoryMock) GetTruckByLicensePlateAndEldID(licensePlate, eldID string) (domain.Truck, error) {
-	return t.GetTruckByLicensePlateAndEldIDMock(licensePlate, eldID)
+	CreateTruckMock func(*domain.Truck) error
 }
 
 func (t TruckRepositoryMock) CreateTruck(truck *domain.Truck) error {
 	return t.CreateTruckMock(truck)
+}
+
+type TruckValidatorMock struct {
+	IsValidTruckMock func(newTruck domain.Truck) error
+}
+
+func (t TruckValidatorMock) IsValidTruck(newTruck domain.Truck) error {
+	return t.IsValidTruckMock(newTruck)
 }
