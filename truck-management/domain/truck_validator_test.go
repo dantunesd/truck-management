@@ -33,6 +33,7 @@ func TestIsValidTruck(t *testing.T) {
 			args: args{
 				truck: Truck{
 					LicensePlate: "ABC1234",
+					EldID:        "00001234",
 				},
 			},
 			wantErr: true,
@@ -53,30 +54,11 @@ func TestIsValidTruck(t *testing.T) {
 			},
 			args: args{
 				truck: Truck{
-					EldID:        "00001234",
 					LicensePlate: "NEW1234",
+					EldID:        "00001234",
 				},
 			},
 			wantErr: true,
-		},
-		{
-			name: "should return error when trucks are empty",
-			fields: fields{
-				LicensePlateChecker: &LicensePlateCheckerMock{
-					IsAlreadyInUseMock: func(string) bool {
-						return false
-					},
-				},
-				EldChecker: &EldCheckerMock{
-					IsAlreadyInUseMock: func(string) bool {
-						return false
-					},
-				},
-			},
-			args: args{
-				truck: Truck{},
-			},
-			wantErr: false,
 		},
 		{
 			name: "should return nil when it's a new truck",

@@ -5,6 +5,7 @@ type Truck struct {
 	LicensePlate string `json:"license_plate"`
 	EldID        string `json:"eld_id"`
 	Carrier      string `json:"carrier"`
+	Type         string `json:"type"`
 	Size         int    `json:"size"`
 	Color        string `json:"color"`
 	Make         string `json:"make"`
