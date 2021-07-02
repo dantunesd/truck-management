@@ -14,16 +14,6 @@ Before running this application, you must to install:
 
 ---
 
-# Unit Tests
-
-Run the following command to run all unit tests:
-
-```bash
-docker-compose up unit-test
-```
-
----
-
 # Start
 
 Run the following command to start the application:
@@ -31,3 +21,25 @@ Run the following command to start the application:
 ```bash
 docker-compose up app
 ```
+
+---
+
+# Unit Tests
+
+Run the following command to run all unit tests:
+
+```bash
+go test ./truck-management/...
+```
+
+---
+
+# Integration Tests
+
+Run the following command to run all integration tests:
+
+```bash
+go test ./integration-tests
+```
+
+

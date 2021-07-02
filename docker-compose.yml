@@ -9,11 +9,3 @@ services:
         command: 'go run main.go'
         ports: 
             - 3000:3000
-
-    unit-test:
-        image: golang:1.16.5-alpine3.14
-        working_dir: /app
-        volumes: 
-            - ./:/app
-        command: 'go test ./...'
-        
