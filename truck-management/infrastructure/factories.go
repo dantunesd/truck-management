@@ -1,21 +1,29 @@
 package infrastructure
 
 import (
+	"fmt"
 	"net/http"
 	"truck-management/truck-management/api"
 	"truck-management/truck-management/application"
 	"truck-management/truck-management/domain"
+
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 )
 
-func TruckServiceFactory() *application.TruckService {
+func DatabaseFactory(config *Config) (*gorm.DB, error) {
+	return gorm.Open(mysql.Open(config.DBConn), &gorm.Config{})
+}
+
+func TruckServiceFactory(truckRepository application.ITruckRepository) *application.TruckService {
 	return application.NewTruckService(
-		TruckRepositoryFactory(),
+		truckRepository,
 		TruckValidatorFactory(),
 	)
 }
 
-func TruckRepositoryFactory() application.ITruckRepository {
-	return NewTruckRepository()
+func TruckRepositoryFactory(db *gorm.DB) application.ITruckRepository {
+	return NewTruckRepository(db)
 }
 
 func TruckValidatorFactory() application.ITruckValidator {
@@ -34,5 +42,11 @@ func EldCheckerFactory() domain.EldChecker {
 }
 
 func HandlerFactory() http.Handler {
-	return api.NewRouter(api.NewTruckHandler(TruckServiceFactory())).GetRoutes()
+	config, cerr := NewConfig()
+	db, derr := DatabaseFactory(config)
+	truckRepository := TruckRepositoryFactory(db)
+
+	fmt.Println(cerr, derr)
+
+	return api.NewRouter(api.NewTruckHandler(TruckServiceFactory(truckRepository))).GetRoutes()
 }

@@ -65,7 +65,7 @@ func TestTruckService_CreateNewTruck(t *testing.T) {
 			fields: fields{
 				TruckRepository: &TruckRepositoryMock{
 					CreateTruckMock: func(truck *domain.Truck) error {
-						truck.ID = "f4bd8a69-372f-4d4b-92ca-5c2424a3a539"
+						truck.ID = 1
 						truck.CreatedAt = timeNow
 						truck.UpdatedAt = timeNow
 						return nil
@@ -81,7 +81,7 @@ func TestTruckService_CreateNewTruck(t *testing.T) {
 				newTruck: domain.Truck{
 					LicensePlate: "ABC1234",
 					EldID:        "00001234",
-					Carrier:      "Third Carrier",
+					CarrierID:    "CARRIER-ID",
 					Size:         23,
 					Color:        "blue",
 					Make:         "any-make",
@@ -90,10 +90,10 @@ func TestTruckService_CreateNewTruck(t *testing.T) {
 				},
 			},
 			want: domain.Truck{
-				ID:           "f4bd8a69-372f-4d4b-92ca-5c2424a3a539",
+				ID:           1,
 				LicensePlate: "ABC1234",
 				EldID:        "00001234",
-				Carrier:      "Third Carrier",
+				CarrierID:    "CARRIER-ID",
 				Size:         23,
 				Color:        "blue",
 				Make:         "any-make",
