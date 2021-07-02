@@ -31,15 +31,3 @@ Run the following command to run all unit tests:
 ```bash
 go test ./truck-management/...
 ```
-
----
-
-# Integration Tests
-
-Run the following command to run all integration tests:
-
-```bash
-go test ./integration-tests
-```
-
-
