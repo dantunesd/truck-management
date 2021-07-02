@@ -3,9 +3,7 @@ module truck-management
 go 1.16
 
 require (
-	github.com/gin-gonic/gin v1.7.2 // indirect
-	github.com/go-chi/chi v1.5.4
-	github.com/go-playground/universal-translator v0.17.0 // indirect
+	github.com/gin-gonic/gin v1.7.2
 	github.com/go-playground/validator v9.31.0+incompatible
 	github.com/go-playground/validator/v10 v10.6.1 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
@@ -23,7 +21,6 @@ require (
 	golang.org/x/text v0.3.6 // indirect
 	google.golang.org/protobuf v1.27.1 // indirect
 	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
-	gopkg.in/go-playground/validator.v9 v9.29.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gorm.io/driver/mysql v1.1.1
 	gorm.io/gorm v1.21.11
