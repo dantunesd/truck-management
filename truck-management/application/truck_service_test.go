@@ -13,7 +13,6 @@ var timeNow = time.Now().Format(time.RFC3339)
 func TestTruckService_CreateNewTruck(t *testing.T) {
 	type fields struct {
 		TruckRepository ITruckRepository
-		TruckValidator  ITruckValidator
 	}
 	type args struct {
 		newTruck domain.Truck
@@ -26,31 +25,11 @@ func TestTruckService_CreateNewTruck(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name: "should return an error when Validator returns any error",
-			fields: fields{
-				TruckValidator: TruckValidatorMock{
-					IsValidTruckMock: func(newTruck domain.Truck) error {
-						return errors.New("license plate is already in use")
-					},
-				},
-			},
-			args: args{
-				newTruck: domain.Truck{},
-			},
-			want:    domain.Truck{},
-			wantErr: true,
-		},
-		{
 			name: "should return an error when CreateTruck returns any error",
 			fields: fields{
 				TruckRepository: &TruckRepositoryMock{
 					CreateTruckMock: func(*domain.Truck) error {
 						return errors.New("failed to create truck")
-					},
-				},
-				TruckValidator: TruckValidatorMock{
-					IsValidTruckMock: func(newTruck domain.Truck) error {
-						return nil
 					},
 				},
 			},
@@ -68,11 +47,6 @@ func TestTruckService_CreateNewTruck(t *testing.T) {
 						truck.ID = 1
 						truck.CreatedAt = timeNow
 						truck.UpdatedAt = timeNow
-						return nil
-					},
-				},
-				TruckValidator: TruckValidatorMock{
-					IsValidTruckMock: func(newTruck domain.Truck) error {
 						return nil
 					},
 				},
@@ -107,10 +81,7 @@ func TestTruckService_CreateNewTruck(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			c := NewTruckService(
-				tt.fields.TruckRepository,
-				tt.fields.TruckValidator,
-			)
+			c := NewTruckService(tt.fields.TruckRepository)
 			got, err := c.CreateNewTruck(tt.args.newTruck)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("TruckService.CreateNewTruck() error = %v, wantErr %v", err, tt.wantErr)

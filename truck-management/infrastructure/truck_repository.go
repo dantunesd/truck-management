@@ -26,7 +26,7 @@ func (t *TruckRepository) CreateTruck(truck *domain.Truck) error {
 
 	result := t.db.Create(&truck)
 	if result.Error != nil && strings.Contains(result.Error.Error(), "Duplicate entry") {
-		return domain.NewConflict("this truck is already registered")
+		return domain.NewConflict("license plate or eld_id is already registered")
 	}
 
 	return result.Error

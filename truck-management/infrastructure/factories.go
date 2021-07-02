@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"truck-management/truck-management/api"
 	"truck-management/truck-management/application"
-	"truck-management/truck-management/domain"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -16,29 +15,11 @@ func DatabaseFactory(config *Config) (*gorm.DB, error) {
 }
 
 func TruckServiceFactory(truckRepository application.ITruckRepository) *application.TruckService {
-	return application.NewTruckService(
-		truckRepository,
-		TruckValidatorFactory(),
-	)
+	return application.NewTruckService(truckRepository)
 }
 
 func TruckRepositoryFactory(db *gorm.DB) application.ITruckRepository {
 	return NewTruckRepository(db)
-}
-
-func TruckValidatorFactory() application.ITruckValidator {
-	return domain.NewTruckValidator(
-		LicensePlateCheckerFactory(),
-		EldCheckerFactory(),
-	)
-}
-
-func LicensePlateCheckerFactory() domain.LicensePlateChecker {
-	return &LicensePlateChecker{}
-}
-
-func EldCheckerFactory() domain.EldChecker {
-	return &EldChecker{}
 }
 
 func HandlerFactory() http.Handler {
