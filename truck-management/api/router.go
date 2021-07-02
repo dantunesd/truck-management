@@ -3,8 +3,7 @@ package api
 import (
 	"net/http"
 
-	"github.com/go-chi/chi"
-	"github.com/go-chi/chi/middleware"
+	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 )
 
@@ -21,15 +20,13 @@ func NewRouter(handler *TruckHandler, logger *logrus.Logger) *Router {
 }
 
 func (rt Router) GetRoutes() http.Handler {
-	r := chi.NewRouter()
+	gin.SetMode("release")
 
-	r.Use(middleware.Recoverer)
-	r.Use(middleware.RequestID)
+	router := gin.New()
 
-	logger := ErrorLogger(rt.logger)
+	router.Use(gin.Recovery())
+	router.POST("/trucks", ErrorHandler(LogHandler(rt.truckHandler.CreateHandler(), rt.logger)))
+	router.GET("/trucks/:id", ErrorHandler(LogHandler(rt.truckHandler.GetHandler(), rt.logger)))
 
-	r.Post("/trucks", Responder(logger(rt.truckHandler.CreateHandler())))
-	r.Get("/trucks/{id}", Responder(logger(rt.truckHandler.GetHandler())))
-
-	return r
+	return router
 }

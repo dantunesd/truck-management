@@ -1,10 +1,9 @@
 package api
 
 import (
-	"encoding/json"
-	"net/http"
 	"truck-management/truck-management/domain"
 
+	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator"
 )
 
@@ -22,27 +21,31 @@ func NewTruckHandler(s ITruckService) *TruckHandler {
 	}
 }
 
-func (h *TruckHandler) CreateHandler() ResponseHandler {
-	return func(r *http.Request) (*Response, error) {
+func (h *TruckHandler) CreateHandler() ResponseWrapper {
+	return func(c *gin.Context) error {
 		var truck domain.Truck
 
-		if dErr := json.NewDecoder(r.Body).Decode(&truck); dErr != nil {
-			return nil, NewBadRequest("invalid content")
+		if err := c.ShouldBindJSON(&truck); err != nil {
+			return NewBadRequest("invalid content")
 		}
 
 		if vErr := validator.New().Struct(truck); vErr != nil {
-			return nil, NewBadRequest(vErr.Error())
+			return NewBadRequest(vErr.Error())
 		}
 
 		result, err := h.service.CreateNewTruck(truck)
+		if err != nil {
+			return err
+		}
 
-		return &Response{result, 201}, err
+		c.JSON(201, result)
+		return nil
 	}
 }
 
-func (h *TruckHandler) GetHandler() ResponseHandler {
-	return func(r *http.Request) (*Response, error) {
-		var truck domain.Truck
-		return &Response{truck, 200}, nil
+func (h *TruckHandler) GetHandler() ResponseWrapper {
+	return func(c *gin.Context) error {
+		c.JSON(200, domain.Truck{})
+		return nil
 	}
 }
