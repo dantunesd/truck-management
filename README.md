@@ -19,7 +19,7 @@ Before running this application, you must to install:
 Run the following command to run all unit tests:
 
 ```bash
-docker-compose up unit-tests
+docker-compose up unit-test
 ```
 
 ---
