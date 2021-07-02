@@ -5,38 +5,40 @@ import (
 	"truck-management/truck-management/api"
 	"truck-management/truck-management/application"
 
+	"github.com/sirupsen/logrus"
+	"go.elastic.co/ecslogrus"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
 func DatabaseFactory(config *Config) (*gorm.DB, error) {
-	return gorm.Open(mysql.Open(config.DBConn), &gorm.Config{})
+	db, err := gorm.Open(mysql.Open(config.DBConn), &gorm.Config{
+		Logger: logger.Default.LogMode(logger.Silent),
+	})
+	return db, err
 }
 
-func TruckServiceFactory(truckRepository application.ITruckRepository) *application.TruckService {
-	return application.NewTruckService(truckRepository)
+func TruckServiceFactory(db *gorm.DB) *application.TruckService {
+	return application.NewTruckService(
+		TruckRepositoryFactory(db),
+	)
 }
 
 func TruckRepositoryFactory(db *gorm.DB) application.ITruckRepository {
 	return NewTruckRepository(db)
 }
 
-func HandlerFactory(ts *application.TruckService) http.Handler {
-	return api.NewRouter(api.NewTruckHandler(ts)).GetRoutes()
+func HandlerFactory(ts *application.TruckService, logger *logrus.Logger) http.Handler {
+	return api.NewRouter(
+		api.NewTruckHandler(ts),
+		logger,
+	).GetRoutes()
 }
 
-func InitializeWebServer() error {
-	config, cErr := NewConfig()
-	if cErr != nil {
-		return cErr
-	}
+func LoggerFactory() *logrus.Logger {
+	logger := logrus.New()
+	logger.SetFormatter(&ecslogrus.Formatter{})
 
-	db, dErr := DatabaseFactory(config)
-	if dErr != nil {
-		return dErr
-	}
-
-	ts := TruckServiceFactory(TruckRepositoryFactory(db))
-
-	return http.ListenAndServe(config.AppPort, HandlerFactory(ts))
+	return logger
 }

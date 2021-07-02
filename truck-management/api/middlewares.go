@@ -2,9 +2,10 @@ package api
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"truck-management/truck-management/domain"
+
+	"github.com/sirupsen/logrus"
 )
 
 type Response struct {
@@ -13,27 +14,30 @@ type Response struct {
 }
 
 type ErrorResponse struct {
-	Title string `json:"title"`
+	Title  string `json:"title"`
+	Status int    `json:"status"`
 }
 
 type ResponseHandler func(r *http.Request) (*Response, error)
 
-func ErrorLogger(rh ResponseHandler) ResponseHandler {
-	return func(r *http.Request) (*Response, error) {
-		response, err := rh(r)
-		if err != nil {
-			// use a log library
-			fmt.Println(err)
+func ErrorLogger(logger *logrus.Logger) func(rh ResponseHandler) ResponseHandler {
+	return func(rh ResponseHandler) ResponseHandler {
+		return func(r *http.Request) (*Response, error) {
+			response, err := rh(r)
+			if err != nil {
+				logger.Error(err)
+			}
+			return response, err
 		}
-		return response, err
 	}
 }
 
-func Responser(rh ResponseHandler) http.HandlerFunc {
+func Responder(rh ResponseHandler) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		response, err := rh(r)
 		if err != nil {
-			responseWriter(w, getHTTPCode(err), ErrorResponse{err.Error()})
+			code, title := getErrorResponse(err)
+			responseWriter(w, code, ErrorResponse{title, code})
 			return
 		}
 		responseWriter(w, response.StatusCode, response.Content)
@@ -49,13 +53,13 @@ func responseWriter(w http.ResponseWriter, code int, content interface{}) {
 	}
 }
 
-func getHTTPCode(err error) int {
+func getErrorResponse(err error) (int, string) {
 	switch terr := err.(type) {
 	case *ClientErrors:
-		return terr.Code
+		return terr.Code, terr.ErrorMessage
 	case *domain.DomainErrors:
-		return terr.Code
+		return terr.Code, terr.ErrorMessage
 	default:
-		return http.StatusInternalServerError
+		return http.StatusInternalServerError, "internal server error"
 	}
 }
