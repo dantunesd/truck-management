@@ -34,5 +34,5 @@ func EldCheckerFactory() domain.EldChecker {
 }
 
 func HandlerFactory() http.Handler {
-	return api.Router(TruckServiceFactory())
+	return api.NewRouter(api.NewTruckHandler(TruckServiceFactory())).GetRoutes()
 }

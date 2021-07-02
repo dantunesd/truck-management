@@ -3,38 +3,46 @@ package api
 import (
 	"encoding/json"
 	"net/http"
-	"truck-management/truck-management/application"
 	"truck-management/truck-management/domain"
 
 	"github.com/go-playground/validator"
 )
 
-func CreateTruckHandler(service *application.TruckService) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		var truck domain.Truck
+type ITruckService interface {
+	CreateNewTruck(newTruck domain.Truck) (domain.Truck, error)
+}
 
-		if dErr := json.NewDecoder(r.Body).Decode(&truck); dErr != nil {
-			responseWriter(w, http.StatusBadRequest, &ErrorResponse{"invalid content"})
-			return
-		}
+type TruckHandler struct {
+	service ITruckService
+}
 
-		if vErr := validator.New().Struct(truck); vErr != nil {
-			responseWriter(w, http.StatusBadRequest, &ErrorResponse{vErr.Error()})
-			return
-		}
-
-		result, err := service.CreateNewTruck(truck)
-		if err != nil {
-			responseWriter(w, getHTTPCode(err), &ErrorResponse{err.Error()})
-			return
-		}
-
-		responseWriter(w, http.StatusOK, result)
+func NewTruckHandler(s ITruckService) *TruckHandler {
+	return &TruckHandler{
+		service: s,
 	}
 }
 
-func GetTruckHandler() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		responseWriter(w, http.StatusOK, domain.Truck{})
+func (h *TruckHandler) CreateHandler() ResponseHandler {
+	return func(r *http.Request) (*Response, error) {
+		var truck domain.Truck
+
+		if dErr := json.NewDecoder(r.Body).Decode(&truck); dErr != nil {
+			return nil, NewBadRequest("invalid content")
+		}
+
+		if vErr := validator.New().Struct(truck); vErr != nil {
+			return nil, NewBadRequest(vErr.Error())
+		}
+
+		result, err := h.service.CreateNewTruck(truck)
+
+		return &Response{result, 201}, err
+	}
+}
+
+func (h *TruckHandler) GetHandler() ResponseHandler {
+	return func(r *http.Request) (*Response, error) {
+		var truck domain.Truck
+		return &Response{truck, 200}, nil
 	}
 }

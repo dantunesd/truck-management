@@ -2,20 +2,29 @@ package api
 
 import (
 	"net/http"
-	"truck-management/truck-management/application"
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 )
 
-func Router(truckService *application.TruckService) http.Handler {
+type Router struct {
+	truckHandler *TruckHandler
+}
+
+func NewRouter(handler *TruckHandler) *Router {
+	return &Router{
+		truckHandler: handler,
+	}
+}
+
+func (rt Router) GetRoutes() http.Handler {
 	r := chi.NewRouter()
 
 	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
 
-	r.Post("/trucks", CreateTruckHandler(truckService))
-	r.Get("/trucks/{id}", GetTruckHandler())
+	r.Post("/trucks", Responser(ErrorLogger(rt.truckHandler.CreateHandler())))
+	r.Get("/trucks/{id}", Responser(ErrorLogger(rt.truckHandler.GetHandler())))
 
 	return r
 }
