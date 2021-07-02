@@ -8,13 +8,13 @@ import (
 	"github.com/go-chi/chi/middleware"
 )
 
-func Router(createTruckService *application.CreateTruckService) http.Handler {
+func Router(truckService *application.TruckService) http.Handler {
 	r := chi.NewRouter()
 
 	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
 
-	r.Post("/trucks", CreateTruckHandler(createTruckService))
+	r.Post("/trucks", CreateTruckHandler(truckService))
 	r.Get("/trucks/{id}", GetTruckHandler())
 
 	return r

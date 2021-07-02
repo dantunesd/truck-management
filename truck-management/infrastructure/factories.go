@@ -7,8 +7,8 @@ import (
 	"truck-management/truck-management/domain"
 )
 
-func CreateTruckServiceFactory() *application.CreateTruckService {
-	return &application.CreateTruckService{
+func TruckServiceFactory() *application.TruckService {
+	return &application.TruckService{
 		TruckRepository: TruckRepositoryFactory(),
 		TruckValidator:  TruckValidatorFactory(),
 	}
@@ -34,5 +34,5 @@ func EldCheckerFactory() domain.EldChecker {
 }
 
 func HandlerFactory() http.Handler {
-	return api.Router(CreateTruckServiceFactory())
+	return api.Router(TruckServiceFactory())
 }

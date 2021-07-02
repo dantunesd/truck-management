@@ -12,12 +12,12 @@ type ITruckValidator interface {
 	IsValidTruck(truck domain.Truck) error
 }
 
-type CreateTruckService struct {
+type TruckService struct {
 	TruckRepository ITruckRepository
 	TruckValidator  ITruckValidator
 }
 
-func (c *CreateTruckService) CreateNewTruck(newTruck domain.Truck) (domain.Truck, error) {
+func (c *TruckService) CreateNewTruck(newTruck domain.Truck) (domain.Truck, error) {
 	if tErr := c.TruckValidator.IsValidTruck(newTruck); tErr != nil {
 		return newTruck, tErr
 	}

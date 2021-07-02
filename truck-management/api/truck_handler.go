@@ -7,7 +7,7 @@ import (
 	"truck-management/truck-management/domain"
 )
 
-func CreateTruckHandler(service *application.CreateTruckService) http.HandlerFunc {
+func CreateTruckHandler(service *application.TruckService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var truck domain.Truck
 
@@ -23,5 +23,11 @@ func CreateTruckHandler(service *application.CreateTruckService) http.HandlerFun
 		}
 
 		responseWriter(w, http.StatusOK, result)
+	}
+}
+
+func GetTruckHandler() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		responseWriter(w, http.StatusOK, domain.Truck{})
 	}
 }
