@@ -38,5 +38,5 @@ func InitializeWebServer() error {
 
 	ts := TruckServiceFactory(TruckRepositoryFactory(db))
 
-	return http.ListenAndServe(":3000", HandlerFactory(ts))
+	return http.ListenAndServe(config.AppPort, HandlerFactory(ts))
 }
