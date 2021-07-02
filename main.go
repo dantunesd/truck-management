@@ -18,12 +18,11 @@ func main() {
 		logger.Fatal(dErr)
 	}
 
-	ts := infrastructure.TruckServiceFactory(db)
-	h := infrastructure.HandlerFactory(ts, logger)
+	handler := infrastructure.HandlerFactory(db, logger)
 
 	logger.Info("starting webserver")
 
-	if err := http.ListenAndServe(config.AppPort, h); err != nil {
+	if err := http.ListenAndServe(config.AppPort, handler); err != nil {
 		logger.Fatal(err)
 	}
 }

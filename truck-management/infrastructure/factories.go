@@ -13,10 +13,15 @@ import (
 )
 
 func DatabaseFactory(config *Config) (*gorm.DB, error) {
-	db, err := gorm.Open(mysql.Open(config.DBConn), &gorm.Config{
+	return gorm.Open(mysql.Open(config.DBConn), &gorm.Config{
 		Logger: logger.Default.LogMode(logger.Silent),
 	})
-	return db, err
+}
+
+func LoggerFactory() *logrus.Logger {
+	logger := logrus.New()
+	logger.SetFormatter(&ecslogrus.Formatter{})
+	return logger
 }
 
 func TruckServiceFactory(db *gorm.DB) *application.TruckService {
@@ -29,16 +34,9 @@ func TruckRepositoryFactory(db *gorm.DB) application.ITruckRepository {
 	return NewTruckRepository(db)
 }
 
-func HandlerFactory(ts *application.TruckService, logger *logrus.Logger) http.Handler {
+func HandlerFactory(db *gorm.DB, logger *logrus.Logger) http.Handler {
 	return api.NewRouter(
-		api.NewTruckHandler(ts),
+		api.NewTruckHandler(TruckServiceFactory(db)),
 		logger,
 	).GetRoutes()
-}
-
-func LoggerFactory() *logrus.Logger {
-	logger := logrus.New()
-	logger.SetFormatter(&ecslogrus.Formatter{})
-
-	return logger
 }
