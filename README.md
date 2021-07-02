@@ -19,7 +19,7 @@ Before running this application, you must to install:
 Run the following command to start the application:
 
 ```bash
-docker-compose up app
+go run main.go
 ```
 
 ---
