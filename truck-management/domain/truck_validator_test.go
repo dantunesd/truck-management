@@ -85,10 +85,10 @@ func TestIsValidTruck(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			v := &TruckValidator{
-				licensePlateChecker: tt.fields.LicensePlateChecker,
-				eldChecker:          tt.fields.EldChecker,
-			}
+			v := NewTruckValidator(
+				tt.fields.LicensePlateChecker,
+				tt.fields.EldChecker,
+			)
 			if err := v.IsValidTruck(tt.args.truck); (err != nil) != tt.wantErr {
 				t.Errorf("IsValidTruck() error = %v, wantErr %v", err, tt.wantErr)
 			}
