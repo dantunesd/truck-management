@@ -1,7 +1,6 @@
 package infrastructure
 
 import (
-	"fmt"
 	"net/http"
 	"truck-management/truck-management/api"
 	"truck-management/truck-management/application"
@@ -22,12 +21,22 @@ func TruckRepositoryFactory(db *gorm.DB) application.ITruckRepository {
 	return NewTruckRepository(db)
 }
 
-func HandlerFactory() http.Handler {
-	config, cerr := NewConfig()
-	db, derr := DatabaseFactory(config)
-	truckRepository := TruckRepositoryFactory(db)
+func HandlerFactory(ts *application.TruckService) http.Handler {
+	return api.NewRouter(api.NewTruckHandler(ts)).GetRoutes()
+}
 
-	fmt.Println(cerr, derr)
+func InitializeWebServer() error {
+	config, cErr := NewConfig()
+	if cErr != nil {
+		return cErr
+	}
 
-	return api.NewRouter(api.NewTruckHandler(TruckServiceFactory(truckRepository))).GetRoutes()
+	db, dErr := DatabaseFactory(config)
+	if dErr != nil {
+		return dErr
+	}
+
+	ts := TruckServiceFactory(TruckRepositoryFactory(db))
+
+	return http.ListenAndServe(":3000", HandlerFactory(ts))
 }
