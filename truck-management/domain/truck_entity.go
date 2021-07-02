@@ -2,9 +2,9 @@ package domain
 
 type Truck struct {
 	ID           string `json:"id"`
-	LicensePlate string `json:"license_plate"`
-	EldID        string `json:"eld_id"`
-	Carrier      string `json:"carrier"`
+	LicensePlate string `json:"license_plate" validate:"required,alphanum,min=7,max=7"`
+	EldID        string `json:"eld_id" validate:"required,alphanum,max=10"`
+	Carrier      string `json:"carrier" validate:"required,alphanum,max=50"`
 	Type         string `json:"type"`
 	Size         int    `json:"size"`
 	Color        string `json:"color"`
