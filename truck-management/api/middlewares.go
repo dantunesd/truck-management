@@ -5,7 +5,6 @@ import (
 	"truck-management/truck-management/domain"
 
 	"github.com/gin-gonic/gin"
-	"github.com/sirupsen/logrus"
 )
 
 type ErrorResponse struct {
@@ -15,7 +14,7 @@ type ErrorResponse struct {
 
 type ResponseWrapper func(c *gin.Context) error
 
-func LogHandler(rw ResponseWrapper, logger *logrus.Logger) ResponseWrapper {
+func LogHandler(rw ResponseWrapper, logger ILogger) ResponseWrapper {
 	return func(c *gin.Context) error {
 		err := rw(c)
 		if err != nil {

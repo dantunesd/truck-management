@@ -4,29 +4,32 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/sirupsen/logrus"
 )
+
+type ILogger interface {
+	Error(args ...interface{})
+}
 
 type Router struct {
 	truckHandler *TruckHandler
-	logger       *logrus.Logger
+	logger       ILogger
 }
 
-func NewRouter(handler *TruckHandler, logger *logrus.Logger) *Router {
+func NewRouter(handler *TruckHandler, logger ILogger) *Router {
 	return &Router{
 		truckHandler: handler,
 		logger:       logger,
 	}
 }
 
-func (rt Router) GetRoutes() http.Handler {
+func (r Router) GetRoutes() http.Handler {
 	gin.SetMode("release")
 
 	router := gin.New()
 
 	router.Use(gin.Recovery())
-	router.POST("/trucks", ErrorHandler(LogHandler(rt.truckHandler.CreateHandler(), rt.logger)))
-	router.GET("/trucks/:id", ErrorHandler(LogHandler(rt.truckHandler.GetHandler(), rt.logger)))
+	router.POST("/trucks", ErrorHandler(LogHandler(r.truckHandler.CreateHandler(), r.logger)))
+	router.GET("/trucks/:id", ErrorHandler(LogHandler(r.truckHandler.GetHandler(), r.logger)))
 
 	return router
 }
