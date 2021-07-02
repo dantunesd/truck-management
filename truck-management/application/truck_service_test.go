@@ -108,8 +108,8 @@ func TestTruckService_CreateNewTruck(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			c := &TruckService{
-				TruckRepository: tt.fields.TruckRepository,
-				TruckValidator:  tt.fields.TruckValidator,
+				truckRepository: tt.fields.TruckRepository,
+				truckValidator:  tt.fields.TruckValidator,
 			}
 			got, err := c.CreateNewTruck(tt.args.newTruck)
 			if (err != nil) != tt.wantErr {

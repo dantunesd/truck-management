@@ -8,6 +8,10 @@ import (
 type TruckRepository struct {
 }
 
+func NewTruckRepository() *TruckRepository {
+	return &TruckRepository{}
+}
+
 func (t *TruckRepository) CreateTruck(truck *domain.Truck) error {
 	timeNow := time.Now().Format(time.RFC3339)
 

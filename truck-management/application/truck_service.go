@@ -13,16 +13,23 @@ type ITruckValidator interface {
 }
 
 type TruckService struct {
-	TruckRepository ITruckRepository
-	TruckValidator  ITruckValidator
+	truckRepository ITruckRepository
+	truckValidator  ITruckValidator
+}
+
+func NewTruckService(repository ITruckRepository, validator ITruckValidator) *TruckService {
+	return &TruckService{
+		truckRepository: repository,
+		truckValidator:  validator,
+	}
 }
 
 func (c *TruckService) CreateNewTruck(newTruck domain.Truck) (domain.Truck, error) {
-	if tErr := c.TruckValidator.IsValidTruck(newTruck); tErr != nil {
+	if tErr := c.truckValidator.IsValidTruck(newTruck); tErr != nil {
 		return newTruck, tErr
 	}
 
-	if cErr := c.TruckRepository.CreateTruck(&newTruck); cErr != nil {
+	if cErr := c.truckRepository.CreateTruck(&newTruck); cErr != nil {
 		return newTruck, cErr
 	}
 

@@ -8,21 +8,21 @@ import (
 )
 
 func TruckServiceFactory() *application.TruckService {
-	return &application.TruckService{
-		TruckRepository: TruckRepositoryFactory(),
-		TruckValidator:  TruckValidatorFactory(),
-	}
+	return application.NewTruckService(
+		TruckRepositoryFactory(),
+		TruckValidatorFactory(),
+	)
 }
 
 func TruckRepositoryFactory() application.ITruckRepository {
-	return &TruckRepository{}
+	return NewTruckRepository()
 }
 
 func TruckValidatorFactory() application.ITruckValidator {
-	return &domain.TruckValidator{
-		LicensePlateChecker: LicensePlateCheckerFactory(),
-		EldChecker:          EldCheckerFactory(),
-	}
+	return domain.NewTruckValidator(
+		LicensePlateCheckerFactory(),
+		EldCheckerFactory(),
+	)
 }
 
 func LicensePlateCheckerFactory() domain.LicensePlateChecker {

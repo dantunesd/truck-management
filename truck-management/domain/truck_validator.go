@@ -9,16 +9,23 @@ type EldChecker interface {
 }
 
 type TruckValidator struct {
-	LicensePlateChecker LicensePlateChecker
-	EldChecker          EldChecker
+	licensePlateChecker LicensePlateChecker
+	eldChecker          EldChecker
+}
+
+func NewTruckValidator(licensePlateChecker LicensePlateChecker, eldChecker EldChecker) *TruckValidator {
+	return &TruckValidator{
+		licensePlateChecker: licensePlateChecker,
+		eldChecker:          eldChecker,
+	}
 }
 
 func (t *TruckValidator) IsValidTruck(newTruck Truck) error {
-	if t.LicensePlateChecker.IsAlreadyInUse(newTruck.LicensePlate) {
+	if t.licensePlateChecker.IsAlreadyInUse(newTruck.LicensePlate) {
 		return NewConflict("there is already a truck registered with this License Plate")
 	}
 
-	if t.EldChecker.IsAlreadyInUse(newTruck.EldID) {
+	if t.eldChecker.IsAlreadyInUse(newTruck.EldID) {
 		return NewConflict("there is already a truck registered with this ELD id")
 	}
 
