@@ -18,59 +18,52 @@ func NewTruckHandler(s *application.TruckService) *TruckHandler {
 	}
 }
 
-func (h *TruckHandler) CreateHandler() ResponseWrapper {
-	return func(c *gin.Context) error {
+func (h *TruckHandler) CreateHandler() gin.HandlerFunc {
+	return func(c *gin.Context) {
 		var truck domain.Truck
 
 		if err := c.ShouldBindJSON(&truck); err != nil {
-			return NewBadRequest(err.Error())
+			c.Error(NewBadRequest(err.Error()))
+			return
 		}
 
 		result, err := h.service.CreateNewTruck(truck)
 		if err != nil {
-			return err
+			c.Error(err)
+			return
 		}
 
 		c.JSON(http.StatusCreated, result)
-		return nil
 	}
 }
 
-type IDUri struct {
-	ID int `uri:"id" binding:"required,numeric"`
-}
-
-func (h *TruckHandler) GetHandler() ResponseWrapper {
-	return func(c *gin.Context) error {
+func (h *TruckHandler) GetHandler() gin.HandlerFunc {
+	return func(c *gin.Context) {
 		var uri IDUri
 
-		if err := c.ShouldBindUri(&uri); err != nil {
-			return NewBadRequest(err.Error())
-		}
+		c.ShouldBindJSON(&uri)
 
 		result, err := h.service.GetTruck(uri.ID)
 		if err != nil {
-			return err
+			c.Error(err)
+			return
 		}
 
 		c.JSON(http.StatusOK, result)
-		return nil
 	}
 }
 
-func (h *TruckHandler) DeleteHandler() ResponseWrapper {
-	return func(c *gin.Context) error {
+func (h *TruckHandler) DeleteHandler() gin.HandlerFunc {
+	return func(c *gin.Context) {
 		var uri IDUri
 
-		if err := c.ShouldBindUri(&uri); err != nil {
-			return NewBadRequest(err.Error())
-		}
+		c.ShouldBindJSON(&uri)
 
 		if err := h.service.DeleteTruck(uri.ID); err != nil {
-			return err
+			c.Error(err)
+			return
 		}
 
 		c.JSON(http.StatusNoContent, nil)
-		return nil
 	}
 }
