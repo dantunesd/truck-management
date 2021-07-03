@@ -1,40 +1,40 @@
-package domain
+package api
 
 import (
 	"reflect"
 	"testing"
 )
 
-func TestNewConflict(t *testing.T) {
+func TestNewBadRequest(t *testing.T) {
 	type args struct {
 		errorMessage string
 	}
 	tests := []struct {
 		name string
 		args args
-		want *DomainErrors
+		want *ClientErrors
 	}{
 		{
-			"should return a domain error with 409 code",
+			"should return a client error with 400 code",
 			args{
 				errorMessage: "error",
 			},
-			&DomainErrors{
+			&ClientErrors{
 				ErrorMessage: "error",
-				Code:         409,
+				Code:         400,
 			},
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := NewConflict(tt.args.errorMessage); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("NewConflict() = %v, want %v", got, tt.want)
+			if got := NewBadRequest(tt.args.errorMessage); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("NewBadRequest() = %v, want %v", got, tt.want)
 			}
 		})
 	}
 }
 
-func TestDomainErrors_Error(t *testing.T) {
+func TestClientErrors_Error(t *testing.T) {
 	type fields struct {
 		ErrorMessage string
 		Code         int
@@ -48,19 +48,19 @@ func TestDomainErrors_Error(t *testing.T) {
 			name: "should return the message",
 			fields: fields{
 				ErrorMessage: "message",
-				Code:         200,
+				Code:         400,
 			},
 			want: "message",
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			d := &DomainErrors{
+			d := &ClientErrors{
 				ErrorMessage: tt.fields.ErrorMessage,
 				Code:         tt.fields.Code,
 			}
 			if got := d.Error(); got != tt.want {
-				t.Errorf("DomainErrors.Error() = %v, want %v", got, tt.want)
+				t.Errorf("ClientErrors.Error() = %v, want %v", got, tt.want)
 			}
 		})
 	}

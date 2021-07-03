@@ -27,13 +27,13 @@ func LogHandler(rw ResponseWrapper, logger ILogger) ResponseWrapper {
 func ErrorHandler(rw ResponseWrapper) func(c *gin.Context) {
 	return func(c *gin.Context) {
 		if err := rw(c); err != nil {
-			code, title := getErrorResponse(err)
+			code, title := GetErrorResponse(err)
 			c.JSON(code, &ErrorResponse{title, code})
 		}
 	}
 }
 
-func getErrorResponse(err error) (int, string) {
+func GetErrorResponse(err error) (int, string) {
 	switch terr := err.(type) {
 	case *ClientErrors:
 		return terr.Code, terr.ErrorMessage
