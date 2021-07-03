@@ -6,6 +6,7 @@ import (
 
 type ITruckRepository interface {
 	CreateTruck(truck *domain.Truck) error
+	GetTruck(ID int) (*domain.Truck, error)
 }
 
 type TruckService struct {
@@ -20,4 +21,8 @@ func NewTruckService(repository ITruckRepository) *TruckService {
 
 func (c *TruckService) CreateNewTruck(newTruck domain.Truck) (domain.Truck, error) {
 	return newTruck, c.truckRepository.CreateTruck(&newTruck)
+}
+
+func (c *TruckService) GetTruck(ID int) (*domain.Truck, error) {
+	return c.truckRepository.GetTruck(ID)
 }

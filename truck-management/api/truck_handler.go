@@ -1,21 +1,18 @@
 package api
 
 import (
+	"truck-management/truck-management/application"
 	"truck-management/truck-management/domain"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator"
 )
 
-type ITruckService interface {
-	CreateNewTruck(newTruck domain.Truck) (domain.Truck, error)
-}
-
 type TruckHandler struct {
-	service ITruckService
+	service *application.TruckService
 }
 
-func NewTruckHandler(s ITruckService) *TruckHandler {
+func NewTruckHandler(s *application.TruckService) *TruckHandler {
 	return &TruckHandler{
 		service: s,
 	}
@@ -43,9 +40,24 @@ func (h *TruckHandler) CreateHandler() ResponseWrapper {
 	}
 }
 
+type GetURI struct {
+	ID int `uri:"id" binding:"required,numeric"`
+}
+
 func (h *TruckHandler) GetHandler() ResponseWrapper {
 	return func(c *gin.Context) error {
-		c.JSON(200, domain.Truck{})
+		var uri GetURI
+
+		if err := c.ShouldBindUri(&uri); err != nil {
+			return NewBadRequest(err.Error())
+		}
+
+		result, err := h.service.GetTruck(uri.ID)
+		if err != nil {
+			return err
+		}
+
+		c.JSON(200, result)
 		return nil
 	}
 }

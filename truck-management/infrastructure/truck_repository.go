@@ -3,6 +3,7 @@ package infrastructure
 import (
 	"strings"
 	"time"
+	"truck-management/truck-management/api"
 	"truck-management/truck-management/domain"
 
 	"gorm.io/gorm"
@@ -26,8 +27,19 @@ func (t *TruckRepository) CreateTruck(truck *domain.Truck) error {
 
 	result := t.db.Create(&truck)
 	if result.Error != nil && strings.Contains(result.Error.Error(), "Duplicate entry") {
-		return domain.NewConflict("license plate or eld_id is already registered")
+		return api.NewConflict("license plate or eld_id is already registered")
 	}
 
 	return result.Error
+}
+
+func (t *TruckRepository) GetTruck(ID int) (*domain.Truck, error) {
+	var truck domain.Truck
+	result := t.db.Find(&truck, ID)
+
+	if result.RowsAffected == 0 {
+		return &truck, api.NewNotFound("truck not found")
+	}
+
+	return &truck, result.Error
 }

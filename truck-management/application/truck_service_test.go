@@ -98,16 +98,13 @@ type GetTruckByLicensePlateAndEldIDMock func(licensePlate, eldID string) (domain
 
 type TruckRepositoryMock struct {
 	CreateTruckMock func(*domain.Truck) error
+	GetTruckMock    func(ID int) (*domain.Truck, error)
 }
 
 func (t TruckRepositoryMock) CreateTruck(truck *domain.Truck) error {
 	return t.CreateTruckMock(truck)
 }
 
-type TruckValidatorMock struct {
-	IsValidTruckMock func(newTruck domain.Truck) error
-}
-
-func (t TruckValidatorMock) IsValidTruck(newTruck domain.Truck) error {
-	return t.IsValidTruckMock(newTruck)
+func (t TruckRepositoryMock) GetTruck(ID int) (*domain.Truck, error) {
+	return t.GetTruckMock(ID)
 }
