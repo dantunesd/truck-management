@@ -5,7 +5,6 @@ import (
 	"truck-management/truck-management/domain"
 
 	"github.com/gin-gonic/gin"
-	"github.com/go-playground/validator"
 )
 
 type TruckHandler struct {
@@ -23,11 +22,7 @@ func (h *TruckHandler) CreateHandler() ResponseWrapper {
 		var truck domain.Truck
 
 		if err := c.ShouldBindJSON(&truck); err != nil {
-			return NewBadRequest("invalid content")
-		}
-
-		if vErr := validator.New().Struct(truck); vErr != nil {
-			return NewBadRequest(vErr.Error())
+			return NewBadRequest(err.Error())
 		}
 
 		result, err := h.service.CreateNewTruck(truck)
@@ -40,12 +35,11 @@ func (h *TruckHandler) CreateHandler() ResponseWrapper {
 	}
 }
 
-type GetURI struct {
-	ID int `uri:"id" binding:"required,numeric"`
-}
-
 func (h *TruckHandler) GetHandler() ResponseWrapper {
 	return func(c *gin.Context) error {
+		type GetURI struct {
+			ID int `uri:"id" binding:"required,numeric"`
+		}
 		var uri GetURI
 
 		if err := c.ShouldBindUri(&uri); err != nil {
