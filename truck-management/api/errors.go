@@ -1,5 +1,7 @@
 package api
 
+import "net/http"
+
 type ClientErrors struct {
 	ErrorMessage string
 	Code         int
@@ -13,15 +15,15 @@ func NewError(errorMessage string, Code int) *ClientErrors {
 }
 
 func NewBadRequest(errorMessage string) *ClientErrors {
-	return NewError(errorMessage, 400)
+	return NewError(errorMessage, http.StatusBadRequest)
 }
 
 func NewConflict(errorMessage string) *ClientErrors {
-	return NewError(errorMessage, 409)
+	return NewError(errorMessage, http.StatusConflict)
 }
 
 func NewNotFound(errorMessage string) *ClientErrors {
-	return NewError(errorMessage, 404)
+	return NewError(errorMessage, http.StatusNotFound)
 }
 
 func (d *ClientErrors) Error() string {
