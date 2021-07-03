@@ -17,7 +17,7 @@ Before running this application, you must to install:
 # Start
 
 
-Run the following command to start application and your dependencies:
+Run the following command to start application and its dependencies:
 
 ```bash
 docker-compose up
