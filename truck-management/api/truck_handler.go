@@ -2,6 +2,7 @@ package api
 
 import (
 	"net/http"
+	"strconv"
 	"truck-management/truck-management/application"
 	"truck-management/truck-management/domain"
 
@@ -39,11 +40,9 @@ func (h *TruckHandler) CreateHandler() gin.HandlerFunc {
 
 func (h *TruckHandler) GetHandler() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var uri IDUri
+		ID, _ := strconv.Atoi(c.Param("id"))
 
-		c.ShouldBindJSON(&uri)
-
-		result, err := h.service.GetTruck(uri.ID)
+		result, err := h.service.GetTruck(ID)
 		if err != nil {
 			c.Error(err)
 			return
@@ -55,11 +54,9 @@ func (h *TruckHandler) GetHandler() gin.HandlerFunc {
 
 func (h *TruckHandler) DeleteHandler() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var uri IDUri
+		ID, _ := strconv.Atoi(c.Param("id"))
 
-		c.ShouldBindJSON(&uri)
-
-		if err := h.service.DeleteTruck(uri.ID); err != nil {
+		if err := h.service.DeleteTruck(ID); err != nil {
 			c.Error(err)
 			return
 		}
