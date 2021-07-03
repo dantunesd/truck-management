@@ -1,6 +1,7 @@
 package api
 
 import (
+	"net/http"
 	"truck-management/truck-management/application"
 	"truck-management/truck-management/domain"
 
@@ -30,17 +31,18 @@ func (h *TruckHandler) CreateHandler() ResponseWrapper {
 			return err
 		}
 
-		c.JSON(201, result)
+		c.JSON(http.StatusCreated, result)
 		return nil
 	}
 }
 
+type IDUri struct {
+	ID int `uri:"id" binding:"required,numeric"`
+}
+
 func (h *TruckHandler) GetHandler() ResponseWrapper {
 	return func(c *gin.Context) error {
-		type GetURI struct {
-			ID int `uri:"id" binding:"required,numeric"`
-		}
-		var uri GetURI
+		var uri IDUri
 
 		if err := c.ShouldBindUri(&uri); err != nil {
 			return NewBadRequest(err.Error())
@@ -51,7 +53,24 @@ func (h *TruckHandler) GetHandler() ResponseWrapper {
 			return err
 		}
 
-		c.JSON(200, result)
+		c.JSON(http.StatusOK, result)
+		return nil
+	}
+}
+
+func (h *TruckHandler) DeleteHandler() ResponseWrapper {
+	return func(c *gin.Context) error {
+		var uri IDUri
+
+		if err := c.ShouldBindUri(&uri); err != nil {
+			return NewBadRequest(err.Error())
+		}
+
+		if err := h.service.DeleteTruck(uri.ID); err != nil {
+			return err
+		}
+
+		c.JSON(http.StatusNoContent, nil)
 		return nil
 	}
 }

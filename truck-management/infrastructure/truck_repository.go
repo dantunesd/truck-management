@@ -43,3 +43,8 @@ func (t *TruckRepository) GetTruck(ID int) (*domain.Truck, error) {
 
 	return &truck, result.Error
 }
+
+func (t *TruckRepository) DeleteTruck(ID int) error {
+	var truck domain.Truck
+	return t.db.Delete(&truck, ID).Error
+}

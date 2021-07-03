@@ -30,6 +30,7 @@ func (r Router) GetRoutes() http.Handler {
 	router.Use(gin.Recovery())
 	router.POST("/trucks", ErrorHandler(LogHandler(r.truckHandler.CreateHandler(), r.logger)))
 	router.GET("/trucks/:id", ErrorHandler(LogHandler(r.truckHandler.GetHandler(), r.logger)))
+	router.DELETE("/trucks/:id", ErrorHandler(LogHandler(r.truckHandler.DeleteHandler(), r.logger)))
 
 	return router
 }
