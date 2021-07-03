@@ -34,6 +34,64 @@ func TestNewBadRequest(t *testing.T) {
 	}
 }
 
+func TestNewConflict(t *testing.T) {
+	type args struct {
+		errorMessage string
+	}
+	tests := []struct {
+		name string
+		args args
+		want *ClientErrors
+	}{
+		{
+			"should return a client error with 409 code",
+			args{
+				errorMessage: "error",
+			},
+			&ClientErrors{
+				ErrorMessage: "error",
+				Code:         409,
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := NewConflict(tt.args.errorMessage); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("NewConflict() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestNewNotFound(t *testing.T) {
+	type args struct {
+		errorMessage string
+	}
+	tests := []struct {
+		name string
+		args args
+		want *ClientErrors
+	}{
+		{
+			"should return a client error with 404 code",
+			args{
+				errorMessage: "error",
+			},
+			&ClientErrors{
+				ErrorMessage: "error",
+				Code:         404,
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := NewNotFound(tt.args.errorMessage); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("NewNotFound() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
 func TestClientErrors_Error(t *testing.T) {
 	type fields struct {
 		ErrorMessage string

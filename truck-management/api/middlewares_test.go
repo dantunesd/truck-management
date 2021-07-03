@@ -3,7 +3,6 @@ package api
 import (
 	"errors"
 	"testing"
-	"truck-management/truck-management/domain"
 )
 
 func TestGetErrorResponse(t *testing.T) {
@@ -16,17 +15,6 @@ func TestGetErrorResponse(t *testing.T) {
 		want  int
 		want1 string
 	}{
-		{
-			"should return code and message when receiving a domain error",
-			args{
-				err: &domain.DomainErrors{
-					ErrorMessage: "domain error",
-					Code:         409,
-				},
-			},
-			409,
-			"domain error",
-		},
 		{
 			"should return code and message when receiving a client error",
 			args{

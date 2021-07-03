@@ -16,6 +16,14 @@ func NewBadRequest(errorMessage string) *ClientErrors {
 	return NewError(errorMessage, 400)
 }
 
+func NewConflict(errorMessage string) *ClientErrors {
+	return NewError(errorMessage, 409)
+}
+
+func NewNotFound(errorMessage string) *ClientErrors {
+	return NewError(errorMessage, 404)
+}
+
 func (d *ClientErrors) Error() string {
 	return d.ErrorMessage
 }

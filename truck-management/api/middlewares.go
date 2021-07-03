@@ -2,7 +2,6 @@ package api
 
 import (
 	"net/http"
-	"truck-management/truck-management/domain"
 
 	"github.com/gin-gonic/gin"
 )
@@ -36,8 +35,6 @@ func ErrorHandler(rw ResponseWrapper) func(c *gin.Context) {
 func GetErrorResponse(err error) (int, string) {
 	switch terr := err.(type) {
 	case *ClientErrors:
-		return terr.Code, terr.ErrorMessage
-	case *domain.DomainErrors:
 		return terr.Code, terr.ErrorMessage
 	default:
 		return http.StatusInternalServerError, "internal server error"
