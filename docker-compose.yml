@@ -1,6 +1,18 @@
 version: "3.7"
 
 services:
+    app:
+        image: golang:1.16.5-alpine3.14
+        working_dir: /app
+        volumes: 
+            - ./:/app
+        command: 'go run main.go'
+        depends_on: 
+            - db
+        restart: on-failure
+        ports: 
+            - 3000:3000
+
     db:
         image: mysql:8.0
         command: --default-authentication-plugin=mysql_native_password
@@ -12,9 +24,3 @@ services:
             - 3306:3306
         volumes: 
             - ./docker/database/:/docker-entrypoint-initdb.d
-
-    adminer:
-        image: adminer
-        restart: always
-        ports:
-            - 8080:8080

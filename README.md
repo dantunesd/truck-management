@@ -16,18 +16,12 @@ Before running this application, you must to install:
 
 # Start
 
-Firstly, start the application's dependencies
+
+Run the following command to start application and your dependencies:
 
 ```bash
 docker-compose up
 ```
-
-Now run the following command to start the application:
-
-```bash
-go run main.go
-```
-
 ---
 
 # Unit Tests
