@@ -22,7 +22,7 @@ func TruckIdHandler(c *gin.Context) {
 	c.Next()
 }
 
-func MyLogHandler(logger ILogger) gin.HandlerFunc {
+func LogHandler(logger ILogger) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.Next()
 
@@ -32,7 +32,7 @@ func MyLogHandler(logger ILogger) gin.HandlerFunc {
 	}
 }
 
-func MyErrorHandler() gin.HandlerFunc {
+func ErrorHandler() gin.HandlerFunc {
 	return func(errType gin.ErrorType) gin.HandlerFunc {
 		return func(c *gin.Context) {
 			c.Next()

@@ -23,13 +23,12 @@ func NewRouter(handler *TruckHandler, logger ILogger) *Router {
 }
 
 func (r Router) GetRoutes() http.Handler {
-
 	gin.SetMode("release")
-	router := gin.New()
 
+	router := gin.New()
 	router.Use(gin.Recovery())
-	router.Use(MyErrorHandler())
-	router.Use(MyLogHandler(r.logger))
+	router.Use(ErrorHandler())
+	router.Use(LogHandler(r.logger))
 
 	router.POST("/trucks", r.truckHandler.CreateHandler())
 	router.GET("/trucks/:id", TruckIdHandler, r.truckHandler.GetHandler())
