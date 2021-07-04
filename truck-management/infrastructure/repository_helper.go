@@ -2,13 +2,11 @@ package infrastructure
 
 import (
 	"strings"
-	"time"
 	"truck-management/truck-management/api"
 
 	"gorm.io/gorm"
 )
 
-var NowFormated = time.Now().Format("2006-01-02 15:04:05")
 var NotFoundError = api.NewNotFound("truck not found")
 var ConflictError = api.NewConflict("license plate or eld_id is already registered")
 

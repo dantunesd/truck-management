@@ -68,9 +68,8 @@ func (h *TruckHandler) UpdateTruck(c *gin.Context) {
 	}
 
 	ID, _ := strconv.Atoi(c.Param("id"))
-	truck.ID = ID
 
-	err := h.service.UpdateTruck(truck)
+	err := h.service.UpdateTruck(ID, truck)
 	if err != nil {
 		c.Error(err)
 		return

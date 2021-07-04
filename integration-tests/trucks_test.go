@@ -37,10 +37,17 @@ func TestTrucks(t *testing.T) {
 			http.StatusConflict,
 		},
 		{
-			"Should return 400 when creating a truck with invalid fields",
+			"Should return 400 when creating a truck without required fields",
 			"http://app:3000/trucks",
 			http.MethodPost,
-			`{"license_plate":"","eld_id":"","carrier_id":""}`,
+			`{}`,
+			http.StatusBadRequest,
+		},
+		{
+			"Should return 400 when creating a truck with invalid payload",
+			"http://app:3000/trucks",
+			http.MethodPost,
+			`invalid payload`,
 			http.StatusBadRequest,
 		},
 	}

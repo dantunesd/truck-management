@@ -1,6 +1,7 @@
 package infrastructure
 
 import (
+	"time"
 	"truck-management/truck-management/domain"
 
 	"gorm.io/gorm"
@@ -17,7 +18,7 @@ func NewTruckRepository(db *gorm.DB) *TruckRepository {
 }
 
 func (t *TruckRepository) CreateTruck(truck *domain.Truck) error {
-	timeNow := NowFormated
+	timeNow := time.Now().Format("2006-01-02 15:04:05")
 	truck.CreatedAt = timeNow
 	truck.UpdatedAt = timeNow
 
@@ -34,8 +35,9 @@ func (t *TruckRepository) DeleteTruck(ID int) error {
 	return t.db.Delete(&truck, ID).Error
 }
 
-func (t *TruckRepository) UpdateTruck(truck *domain.Truck) error {
-	truck.UpdatedAt = NowFormated
-	result := t.db.Model(&truck).Where("id = ?", truck.ID).Updates(truck)
+func (t *TruckRepository) UpdateTruck(ID int, truck *domain.Truck) error {
+	truck.ID = ID
+	truck.UpdatedAt = time.Now().Format("2006-01-02 15:04:05")
+	result := t.db.Model(&truck).Where("id = ?", ID).Updates(truck)
 	return getError(result)
 }
