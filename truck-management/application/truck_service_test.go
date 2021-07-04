@@ -12,7 +12,7 @@ var timeNow = time.Now().Format(time.RFC3339)
 
 func TestTruckService_CreateNewTruck(t *testing.T) {
 	type fields struct {
-		TruckRepository ITruckRepository
+		truckRepository ITruckRepository
 	}
 	type args struct {
 		newTruck domain.Truck
@@ -27,7 +27,7 @@ func TestTruckService_CreateNewTruck(t *testing.T) {
 		{
 			name: "should return an error when CreateTruck returns any error",
 			fields: fields{
-				TruckRepository: &TruckRepositoryMock{
+				truckRepository: &TruckRepositoryMock{
 					CreateTruckMock: func(*domain.Truck) error {
 						return errors.New("failed to create truck")
 					},
@@ -42,7 +42,7 @@ func TestTruckService_CreateNewTruck(t *testing.T) {
 		{
 			name: "should return TruckEntity when creating with success",
 			fields: fields{
-				TruckRepository: &TruckRepositoryMock{
+				truckRepository: &TruckRepositoryMock{
 					CreateTruckMock: func(truck *domain.Truck) error {
 						truck.ID = 1
 						truck.CreatedAt = timeNow
@@ -81,7 +81,7 @@ func TestTruckService_CreateNewTruck(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			c := NewTruckService(tt.fields.TruckRepository)
+			c := NewTruckService(tt.fields.truckRepository)
 			got, err := c.CreateNewTruck(tt.args.newTruck)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("TruckService.CreateNewTruck() error = %v, wantErr %v", err, tt.wantErr)
@@ -95,6 +95,128 @@ func TestTruckService_CreateNewTruck(t *testing.T) {
 }
 
 type GetTruckByLicensePlateAndEldIDMock func(licensePlate, eldID string) (domain.Truck, error)
+
+func TestTruckService_GetTruck(t *testing.T) {
+	type fields struct {
+		truckRepository ITruckRepository
+	}
+	type args struct {
+		ID int
+	}
+	tests := []struct {
+		name    string
+		fields  fields
+		args    args
+		want    *domain.Truck
+		wantErr bool
+	}{
+		{
+			name: "should return an error when GetTruck returns any error",
+			fields: fields{
+				truckRepository: &TruckRepositoryMock{
+					GetTruckMock: func(ID int) (*domain.Truck, error) {
+						return &domain.Truck{}, errors.New("failed to get truck")
+					},
+				},
+			},
+			args: args{
+				ID: 1,
+			},
+			want:    &domain.Truck{},
+			wantErr: true,
+		},
+		{
+			name: "should return a Truck getting with success",
+			fields: fields{
+				truckRepository: &TruckRepositoryMock{
+					GetTruckMock: func(ID int) (*domain.Truck, error) {
+						return &domain.Truck{
+							ID:           1,
+							LicensePlate: "ABC12345",
+						}, nil
+					},
+				},
+			},
+			args: args{
+				ID: 1,
+			},
+			want: &domain.Truck{
+				ID:           1,
+				LicensePlate: "ABC12345",
+			},
+			wantErr: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			c := &TruckService{
+				truckRepository: tt.fields.truckRepository,
+			}
+			got, err := c.GetTruck(tt.args.ID)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("TruckService.GetTruck() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("TruckService.GetTruck() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestTruckService_DeleteTruck(t *testing.T) {
+	type fields struct {
+		truckRepository ITruckRepository
+	}
+	type args struct {
+		ID int
+	}
+	tests := []struct {
+		name    string
+		fields  fields
+		args    args
+		wantErr bool
+	}{
+		{
+			name: "should return an error when DeleteTruck returns any error",
+			fields: fields{
+				truckRepository: &TruckRepositoryMock{
+					DeleteTruckMock: func(ID int) error {
+						return errors.New("failed to delete truck")
+					},
+				},
+			},
+			args: args{
+				ID: 1,
+			},
+			wantErr: true,
+		},
+		{
+			name: "should return nil when deleting with success",
+			fields: fields{
+				truckRepository: &TruckRepositoryMock{
+					DeleteTruckMock: func(ID int) error {
+						return nil
+					},
+				},
+			},
+			args: args{
+				ID: 1,
+			},
+			wantErr: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			c := &TruckService{
+				truckRepository: tt.fields.truckRepository,
+			}
+			if err := c.DeleteTruck(tt.args.ID); (err != nil) != tt.wantErr {
+				t.Errorf("TruckService.DeleteTruck() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}
 
 type TruckRepositoryMock struct {
 	CreateTruckMock func(*domain.Truck) error
