@@ -20,7 +20,7 @@ Before running this application, you must to install:
 Run the following command to start application and its dependencies:
 
 ```bash
-docker-compose up
+make start
 ```
 ---
 
@@ -29,5 +29,13 @@ docker-compose up
 Run the following command to run all unit tests:
 
 ```bash
-go test ./truck-management/...
+make unit-test
+```
+
+# Integration Tests
+
+Run the following command to run all integration tests:
+
+```bash
+make integration-test
 ```

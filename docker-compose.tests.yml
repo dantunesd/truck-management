@@ -1,0 +1,23 @@
+version: "3.7"
+
+services:
+    unit:
+        image: golang:1.16.5
+        working_dir: /app
+        volumes: 
+            - ./:/app
+        command: 'go test ./truck-management/...'
+
+    integration:
+        image: golang:1.16.5
+        working_dir: /app
+        volumes: 
+            - ./:/app
+        command: 'go test ./integration-tests'
+        networks:
+            - app
+
+networks:
+    app:
+        external:
+            name: app

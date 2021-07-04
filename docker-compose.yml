@@ -2,6 +2,7 @@ version: "3.7"
 
 services:
     app:
+        container_name: app
         image: golang:1.16.5-alpine3.14
         working_dir: /app
         volumes: 
@@ -12,8 +13,11 @@ services:
         restart: on-failure
         ports: 
             - 3000:3000
+        networks: 
+            - app
 
     db:
+        container_name: db
         image: mysql:8.0
         command: --default-authentication-plugin=mysql_native_password
         restart: always
@@ -24,3 +28,9 @@ services:
             - 3306:3306
         volumes: 
             - ./docker/database/:/docker-entrypoint-initdb.d
+        networks: 
+            - app
+
+networks:
+    app:
+        name: app
