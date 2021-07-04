@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS trucks (
 );
 
 INSERT INTO trucks (id, license_plate, eld_id, carrier_id, type, size, color, make, model, year, created_at, updated_at) VALUES ('1', 'INSERTT', 'INSERTED ELD', 'INSERTT MY CARRIER', 'REEFERR', '23', 'blue', 'Maker', 'Model', '1900', '2021-07-04 21:34:26', '2021-07-04 21:34:26');
+INSERT INTO trucks (id, license_plate, eld_id, carrier_id, type, size, color, make, model, year, created_at, updated_at) VALUES ('2', 'TODELET', 'TO DELETE ELD', 'TO DELETE MY CARRIER', 'REEFERR', '23', 'blue', 'Maker', 'Model', '1900', '2021-07-04 21:34:26', '2021-07-04 21:34:26');
 
 CREATE TABLE IF NOT EXISTS `truck_management`.`locations` (
   `id` INT NOT NULL AUTO_INCREMENT,

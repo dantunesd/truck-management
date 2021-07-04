@@ -123,7 +123,7 @@ func TestTrucks(t *testing.T) {
 		},
 		{
 			"Should return 204 when deleting an existent truck",
-			"http://app:3000/trucks/1",
+			"http://app:3000/trucks/2",
 			http.MethodDelete,
 			``,
 			http.StatusNoContent,
