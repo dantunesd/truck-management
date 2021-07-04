@@ -2,23 +2,26 @@ package main
 
 import (
 	"net/http"
+	"truck-management/truck-management/api"
 	"truck-management/truck-management/infrastructure"
 )
 
 func main() {
 	logger := infrastructure.LoggerFactory()
 
-	config, cErr := infrastructure.NewConfig()
-	if cErr != nil {
-		logger.Fatal(cErr)
+	config, err := infrastructure.ConfigFactory()
+	if err != nil {
+		logger.Fatal(err)
 	}
 
-	db, dErr := infrastructure.DatabaseFactory(config)
-	if dErr != nil {
-		logger.Fatal(dErr)
+	db, err := infrastructure.DatabaseFactory(config)
+	if err != nil {
+		logger.Fatal(err)
 	}
 
-	handler := infrastructure.HandlerFactory(db, logger)
+	ts := infrastructure.TruckServiceFactory(db)
+
+	handler := api.CreateHandler(logger, ts)
 
 	logger.Info("starting webserver")
 

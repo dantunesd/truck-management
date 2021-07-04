@@ -19,48 +19,42 @@ func NewTruckHandler(s *application.TruckService) *TruckHandler {
 	}
 }
 
-func (h *TruckHandler) CreateHandler() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		var truck domain.Truck
+func (h *TruckHandler) CreateTruck(c *gin.Context) {
+	var truck domain.Truck
 
-		if err := c.ShouldBindJSON(&truck); err != nil {
-			c.Error(NewBadRequest(err.Error()))
-			return
-		}
-
-		result, err := h.service.CreateNewTruck(truck)
-		if err != nil {
-			c.Error(err)
-			return
-		}
-
-		c.JSON(http.StatusCreated, result)
+	if err := c.ShouldBindJSON(&truck); err != nil {
+		c.Error(NewBadRequest(err.Error()))
+		return
 	}
+
+	result, err := h.service.CreateNewTruck(truck)
+	if err != nil {
+		c.Error(err)
+		return
+	}
+
+	c.JSON(http.StatusCreated, result)
 }
 
-func (h *TruckHandler) GetHandler() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		ID, _ := strconv.Atoi(c.Param("id"))
+func (h *TruckHandler) GetTruck(c *gin.Context) {
+	ID, _ := strconv.Atoi(c.Param("id"))
 
-		result, err := h.service.GetTruck(ID)
-		if err != nil {
-			c.Error(err)
-			return
-		}
-
-		c.JSON(http.StatusOK, result)
+	result, err := h.service.GetTruck(ID)
+	if err != nil {
+		c.Error(err)
+		return
 	}
+
+	c.JSON(http.StatusOK, result)
 }
 
-func (h *TruckHandler) DeleteHandler() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		ID, _ := strconv.Atoi(c.Param("id"))
+func (h *TruckHandler) DeleteTruck(c *gin.Context) {
+	ID, _ := strconv.Atoi(c.Param("id"))
 
-		if err := h.service.DeleteTruck(ID); err != nil {
-			c.Error(err)
-			return
-		}
-
-		c.JSON(http.StatusNoContent, nil)
+	if err := h.service.DeleteTruck(ID); err != nil {
+		c.Error(err)
+		return
 	}
+
+	c.JSON(http.StatusNoContent, nil)
 }

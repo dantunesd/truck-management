@@ -2,6 +2,7 @@ package api
 
 import (
 	"net/http"
+	"truck-management/truck-management/application"
 
 	"github.com/gin-gonic/gin"
 )
@@ -10,29 +11,20 @@ type ILogger interface {
 	Error(args ...interface{})
 }
 
-type Router struct {
-	truckHandler *TruckHandler
-	logger       ILogger
-}
+func CreateHandler(logger ILogger, ts *application.TruckService) http.Handler {
 
-func NewRouter(handler *TruckHandler, logger ILogger) *Router {
-	return &Router{
-		truckHandler: handler,
-		logger:       logger,
-	}
-}
+	truckHandler := NewTruckHandler(ts)
 
-func (r Router) GetRoutes() http.Handler {
 	gin.SetMode("release")
+	handler := gin.New()
 
-	router := gin.New()
-	router.Use(gin.Recovery())
-	router.Use(ErrorHandler)
-	router.Use(LogHandler(r.logger))
+	handler.Use(gin.Recovery())
+	handler.Use(ErrorHandler)
+	handler.Use(LogHandler(logger))
 
-	router.POST("/trucks", r.truckHandler.CreateHandler())
-	router.GET("/trucks/:id", TruckIdHandler, r.truckHandler.GetHandler())
-	router.DELETE("/trucks/:id", TruckIdHandler, r.truckHandler.DeleteHandler())
+	handler.POST("/trucks", truckHandler.CreateTruck)
+	handler.GET("/trucks/:id", TruckIdHandler, truckHandler.GetTruck)
+	handler.DELETE("/trucks/:id", TruckIdHandler, truckHandler.DeleteTruck)
 
-	return router
+	return handler
 }
