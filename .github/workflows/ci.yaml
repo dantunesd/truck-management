@@ -15,4 +15,7 @@ jobs:
           go-version: "1.16"
 
       - name: Running Unit Tests
-        run: go test ./truck-management/...
+        run: make unit-test
+
+      - name: Running Integration Tests
+        run: make integration-test
