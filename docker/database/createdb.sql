@@ -19,3 +19,28 @@ CREATE TABLE IF NOT EXISTS trucks (
     UNIQUE INDEX license_plate_UNIQUE (license_plate),
     UNIQUE INDEX eld_id_UNIQUE (eld_id)
 );
+
+CREATE TABLE IF NOT EXISTS `truck_management`.`locations` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `truck_id` INT NOT NULL,
+  `eld_id` VARCHAR(20) NOT NULL,
+  `engine_state` VARCHAR(3) NOT NULL,
+  `current_speed` INT NOT NULL,
+  `latitude` INT NOT NULL,
+  `longitude` INT NOT NULL,
+  `engine_hours` INT NOT NULL,
+  `odometer` INT NOT NULL,
+  `created_at` VARCHAR(45) NULL DEFAULT 'CURRENT_TIMESTAMP',
+  PRIMARY KEY (`id`),
+  INDEX `fk_locations_1_idx` (`truck_id`),
+  INDEX `fk_locations_2_idx` (`eld_id`),
+  CONSTRAINT `fk_locations_1`
+    FOREIGN KEY (`truck_id`)
+    REFERENCES `truck_management`.`trucks` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_locations_2`
+    FOREIGN KEY (`eld_id`)
+    REFERENCES `truck_management`.`trucks` (`eld_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);

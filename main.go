@@ -20,8 +20,9 @@ func main() {
 	}
 
 	ts := infrastructure.TruckServiceFactory(db)
+	ls := infrastructure.LocationServiceFactory(db)
 
-	handler := api.CreateHandler(logger, ts)
+	handler := api.CreateHandler(logger, ts, ls)
 
 	logger.Info("starting webserver")
 

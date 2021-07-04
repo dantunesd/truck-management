@@ -31,3 +31,7 @@ func DatabaseFactory(config *Config) (*gorm.DB, error) {
 func TruckServiceFactory(db *gorm.DB) *application.TruckService {
 	return application.NewTruckService(NewTruckRepository(db))
 }
+
+func LocationServiceFactory(db *gorm.DB) *application.LocationService {
+	return application.NewLocationService(NewLocationRepository(db))
+}
