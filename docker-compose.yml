@@ -33,4 +33,5 @@ services:
 
 networks:
     app:
-        name: app
+        external:
+            name: app

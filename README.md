@@ -16,8 +16,13 @@ Before running this application, you must to install:
 
 # Start
 
+First of all, create a network, it will be required for running application and tests:
 
-Run the following command to start application and its dependencies:
+```bash
+make create-network
+```
+
+Now run the following command to start application and its dependencies:
 
 ```bash
 make start
@@ -32,6 +37,8 @@ Run the following command to run all unit tests:
 make unit-test
 ```
 
+---
+
 # Integration Tests
 
 Run the following command to run all integration tests:
@@ -39,3 +46,5 @@ Run the following command to run all integration tests:
 ```bash
 make integration-test
 ```
+
+---

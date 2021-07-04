@@ -1,5 +1,8 @@
 .PHONY: start down unit-test integration-test
 
+create-network:
+	docker network create app
+
 start:
 	docker-compose up --force-recreate -d
 
