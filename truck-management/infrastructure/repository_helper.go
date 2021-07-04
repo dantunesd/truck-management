@@ -21,19 +21,3 @@ func isDuplicated(result *gorm.DB) bool {
 func isNotFound(result *gorm.DB) bool {
 	return result.RowsAffected == 0
 }
-
-func getError(result *gorm.DB) error {
-	if isDuplicated(result) {
-		return ConflictError
-	}
-
-	if hasError(result) {
-		return result.Error
-	}
-
-	if isNotFound(result) {
-		return NotFoundError
-	}
-
-	return nil
-}

@@ -22,12 +22,33 @@ func (t *TruckRepository) CreateTruck(truck *domain.Truck) error {
 	truck.CreatedAt = timeNow
 	truck.UpdatedAt = timeNow
 
-	return getError(t.db.Create(&truck))
+	result := t.db.Create(&truck)
+
+	if isDuplicated(result) {
+		return ConflictError
+	}
+
+	if hasError(result) {
+		return result.Error
+	}
+
+	return nil
 }
 
 func (t *TruckRepository) GetTruck(ID int) (*domain.Truck, error) {
 	var truck domain.Truck
-	return &truck, getError(t.db.Find(&truck, ID))
+
+	result := t.db.Find(&truck, ID)
+
+	if hasError(result) {
+		return &truck, result.Error
+	}
+
+	if isNotFound(result) {
+		return &truck, NotFoundError
+	}
+
+	return &truck, nil
 }
 
 func (t *TruckRepository) DeleteTruck(ID int) error {
@@ -38,6 +59,20 @@ func (t *TruckRepository) DeleteTruck(ID int) error {
 func (t *TruckRepository) UpdateTruck(ID int, truck *domain.Truck) error {
 	truck.ID = ID
 	truck.UpdatedAt = time.Now().Format("2006-01-02 15:04:05")
+
 	result := t.db.Model(&truck).Where("id = ?", ID).Updates(truck)
-	return getError(result)
+
+	if isDuplicated(result) {
+		return ConflictError
+	}
+
+	if hasError(result) {
+		return result.Error
+	}
+
+	if isNotFound(result) {
+		return NotFoundError
+	}
+
+	return nil
 }

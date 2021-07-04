@@ -21,10 +21,13 @@ func (t *LocationRepository) CreateLocation(truckID int, location *domain.Locati
 	location.TruckID = truckID
 	location.CreatedAt = time.Now().Format("2006-01-02 15:04:05")
 
-	return getError(t.db.Create(&location))
+	return t.db.Create(&location).Error
 }
 
 func (t *LocationRepository) GetLastLocation(truckID int) (*domain.Location, error) {
 	var location domain.Location
-	return &location, getError(t.db.Find(&location, truckID))
+
+	result := t.db.Find(&location).Where("truck_id = ?", truckID).Order("id DESC").Limit(1)
+
+	return &location, result.Error
 }

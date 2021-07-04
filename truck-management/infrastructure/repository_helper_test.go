@@ -7,58 +7,108 @@ import (
 	"gorm.io/gorm"
 )
 
-func Test_getError(t *testing.T) {
-	GenericError := errors.New("generic error")
-
+func Test_hasError(t *testing.T) {
 	type args struct {
 		result *gorm.DB
 	}
 	tests := []struct {
 		name string
 		args args
-		want error
+		want bool
 	}{
 		{
-			"should return a Conflict error",
+			"should return true when exists error",
+			args{
+				result: &gorm.DB{
+					Error: errors.New("generic error"),
+				},
+			},
+			true,
+		},
+		{
+			"should return false when not exists error",
+			args{
+				result: &gorm.DB{},
+			},
+			false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := hasError(tt.args.result); got != tt.want {
+				t.Errorf("hasError() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_isDuplicated(t *testing.T) {
+	type args struct {
+		result *gorm.DB
+	}
+	tests := []struct {
+		name string
+		args args
+		want bool
+	}{
+		{
+			"should return true when exists error",
 			args{
 				result: &gorm.DB{
 					Error: errors.New("Duplicate entry"),
 				},
 			},
-			ConflictError,
+			true,
 		},
 		{
-			"should return generic error",
+			"should return false when not exists error",
 			args{
-				result: &gorm.DB{
-					Error: GenericError,
-				},
+				result: &gorm.DB{},
 			},
-			GenericError,
+			false,
 		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := isDuplicated(tt.args.result); got != tt.want {
+				t.Errorf("isDuplicated() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_isNotFound(t *testing.T) {
+	type args struct {
+		result *gorm.DB
+	}
+	tests := []struct {
+		name string
+		args args
+		want bool
+	}{
 		{
-			"should return Not Found error",
+			"should return true when is rows was not affected",
 			args{
 				result: &gorm.DB{
 					RowsAffected: 0,
 				},
 			},
-			NotFoundError,
+			true,
 		},
 		{
-			"should return nil",
+			"should return false when rows was affected",
 			args{
 				result: &gorm.DB{
 					RowsAffected: 1,
 				},
 			},
-			nil,
+			false,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if err := getError(tt.args.result); err != tt.want {
-				t.Errorf("getError() error = %v, wantErr %v", err, tt.want)
+			if got := isNotFound(tt.args.result); got != tt.want {
+				t.Errorf("isNotFound() = %v, want %v", got, tt.want)
 			}
 		})
 	}
