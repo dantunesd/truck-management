@@ -94,8 +94,6 @@ func TestTruckService_CreateTruck(t *testing.T) {
 	}
 }
 
-type GetTruckByLicensePlateAndEldIDMock func(licensePlate, eldID string) (domain.Truck, error)
-
 func TestTruckService_GetTruck(t *testing.T) {
 	type fields struct {
 		truckRepository ITruckRepository
@@ -213,6 +211,63 @@ func TestTruckService_DeleteTruck(t *testing.T) {
 			}
 			if err := c.DeleteTruck(tt.args.ID); (err != nil) != tt.wantErr {
 				t.Errorf("TruckService.DeleteTruck() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}
+
+func TestTruckService_UpdateTruck(t *testing.T) {
+	type fields struct {
+		truckRepository ITruckRepository
+	}
+	type args struct {
+		ID    int
+		truck domain.Truck
+	}
+	tests := []struct {
+		name    string
+		fields  fields
+		args    args
+		wantErr bool
+	}{
+		{
+			name: "should return an error when UpdateTruck returns any error",
+			fields: fields{
+				truckRepository: &TruckRepositoryMock{
+					UpdateTruckMock: func(ID int, truck *domain.Truck) error {
+						return errors.New("failed to create truck")
+					},
+				},
+			},
+			args: args{
+				ID:    1,
+				truck: domain.Truck{},
+			},
+			wantErr: true,
+		},
+		{
+			name: "should return nil when updating with success",
+			fields: fields{
+				truckRepository: &TruckRepositoryMock{
+					UpdateTruckMock: func(ID int, truck *domain.Truck) error {
+						return nil
+					},
+				},
+			},
+			args: args{
+				ID:    1,
+				truck: domain.Truck{},
+			},
+			wantErr: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			c := &TruckService{
+				truckRepository: tt.fields.truckRepository,
+			}
+			if err := c.UpdateTruck(tt.args.ID, tt.args.truck); (err != nil) != tt.wantErr {
+				t.Errorf("TruckService.UpdateTruck() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
 	}
