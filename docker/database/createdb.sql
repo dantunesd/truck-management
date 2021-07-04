@@ -41,9 +41,4 @@ CREATE TABLE IF NOT EXISTS `truck_management`.`locations` (
     FOREIGN KEY (`truck_id`)
     REFERENCES `truck_management`.`trucks` (`id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_locations_2`
-    FOREIGN KEY (`eld_id`)
-    REFERENCES `truck_management`.`trucks` (`eld_id`)
-    ON DELETE NO ACTION
     ON UPDATE NO ACTION);
