@@ -20,6 +20,8 @@ CREATE TABLE IF NOT EXISTS trucks (
     UNIQUE INDEX eld_id_UNIQUE (eld_id)
 );
 
+INSERT INTO trucks (id, license_plate, eld_id, carrier_id, type, size, color, make, model, year, created_at, updated_at) VALUES ('1', 'INSERTT', 'INSERTED ELD', 'INSERTT MY CARRIER', 'REEFERR', '23', 'blue', 'Maker', 'Model', '1900', '2021-07-04 21:34:26', '2021-07-04 21:34:26');
+
 CREATE TABLE IF NOT EXISTS `truck_management`.`locations` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `truck_id` INT NOT NULL,
@@ -30,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `truck_management`.`locations` (
   `longitude` INT NOT NULL,
   `engine_hours` INT NOT NULL,
   `odometer` INT NOT NULL,
-  `created_at` VARCHAR(45) NULL DEFAULT 'CURRENT_TIMESTAMP',
+  `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   INDEX `fk_locations_1_idx` (`truck_id`),
   INDEX `fk_locations_2_idx` (`eld_id`),
