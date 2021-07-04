@@ -1,0 +1,49 @@
+package api
+
+import (
+	"errors"
+	"testing"
+)
+
+func TestGetErrorResponse(t *testing.T) {
+	type args struct {
+		err error
+	}
+	tests := []struct {
+		name string
+		args args
+		want ErrorResponse
+	}{
+		{
+			"should return code and message when receiving a client error",
+			args{
+				err: &ClientErrors{
+					ErrorMessage: "client error",
+					Code:         400,
+				},
+			},
+			ErrorResponse{
+				"client error",
+				400,
+			},
+		},
+		{
+			"should return code and message when receiving a generic error",
+			args{
+				err: errors.New("generic"),
+			},
+			ErrorResponse{
+				"internal server error",
+				500,
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := GetErrorResponse(tt.args.err)
+			if got != tt.want {
+				t.Errorf("GetErrorResponse() got = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}

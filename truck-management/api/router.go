@@ -27,7 +27,7 @@ func (r Router) GetRoutes() http.Handler {
 
 	router := gin.New()
 	router.Use(gin.Recovery())
-	router.Use(ErrorHandler())
+	router.Use(ErrorHandler)
 	router.Use(LogHandler(r.logger))
 
 	router.POST("/trucks", r.truckHandler.CreateHandler())
