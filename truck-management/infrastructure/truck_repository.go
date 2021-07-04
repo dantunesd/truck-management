@@ -1,9 +1,6 @@
 package infrastructure
 
 import (
-	"strings"
-	"time"
-	"truck-management/truck-management/api"
 	"truck-management/truck-management/domain"
 
 	"gorm.io/gorm"
@@ -20,28 +17,16 @@ func NewTruckRepository(db *gorm.DB) *TruckRepository {
 }
 
 func (t *TruckRepository) CreateTruck(truck *domain.Truck) error {
-	timeNow := time.Now().Format("2006-01-02 15:04:05")
-
+	timeNow := NowFormated
 	truck.CreatedAt = timeNow
 	truck.UpdatedAt = timeNow
 
-	result := t.db.Create(&truck)
-	if result.Error != nil && isDuplicated(result.Error) {
-		return api.NewConflict("license plate or eld_id is already registered")
-	}
-
-	return result.Error
+	return getError(t.db.Create(&truck))
 }
 
 func (t *TruckRepository) GetTruck(ID int) (*domain.Truck, error) {
 	var truck domain.Truck
-	result := t.db.Find(&truck, ID)
-
-	if err := getError(result); err != nil {
-		return &truck, err
-	}
-
-	return &truck, nil
+	return &truck, getError(t.db.Find(&truck, ID))
 }
 
 func (t *TruckRepository) DeleteTruck(ID int) error {
@@ -50,29 +35,7 @@ func (t *TruckRepository) DeleteTruck(ID int) error {
 }
 
 func (t *TruckRepository) UpdateTruck(truck *domain.Truck) error {
-	timeNow := time.Now().Format("2006-01-02 15:04:05")
-	truck.UpdatedAt = timeNow
-
+	truck.UpdatedAt = NowFormated
 	result := t.db.Model(&truck).Where("id = ?", truck.ID).Updates(truck)
-
 	return getError(result)
-}
-
-func getError(result *gorm.DB) error {
-	if result.Error != nil {
-		if isDuplicated(result.Error) {
-			return api.NewConflict("license plate or eld_id is already registered")
-		}
-		return result.Error
-	}
-
-	if result.RowsAffected == 0 {
-		return api.NewNotFound("truck not found")
-	}
-
-	return nil
-}
-
-func isDuplicated(err error) bool {
-	return strings.Contains(err.Error(), "Duplicate entry")
 }
