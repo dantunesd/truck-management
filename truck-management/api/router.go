@@ -24,6 +24,7 @@ func CreateHandler(logger ILogger, ts *application.TruckService) http.Handler {
 
 	handler.POST("/trucks", truckHandler.CreateTruck)
 	handler.GET("/trucks/:id", TruckIdHandler, truckHandler.GetTruck)
+	handler.PATCH("/trucks/:id", TruckIdHandler, truckHandler.UpdateTruck)
 	handler.DELETE("/trucks/:id", TruckIdHandler, truckHandler.DeleteTruck)
 
 	return handler

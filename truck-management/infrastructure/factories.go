@@ -28,10 +28,6 @@ func DatabaseFactory(config *Config) (*gorm.DB, error) {
 	})
 }
 
-func TruckRepositoryFactory(db *gorm.DB) application.ITruckRepository {
-	return NewTruckRepository(db)
-}
-
 func TruckServiceFactory(db *gorm.DB) *application.TruckService {
 	return application.NewTruckService(NewTruckRepository(db))
 }

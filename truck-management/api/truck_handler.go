@@ -58,3 +58,23 @@ func (h *TruckHandler) DeleteTruck(c *gin.Context) {
 
 	c.JSON(http.StatusNoContent, nil)
 }
+
+func (h *TruckHandler) UpdateTruck(c *gin.Context) {
+	var truck domain.Truck
+
+	if err := c.ShouldBindJSON(&truck); err != nil {
+		c.Error(NewBadRequest(err.Error()))
+		return
+	}
+
+	ID, _ := strconv.Atoi(c.Param("id"))
+	truck.ID = ID
+
+	err := h.service.UpdateTruck(truck)
+	if err != nil {
+		c.Error(err)
+		return
+	}
+
+	c.JSON(http.StatusNoContent, nil)
+}
