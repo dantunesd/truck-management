@@ -7,7 +7,7 @@ type ErrorResponse struct {
 	Status int    `json:"status"`
 }
 
-func GetErrorResponse(err error) ErrorResponse {
+func NewErrorResponse(err error) ErrorResponse {
 	switch terr := err.(type) {
 	case *ClientErrors:
 		return ErrorResponse{terr.ErrorMessage, terr.Code}

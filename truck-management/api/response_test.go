@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func TestGetErrorResponse(t *testing.T) {
+func TestNewErrorResponse(t *testing.T) {
 	type args struct {
 		err error
 	}
@@ -40,9 +40,9 @@ func TestGetErrorResponse(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := GetErrorResponse(tt.args.err)
+			got := NewErrorResponse(tt.args.err)
 			if got != tt.want {
-				t.Errorf("GetErrorResponse() got = %v, want %v", got, tt.want)
+				t.Errorf("NewErrorResponse() got = %v, want %v", got, tt.want)
 			}
 		})
 	}

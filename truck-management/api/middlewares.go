@@ -28,11 +28,16 @@ func LogHandler(logger ILogger) gin.HandlerFunc {
 
 func ErrorHandler(c *gin.Context) {
 	c.Next()
-
-	errors := c.Errors.ByType(gin.ErrorTypeAny)
-	if len(errors) > 0 {
-		err := errors[0].Err
-		response := GetErrorResponse(err)
+	if err := getContextError(c); err != nil {
+		response := NewErrorResponse(err)
 		c.AbortWithStatusJSON(response.Status, response)
 	}
+}
+
+func getContextError(c *gin.Context) error {
+	errors := c.Errors.ByType(gin.ErrorTypeAny)
+	if len(errors) > 0 {
+		return errors[0].Err
+	}
+	return nil
 }
