@@ -20,7 +20,7 @@ func NewTruckService(repository ITruckRepository) *TruckService {
 	}
 }
 
-func (c *TruckService) CreateNewTruck(newTruck domain.Truck) (domain.Truck, error) {
+func (c *TruckService) CreateTruck(newTruck domain.Truck) (domain.Truck, error) {
 	return newTruck, c.truckRepository.CreateTruck(&newTruck)
 }
 

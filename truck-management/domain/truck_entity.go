@@ -2,7 +2,7 @@ package domain
 
 type Truck struct {
 	ID           int    `json:"id"`
-	LicensePlate string `json:"license_plate" binding:"required,alphanum,min=7,max=7"`
+	LicensePlate string `json:"license_plate" binding:"required,alphanum,min=7,max=7" gorm:"id"`
 	EldID        string `json:"eld_id" binding:"required,ascii,max=20"`
 	CarrierID    string `json:"carrier_id" binding:"required,ascii,max=50"`
 	Type         string `json:"type" binding:"ascii,max=20"`

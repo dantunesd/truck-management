@@ -10,7 +10,7 @@ import (
 
 var timeNow = time.Now().Format(time.RFC3339)
 
-func TestTruckService_CreateNewTruck(t *testing.T) {
+func TestTruckService_CreateTruck(t *testing.T) {
 	type fields struct {
 		truckRepository ITruckRepository
 	}
@@ -82,13 +82,13 @@ func TestTruckService_CreateNewTruck(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			c := NewTruckService(tt.fields.truckRepository)
-			got, err := c.CreateNewTruck(tt.args.newTruck)
+			got, err := c.CreateTruck(tt.args.newTruck)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("TruckService.CreateNewTruck() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("TruckService.CreateTruck() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("TruckService.CreateNewTruck() = %v, want %v", got, tt.want)
+				t.Errorf("TruckService.CreateTruck() = %v, want %v", got, tt.want)
 			}
 		})
 	}

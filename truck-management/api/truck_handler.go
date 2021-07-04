@@ -27,7 +27,7 @@ func (h *TruckHandler) CreateTruck(c *gin.Context) {
 		return
 	}
 
-	result, err := h.service.CreateNewTruck(truck)
+	result, err := h.service.CreateTruck(truck)
 	if err != nil {
 		c.Error(err)
 		return
