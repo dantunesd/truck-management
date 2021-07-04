@@ -3,7 +3,7 @@ CREATE DATABASE IF NOT EXISTS truck_management;
 USE truck_management;
 
 CREATE TABLE IF NOT EXISTS trucks (
-    id INT AUTO_INCREMENT,
+    id INT NOT NULL AUTO_INCREMENT,
     license_plate VARCHAR(7) NOT NULL,
     eld_id VARCHAR(20) NOT NULL,
     carrier_id VARCHAR(20) NOT NULL,
