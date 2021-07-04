@@ -29,6 +29,7 @@ func CreateHandler(logger ILogger, ts *application.TruckService, ls *application
 	handler.DELETE("/trucks/:id", TruckIdHandler, truckHandler.DeleteTruck)
 
 	handler.POST("/trucks/:id/locations", TruckIdHandler, locationHandler.CreateLocation)
+	handler.GET("/trucks/:id/locations/last", TruckIdHandler, locationHandler.GetLastLocation)
 
 	return handler
 }

@@ -37,3 +37,15 @@ func (h *LocationHandler) CreateLocation(c *gin.Context) {
 
 	c.JSON(http.StatusCreated, result)
 }
+
+func (h *LocationHandler) GetLastLocation(c *gin.Context) {
+	ID, _ := strconv.Atoi(c.Param("id"))
+
+	result, err := h.service.GetLastLocation(ID)
+	if err != nil {
+		c.Error(err)
+		return
+	}
+
+	c.JSON(http.StatusOK, result)
+}
