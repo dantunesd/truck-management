@@ -49,14 +49,6 @@ func TestLocations(t *testing.T) {
 			http.StatusBadRequest,
 			`{"title":"Key: 'Location.EldID' Error:Field validation for 'EldID' failed on the 'required' tag\nKey: 'Location.EngineState' Error:Field validation for 'EngineState' failed on the 'required' tag\nKey: 'Location.CurrentSpeed' Error:Field validation for 'CurrentSpeed' failed on the 'required' tag\nKey: 'Location.Latitude' Error:Field validation for 'Latitude' failed on the 'required' tag\nKey: 'Location.Longitude' Error:Field validation for 'Longitude' failed on the 'required' tag\nKey: 'Location.EngineHours' Error:Field validation for 'EngineHours' failed on the 'required' tag\nKey: 'Location.Odometer' Error:Field validation for 'Odometer' failed on the 'required' tag","status":400}`,
 		},
-		{
-			"Should return 400 when creating a location with invalid payload",
-			"http://app:3000/trucks/1/locations",
-			http.MethodPost,
-			`invalid payload`,
-			http.StatusBadRequest,
-			`{"title":"invalid character 'i' looking for beginning of value","status":400}`,
-		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

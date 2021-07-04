@@ -50,14 +50,6 @@ func TestTrucks(t *testing.T) {
 			`{"title":"Key: 'Truck.LicensePlate' Error:Field validation for 'LicensePlate' failed on the 'required' tag\nKey: 'Truck.EldID' Error:Field validation for 'EldID' failed on the 'required' tag\nKey: 'Truck.CarrierID' Error:Field validation for 'CarrierID' failed on the 'required' tag","status":400}`,
 		},
 		{
-			"Should return 400 when creating a truck with invalid payload",
-			"http://app:3000/trucks",
-			http.MethodPost,
-			`invalid payload`,
-			http.StatusBadRequest,
-			`{"title":"invalid character 'i' looking for beginning of value","status":400}`,
-		},
-		{
 			"Should return 200 when getting an existent truck",
 			"http://app:3000/trucks/1",
 			http.MethodGet,
@@ -112,14 +104,6 @@ func TestTrucks(t *testing.T) {
 			`{}`,
 			http.StatusBadRequest,
 			`{"title":"Key: 'Truck.LicensePlate' Error:Field validation for 'LicensePlate' failed on the 'required' tag\nKey: 'Truck.EldID' Error:Field validation for 'EldID' failed on the 'required' tag\nKey: 'Truck.CarrierID' Error:Field validation for 'CarrierID' failed on the 'required' tag","status":400}`,
-		},
-		{
-			"Should return 400 when updating a truck with invalid payload",
-			"http://app:3000/trucks/1",
-			http.MethodPatch,
-			`invalid payload`,
-			http.StatusBadRequest,
-			`{"title":"invalid character 'i' looking for beginning of value","status":400}`,
 		},
 		{
 			"Should return 204 when deleting an existent truck",
