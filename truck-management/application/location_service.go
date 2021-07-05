@@ -21,9 +21,9 @@ type LocationService struct {
 	tripService        ITripService
 }
 
-func NewLocationService(repository ILocationRepository, truckService ITruckService, tripService ITripService) *LocationService {
+func NewLocationService(locationRepository ILocationRepository, truckService ITruckService, tripService ITripService) *LocationService {
 	return &LocationService{
-		locationRepository: repository,
+		locationRepository: locationRepository,
 		truckService:       truckService,
 		tripService:        tripService,
 	}

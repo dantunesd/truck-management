@@ -17,9 +17,9 @@ type TripService struct {
 	tripUpdater    ITripUpdater
 }
 
-func NewTripService(repository ITripRepository, truckService ITruckService, tripUpdater ITripUpdater) *TripService {
+func NewTripService(tripRepository ITripRepository, truckService ITruckService, tripUpdater ITripUpdater) *TripService {
 	return &TripService{
-		tripRepository: repository,
+		tripRepository: tripRepository,
 		truckService:   truckService,
 		tripUpdater:    tripUpdater,
 	}
