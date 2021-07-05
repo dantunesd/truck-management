@@ -35,20 +35,20 @@ func (t *TruckRepository) CreateTruck(truck *domain.Truck) error {
 	return nil
 }
 
-func (t *TruckRepository) GetTruck(ID int) (*domain.Truck, error) {
+func (t *TruckRepository) GetTruck(ID int) (domain.Truck, error) {
 	var truck domain.Truck
 
 	result := t.db.Find(&truck, ID)
 
 	if hasError(result) {
-		return &truck, result.Error
+		return truck, result.Error
 	}
 
 	if isNotFound(result) {
-		return &truck, NotFoundError
+		return truck, NotFoundError
 	}
 
-	return &truck, nil
+	return truck, nil
 }
 
 func (t *TruckRepository) DeleteTruck(ID int) error {

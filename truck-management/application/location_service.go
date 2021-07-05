@@ -4,11 +4,11 @@ import "truck-management/truck-management/domain"
 
 type ILocationRepository interface {
 	CreateLocation(truckID int, location *domain.Location) error
-	GetLastLocation(truckID int) (*domain.Location, error)
+	GetLastLocation(truckID int) (domain.Location, error)
 }
 
 type ITruckService interface {
-	GetTruck(ID int) (*domain.Truck, error)
+	GetTruck(ID int) (domain.Truck, error)
 }
 
 type ITripService interface {
@@ -41,9 +41,9 @@ func (l *LocationService) CreateLocation(truckID int, location domain.Location) 
 	return location, l.tripService.UpdateTrip(location)
 }
 
-func (l *LocationService) GetLastLocation(truckID int) (*domain.Location, error) {
+func (l *LocationService) GetLastLocation(truckID int) (domain.Location, error) {
 	if _, err := l.truckService.GetTruck(truckID); err != nil {
-		return &domain.Location{}, err
+		return domain.Location{}, err
 	}
 
 	return l.locationRepository.GetLastLocation(truckID)

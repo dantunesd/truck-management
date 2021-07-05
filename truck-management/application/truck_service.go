@@ -6,7 +6,7 @@ import (
 
 type ITruckRepository interface {
 	CreateTruck(truck *domain.Truck) error
-	GetTruck(ID int) (*domain.Truck, error)
+	GetTruck(ID int) (domain.Truck, error)
 	DeleteTruck(ID int) error
 	UpdateTruck(ID int, truck *domain.Truck) error
 }
@@ -25,7 +25,7 @@ func (t *TruckService) CreateTruck(truck domain.Truck) (domain.Truck, error) {
 	return truck, t.truckRepository.CreateTruck(&truck)
 }
 
-func (t *TruckService) GetTruck(ID int) (*domain.Truck, error) {
+func (t *TruckService) GetTruck(ID int) (domain.Truck, error) {
 	return t.truckRepository.GetTruck(ID)
 }
 

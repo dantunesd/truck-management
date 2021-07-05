@@ -18,10 +18,10 @@ func NewTripRepository(db *gorm.DB) *TripRepository {
 	}
 }
 
-func (t *TripRepository) GetTrip(truckID int) (*domain.Trip, error) {
+func (t *TripRepository) GetTrip(truckID int) (domain.Trip, error) {
 	var trip domain.Trip
 	result := t.db.Where("truck_id = ?", truckID).Find(&trip)
-	return &trip, result.Error
+	return trip, result.Error
 }
 
 func (t *TripRepository) SaveTrip(trip *domain.Trip) error {

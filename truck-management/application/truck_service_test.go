@@ -105,30 +105,30 @@ func TestTruckService_GetTruck(t *testing.T) {
 		name    string
 		fields  fields
 		args    args
-		want    *domain.Truck
+		want    domain.Truck
 		wantErr bool
 	}{
 		{
 			name: "should return an error when GetTruck returns any error",
 			fields: fields{
 				truckRepository: &TruckRepositoryMock{
-					GetTruckMock: func(ID int) (*domain.Truck, error) {
-						return &domain.Truck{}, errors.New("failed to get truck")
+					GetTruckMock: func(ID int) (domain.Truck, error) {
+						return domain.Truck{}, errors.New("failed to get truck")
 					},
 				},
 			},
 			args: args{
 				ID: 1,
 			},
-			want:    &domain.Truck{},
+			want:    domain.Truck{},
 			wantErr: true,
 		},
 		{
 			name: "should return a Truck getting with success",
 			fields: fields{
 				truckRepository: &TruckRepositoryMock{
-					GetTruckMock: func(ID int) (*domain.Truck, error) {
-						return &domain.Truck{
+					GetTruckMock: func(ID int) (domain.Truck, error) {
+						return domain.Truck{
 							ID:           1,
 							LicensePlate: "ABC12345",
 						}, nil
@@ -138,7 +138,7 @@ func TestTruckService_GetTruck(t *testing.T) {
 			args: args{
 				ID: 1,
 			},
-			want: &domain.Truck{
+			want: domain.Truck{
 				ID:           1,
 				LicensePlate: "ABC12345",
 			},
@@ -275,7 +275,7 @@ func TestTruckService_UpdateTruck(t *testing.T) {
 
 type TruckRepositoryMock struct {
 	CreateTruckMock func(*domain.Truck) error
-	GetTruckMock    func(ID int) (*domain.Truck, error)
+	GetTruckMock    func(ID int) (domain.Truck, error)
 	DeleteTruckMock func(ID int) error
 	UpdateTruckMock func(ID int, truck *domain.Truck) error
 }
@@ -284,7 +284,7 @@ func (t TruckRepositoryMock) CreateTruck(truck *domain.Truck) error {
 	return t.CreateTruckMock(truck)
 }
 
-func (t TruckRepositoryMock) GetTruck(ID int) (*domain.Truck, error) {
+func (t TruckRepositoryMock) GetTruck(ID int) (domain.Truck, error) {
 	return t.GetTruckMock(ID)
 }
 

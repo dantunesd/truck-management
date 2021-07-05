@@ -20,60 +20,60 @@ func TestTripService_GetTrip(t *testing.T) {
 		name    string
 		fields  fields
 		args    args
-		want    *domain.Trip
+		want    domain.Trip
 		wantErr bool
 	}{
 		{
 			name: "should return an error when GetTruck returns any error",
 			fields: fields{
 				truckService: TruckServiceMock{
-					GetTruckMock: func(ID int) (*domain.Truck, error) {
-						return &domain.Truck{}, errors.New("truck not found")
+					GetTruckMock: func(ID int) (domain.Truck, error) {
+						return domain.Truck{}, errors.New("truck not found")
 					},
 				},
 				tripRepository: &TripRepositoryMock{
-					GetTripMock: func(truckID int) (*domain.Trip, error) {
-						return &domain.Trip{}, nil
+					GetTripMock: func(truckID int) (domain.Trip, error) {
+						return domain.Trip{}, nil
 					},
 				},
 			},
 			args: args{
 				truckID: 1,
 			},
-			want:    &domain.Trip{},
+			want:    domain.Trip{},
 			wantErr: true,
 		},
 		{
 			name: "should return an error when GetTrip returns any error",
 			fields: fields{
 				truckService: TruckServiceMock{
-					GetTruckMock: func(ID int) (*domain.Truck, error) {
-						return &domain.Truck{}, nil
+					GetTruckMock: func(ID int) (domain.Truck, error) {
+						return domain.Truck{}, nil
 					},
 				},
 				tripRepository: &TripRepositoryMock{
-					GetTripMock: func(truckID int) (*domain.Trip, error) {
-						return &domain.Trip{}, errors.New("not found")
+					GetTripMock: func(truckID int) (domain.Trip, error) {
+						return domain.Trip{}, errors.New("not found")
 					},
 				},
 			},
 			args: args{
 				truckID: 1,
 			},
-			want:    &domain.Trip{},
+			want:    domain.Trip{},
 			wantErr: true,
 		},
 		{
 			name: "should return an TripEntity when getting with success",
 			fields: fields{
 				truckService: TruckServiceMock{
-					GetTruckMock: func(ID int) (*domain.Truck, error) {
-						return &domain.Truck{}, nil
+					GetTruckMock: func(ID int) (domain.Truck, error) {
+						return domain.Truck{}, nil
 					},
 				},
 				tripRepository: &TripRepositoryMock{
-					GetTripMock: func(truckID int) (*domain.Trip, error) {
-						return &domain.Trip{
+					GetTripMock: func(truckID int) (domain.Trip, error) {
+						return domain.Trip{
 							ID:           1,
 							TruckID:      1,
 							Origin:       "90",
@@ -90,7 +90,7 @@ func TestTripService_GetTrip(t *testing.T) {
 			args: args{
 				truckID: 1,
 			},
-			want: &domain.Trip{
+			want: domain.Trip{
 				ID:           1,
 				TruckID:      1,
 				Origin:       "90",
@@ -138,8 +138,8 @@ func TestTripService_UpdateTrip(t *testing.T) {
 			name: "should return an error when GetTrip returns any error",
 			fields: fields{
 				tripRepository: &TripRepositoryMock{
-					GetTripMock: func(truckID int) (*domain.Trip, error) {
-						return &domain.Trip{}, errors.New("not found")
+					GetTripMock: func(truckID int) (domain.Trip, error) {
+						return domain.Trip{}, errors.New("not found")
 					},
 				},
 			},
@@ -152,8 +152,8 @@ func TestTripService_UpdateTrip(t *testing.T) {
 			name: "should return an error when SaveTrip returns any error",
 			fields: fields{
 				tripRepository: &TripRepositoryMock{
-					GetTripMock: func(truckID int) (*domain.Trip, error) {
-						return &domain.Trip{}, nil
+					GetTripMock: func(truckID int) (domain.Trip, error) {
+						return domain.Trip{}, nil
 					},
 					SaveTripMock: func(trip *domain.Trip) error {
 						return errors.New("failed to update")
@@ -186,11 +186,11 @@ func TestTripService_UpdateTrip(t *testing.T) {
 }
 
 type TripRepositoryMock struct {
-	GetTripMock  func(truckID int) (*domain.Trip, error)
+	GetTripMock  func(truckID int) (domain.Trip, error)
 	SaveTripMock func(trip *domain.Trip) error
 }
 
-func (t TripRepositoryMock) GetTrip(truckID int) (*domain.Trip, error) {
+func (t TripRepositoryMock) GetTrip(truckID int) (domain.Trip, error) {
 	return t.GetTripMock(truckID)
 }
 func (t TripRepositoryMock) SaveTrip(trip *domain.Trip) error {

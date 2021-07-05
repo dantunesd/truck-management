@@ -27,15 +27,14 @@ func TestLocationService_CreateLocation(t *testing.T) {
 		{
 			name: "should return an error when GetTruck returns any error",
 			fields: fields{
-
 				locationRepository: &LocationRepositoryMock{
 					CreateLocationMock: func(truckID int, location *domain.Location) error {
 						return nil
 					},
 				},
 				truckService: TruckServiceMock{
-					GetTruckMock: func(ID int) (*domain.Truck, error) {
-						return &domain.Truck{}, errors.New("truck not found")
+					GetTruckMock: func(ID int) (domain.Truck, error) {
+						return domain.Truck{}, errors.New("truck not found")
 					},
 				},
 				tripService: TripServiceMock{
@@ -59,8 +58,8 @@ func TestLocationService_CreateLocation(t *testing.T) {
 					},
 				},
 				truckService: TruckServiceMock{
-					GetTruckMock: func(ID int) (*domain.Truck, error) {
-						return &domain.Truck{}, nil
+					GetTruckMock: func(ID int) (domain.Truck, error) {
+						return domain.Truck{}, nil
 					},
 				},
 				tripService: TripServiceMock{
@@ -84,8 +83,8 @@ func TestLocationService_CreateLocation(t *testing.T) {
 					},
 				},
 				truckService: TruckServiceMock{
-					GetTruckMock: func(ID int) (*domain.Truck, error) {
-						return &domain.Truck{}, nil
+					GetTruckMock: func(ID int) (domain.Truck, error) {
+						return domain.Truck{}, nil
 					},
 				},
 				tripService: TripServiceMock{
@@ -113,8 +112,8 @@ func TestLocationService_CreateLocation(t *testing.T) {
 					},
 				},
 				truckService: TruckServiceMock{
-					GetTruckMock: func(ID int) (*domain.Truck, error) {
-						return &domain.Truck{}, nil
+					GetTruckMock: func(ID int) (domain.Truck, error) {
+						return domain.Truck{}, nil
 					},
 				},
 				tripService: TripServiceMock{
@@ -177,60 +176,60 @@ func TestLocationService_GetLastLocation(t *testing.T) {
 		name    string
 		fields  fields
 		args    args
-		want    *domain.Location
+		want    domain.Location
 		wantErr bool
 	}{
 		{
 			name: "should return an error when GetTruck returns any error",
 			fields: fields{
 				truckService: TruckServiceMock{
-					GetTruckMock: func(ID int) (*domain.Truck, error) {
-						return &domain.Truck{}, errors.New("not found")
+					GetTruckMock: func(ID int) (domain.Truck, error) {
+						return domain.Truck{}, errors.New("not found")
 					},
 				},
 				locationRepository: &LocationRepositoryMock{
-					GetLastLocationMock: func(truckID int) (*domain.Location, error) {
-						return &domain.Location{}, nil
+					GetLastLocationMock: func(truckID int) (domain.Location, error) {
+						return domain.Location{}, nil
 					},
 				},
 			},
 			args: args{
 				truckID: 5,
 			},
-			want:    &domain.Location{},
+			want:    domain.Location{},
 			wantErr: true,
 		},
 		{
 			name: "should return an error when GetLastLocation returns any error",
 			fields: fields{
 				truckService: TruckServiceMock{
-					GetTruckMock: func(ID int) (*domain.Truck, error) {
-						return &domain.Truck{}, nil
+					GetTruckMock: func(ID int) (domain.Truck, error) {
+						return domain.Truck{}, nil
 					},
 				},
 				locationRepository: &LocationRepositoryMock{
-					GetLastLocationMock: func(truckID int) (*domain.Location, error) {
-						return &domain.Location{}, errors.New("not found")
+					GetLastLocationMock: func(truckID int) (domain.Location, error) {
+						return domain.Location{}, errors.New("not found")
 					},
 				},
 			},
 			args: args{
 				truckID: 5,
 			},
-			want:    &domain.Location{},
+			want:    domain.Location{},
 			wantErr: true,
 		},
 		{
 			name: "should return LocationEntity when getting with success",
 			fields: fields{
 				truckService: TruckServiceMock{
-					GetTruckMock: func(ID int) (*domain.Truck, error) {
-						return &domain.Truck{}, nil
+					GetTruckMock: func(ID int) (domain.Truck, error) {
+						return domain.Truck{}, nil
 					},
 				},
 				locationRepository: &LocationRepositoryMock{
-					GetLastLocationMock: func(truckID int) (*domain.Location, error) {
-						return &domain.Location{
+					GetLastLocationMock: func(truckID int) (domain.Location, error) {
+						return domain.Location{
 							ID:           1,
 							TruckID:      5,
 							EldID:        "id",
@@ -248,7 +247,7 @@ func TestLocationService_GetLastLocation(t *testing.T) {
 			args: args{
 				truckID: 5,
 			},
-			want: &domain.Location{
+			want: domain.Location{
 				ID:           1,
 				TruckID:      5,
 				EldID:        "id",
@@ -283,21 +282,21 @@ func TestLocationService_GetLastLocation(t *testing.T) {
 
 type LocationRepositoryMock struct {
 	CreateLocationMock  func(truckID int, location *domain.Location) error
-	GetLastLocationMock func(truckID int) (*domain.Location, error)
+	GetLastLocationMock func(truckID int) (domain.Location, error)
 }
 
 func (l LocationRepositoryMock) CreateLocation(truckID int, location *domain.Location) error {
 	return l.CreateLocationMock(truckID, location)
 }
-func (l LocationRepositoryMock) GetLastLocation(truckID int) (*domain.Location, error) {
+func (l LocationRepositoryMock) GetLastLocation(truckID int) (domain.Location, error) {
 	return l.GetLastLocationMock(truckID)
 }
 
 type TruckServiceMock struct {
-	GetTruckMock func(ID int) (*domain.Truck, error)
+	GetTruckMock func(ID int) (domain.Truck, error)
 }
 
-func (t TruckServiceMock) GetTruck(ID int) (*domain.Truck, error) {
+func (t TruckServiceMock) GetTruck(ID int) (domain.Truck, error) {
 	return t.GetTruckMock(ID)
 }
 

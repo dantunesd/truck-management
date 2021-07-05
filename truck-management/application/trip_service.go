@@ -3,7 +3,7 @@ package application
 import "truck-management/truck-management/domain"
 
 type ITripRepository interface {
-	GetTrip(truckID int) (*domain.Trip, error)
+	GetTrip(truckID int) (domain.Trip, error)
 	SaveTrip(trip *domain.Trip) error
 }
 
@@ -25,9 +25,9 @@ func NewTripService(tripRepository ITripRepository, truckService ITruckService, 
 	}
 }
 
-func (t *TripService) GetTrip(truckID int) (*domain.Trip, error) {
+func (t *TripService) GetTrip(truckID int) (domain.Trip, error) {
 	if _, err := t.truckService.GetTruck(truckID); err != nil {
-		return &domain.Trip{}, err
+		return domain.Trip{}, err
 	}
 
 	return t.tripRepository.GetTrip(truckID)
@@ -39,7 +39,7 @@ func (t *TripService) UpdateTrip(location domain.Location) error {
 		return err
 	}
 
-	updatedTrip := t.tripUpdater.UpdateTrip(*currentTrip, location)
+	updatedTrip := t.tripUpdater.UpdateTrip(currentTrip, location)
 
 	return t.tripRepository.SaveTrip(&updatedTrip)
 }
