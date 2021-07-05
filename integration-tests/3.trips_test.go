@@ -23,7 +23,7 @@ func TestTrips(t *testing.T) {
 			http.MethodGet,
 			``,
 			http.StatusOK,
-			`{"id":1,"truck_id":1,"origin":90,"destination":90,"state":"ONGOING","odometer":100,"engine_hours":5,"average_speed":100,"updated_at":"2021-07-05 00:41:37"}`,
+			`{"id":1,"truck_id":1,"origin":"90","destination":"90","state":"ONGOING","odometer":100,"engine_hours":5,"average_speed":100,"updated_at":"2021-07-05 00:41:37"}`,
 		},
 		{
 			"Should return 200 when getting the trip summary of an existing truck without trip",
