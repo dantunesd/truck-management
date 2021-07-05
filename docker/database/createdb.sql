@@ -20,8 +20,9 @@ CREATE TABLE IF NOT EXISTS trucks (
     UNIQUE INDEX eld_id_UNIQUE (eld_id)
 );
 
-INSERT INTO trucks (id, license_plate, eld_id, carrier_id, type, size, color, make, model, year, created_at, updated_at) VALUES ('1', 'INSERTT', 'INSERTED ELD', 'INSERTT MY CARRIER', 'REEFERR', '23', 'blue', 'Maker', 'Model', '1900', '2021-07-04 21:34:26', '2021-07-04 21:34:26');
-INSERT INTO trucks (id, license_plate, eld_id, carrier_id, type, size, color, make, model, year, created_at, updated_at) VALUES ('2', 'TODELET', 'TO DELETE ELD', 'TO DELETE MY CARRIER', 'REEFERR', '23', 'blue', 'Maker', 'Model', '1900', '2021-07-04 21:34:26', '2021-07-04 21:34:26');
+INSERT INTO trucks VALUES ('1', 'INSERTT', 'INSERTED ELD', 'INSERTT MY CARRIER', 'REEFERR', '23', 'blue', 'Maker', 'Model', '1900', '2021-07-04 21:34:26', '2021-07-04 21:34:26');
+INSERT INTO trucks VALUES ('2', 'TODELET', 'TO DELETE ELD', 'TO DELETE MY CARRIER', 'REEFERR', '23', 'blue', 'Maker', 'Model', '1900', '2021-07-04 21:34:26', '2021-07-04 21:34:26');
+INSERT INTO trucks VALUES ('3', 'TOLOCAT', 'TO LOCATION ELD', 'MY CARRIER', 'REEFERR', '23', 'blue', 'Maker', 'Model', '1900', '2021-07-04 21:34:26', '2021-07-04 21:34:26');
 
 CREATE TABLE IF NOT EXISTS `truck_management`.`locations` (
   `id` INT NOT NULL AUTO_INCREMENT,
@@ -42,3 +43,7 @@ CREATE TABLE IF NOT EXISTS `truck_management`.`locations` (
     REFERENCES `truck_management`.`trucks` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
+
+INSERT INTO locations VALUES ('1', '1', 'INSERTED 1', 'ON', '100', '1100', '1000', '1', '100', '2021-07-04 23:45:56');
+INSERT INTO locations VALUES ('2', '1', 'INSERTED 2', 'ON', '100', '1100', '1000', '1', '100', '2021-07-04 23:45:56');
+INSERT INTO locations VALUES ('3', '1', 'INSERTED 3', 'ON', '100', '1100', '1000', '1', '100', '2021-07-04 23:45:56');
