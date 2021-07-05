@@ -11,6 +11,7 @@ down:
 
 unit-test:
 	docker-compose -f docker-compose.tests.yml up unit 
+
 integration-test: down start wait-start
 	docker-compose -f docker-compose.tests.yml up integration 
 
