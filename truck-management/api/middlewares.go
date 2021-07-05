@@ -7,8 +7,8 @@ import (
 )
 
 func TruckIdHandler(c *gin.Context) {
-	if _, err := strconv.Atoi(c.Param("id")); err != nil {
-		c.Error(NewBadRequest("id must be numeric"))
+	if _, err := strconv.Atoi(c.Param(TRUCK_ID)); err != nil {
+		c.Error(NewBadRequest(TRUCK_ID + " must be numeric"))
 		c.Abort()
 		return
 	}

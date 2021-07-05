@@ -149,13 +149,13 @@ func TestTripService_UpdateTrip(t *testing.T) {
 			wantErr: true,
 		},
 		{
-			name: "should return an error when SaveTrip returns any error",
+			name: "should return an error when UpsertTrip returns any error",
 			fields: fields{
 				tripRepository: &TripRepositoryMock{
 					GetTripMock: func(truckID int) (domain.Trip, error) {
 						return domain.Trip{}, nil
 					},
-					SaveTripMock: func(trip *domain.Trip) error {
+					UpsertTripMock: func(trip *domain.Trip) error {
 						return errors.New("failed to update")
 					},
 				},
@@ -186,15 +186,15 @@ func TestTripService_UpdateTrip(t *testing.T) {
 }
 
 type TripRepositoryMock struct {
-	GetTripMock  func(truckID int) (domain.Trip, error)
-	SaveTripMock func(trip *domain.Trip) error
+	GetTripMock    func(truckID int) (domain.Trip, error)
+	UpsertTripMock func(trip *domain.Trip) error
 }
 
 func (t TripRepositoryMock) GetTrip(truckID int) (domain.Trip, error) {
 	return t.GetTripMock(truckID)
 }
-func (t TripRepositoryMock) SaveTrip(trip *domain.Trip) error {
-	return t.SaveTripMock(trip)
+func (t TripRepositoryMock) UpsertTrip(trip *domain.Trip) error {
+	return t.UpsertTripMock(trip)
 }
 
 type TripUpdaterMock struct {

@@ -28,11 +28,8 @@ func (t *TruckRepository) CreateTruck(truck *domain.Truck) error {
 		return ConflictError
 	}
 
-	if hasError(result) {
-		return result.Error
-	}
+	return result.Error
 
-	return nil
 }
 
 func (t *TruckRepository) GetTruck(ID int) (domain.Truck, error) {
@@ -40,7 +37,7 @@ func (t *TruckRepository) GetTruck(ID int) (domain.Truck, error) {
 
 	result := t.db.Find(&truck, ID)
 
-	if hasError(result) {
+	if result.Error != nil {
 		return truck, result.Error
 	}
 
@@ -53,6 +50,7 @@ func (t *TruckRepository) GetTruck(ID int) (domain.Truck, error) {
 
 func (t *TruckRepository) DeleteTruck(ID int) error {
 	var truck domain.Truck
+
 	return t.db.Delete(&truck, ID).Error
 }
 
@@ -66,9 +64,5 @@ func (t *TruckRepository) UpdateTruck(ID int, truck *domain.Truck) error {
 		return ConflictError
 	}
 
-	if hasError(result) {
-		return result.Error
-	}
-
-	return nil
+	return result.Error
 }

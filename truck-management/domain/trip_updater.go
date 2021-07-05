@@ -2,7 +2,11 @@ package domain
 
 type TripUpdater struct{}
 
-func (t TripUpdater) UpdateTrip(currentTrip Trip, location Location) Trip {
+func NewTripUpdater() *TripUpdater {
+	return &TripUpdater{}
+}
+
+func (t *TripUpdater) UpdateTrip(currentTrip Trip, location Location) Trip {
 	if currentTrip.IsNewTrip() {
 		return Trip{
 			ID:           currentTrip.ID,

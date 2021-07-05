@@ -214,7 +214,7 @@ func TestTripUpdater_UpdateTrip(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			tr := TripUpdater{}
+			tr := NewTripUpdater()
 			if got := tr.UpdateTrip(tt.args.trip, tt.args.location); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("TripUpdater.UpdateTrip() = %v, want %v", got, tt.want)
 			}

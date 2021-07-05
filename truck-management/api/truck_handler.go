@@ -8,17 +8,19 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+const TRUCK_ID = "id"
+
 type TruckHandler struct {
-	service *application.TruckService
+	truckService *application.TruckService
 }
 
-func NewTruckHandler(s *application.TruckService) *TruckHandler {
+func NewTruckHandler(truckService *application.TruckService) *TruckHandler {
 	return &TruckHandler{
-		service: s,
+		truckService: truckService,
 	}
 }
 
-func (h *TruckHandler) CreateTruck(c *gin.Context) {
+func (t *TruckHandler) CreateTruck(c *gin.Context) {
 	var truck application.TruckCreateInput
 
 	if err := c.ShouldBindJSON(&truck); err != nil {
@@ -26,7 +28,7 @@ func (h *TruckHandler) CreateTruck(c *gin.Context) {
 		return
 	}
 
-	result, err := h.service.CreateTruck(truck)
+	result, err := t.truckService.CreateTruck(truck)
 	if err != nil {
 		c.Error(err)
 		return
@@ -35,10 +37,10 @@ func (h *TruckHandler) CreateTruck(c *gin.Context) {
 	c.JSON(http.StatusCreated, result)
 }
 
-func (h *TruckHandler) GetTruck(c *gin.Context) {
-	ID, _ := strconv.Atoi(c.Param("id"))
+func (t *TruckHandler) GetTruck(c *gin.Context) {
+	ID, _ := strconv.Atoi(c.Param(TRUCK_ID))
 
-	result, err := h.service.GetTruck(ID)
+	result, err := t.truckService.GetTruck(ID)
 	if err != nil {
 		c.Error(err)
 		return
@@ -47,10 +49,10 @@ func (h *TruckHandler) GetTruck(c *gin.Context) {
 	c.JSON(http.StatusOK, result)
 }
 
-func (h *TruckHandler) DeleteTruck(c *gin.Context) {
-	ID, _ := strconv.Atoi(c.Param("id"))
+func (t *TruckHandler) DeleteTruck(c *gin.Context) {
+	ID, _ := strconv.Atoi(c.Param(TRUCK_ID))
 
-	if err := h.service.DeleteTruck(ID); err != nil {
+	if err := t.truckService.DeleteTruck(ID); err != nil {
 		c.Error(err)
 		return
 	}
@@ -58,7 +60,7 @@ func (h *TruckHandler) DeleteTruck(c *gin.Context) {
 	c.JSON(http.StatusNoContent, nil)
 }
 
-func (h *TruckHandler) UpdateTruck(c *gin.Context) {
+func (t *TruckHandler) UpdateTruck(c *gin.Context) {
 	var truck application.TruckUpdateInput
 
 	if err := c.ShouldBindJSON(&truck); err != nil {
@@ -66,9 +68,9 @@ func (h *TruckHandler) UpdateTruck(c *gin.Context) {
 		return
 	}
 
-	ID, _ := strconv.Atoi(c.Param("id"))
+	ID, _ := strconv.Atoi(c.Param(TRUCK_ID))
 
-	err := h.service.UpdateTruck(ID, truck)
+	err := t.truckService.UpdateTruck(ID, truck)
 	if err != nil {
 		c.Error(err)
 		return

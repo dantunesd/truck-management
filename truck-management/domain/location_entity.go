@@ -22,15 +22,15 @@ type Location struct {
 	CreatedAt    string      `json:"created_at,omitempty"`
 }
 
-func (l Location) GetLatitudeAndLongitude() string {
+func (l *Location) GetLatitudeAndLongitude() string {
 	return fmt.Sprintf("%d %d", l.Latitude, l.Longitude)
 }
 
-func (l Location) GetAverageSpeed() int {
+func (l *Location) GetAverageSpeed() int {
 	return l.Odometer / l.EngineHours
 }
 
-func (l Location) GetTripState() TripState {
+func (l *Location) GetTripState() TripState {
 	if l.EngineState == ON {
 		return ONGOING
 	}

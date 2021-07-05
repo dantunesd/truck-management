@@ -19,6 +19,6 @@ type Trip struct {
 	UpdatedAt    string    `json:"updated_at,omitempty"`
 }
 
-func (t Trip) IsNewTrip() bool {
+func (t *Trip) IsNewTrip() bool {
 	return t.ID == 0 || t.State == FINISHED
 }

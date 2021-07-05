@@ -9,19 +9,19 @@ import (
 )
 
 type TripHandler struct {
-	service *application.TripService
+	tripService *application.TripService
 }
 
-func NewTripHandler(s *application.TripService) *TripHandler {
+func NewTripHandler(tripService *application.TripService) *TripHandler {
 	return &TripHandler{
-		service: s,
+		tripService: tripService,
 	}
 }
 
-func (h *TripHandler) GetTrip(c *gin.Context) {
+func (t *TripHandler) GetTripSummary(c *gin.Context) {
 	ID, _ := strconv.Atoi(c.Param("id"))
 
-	result, err := h.service.GetTrip(ID)
+	result, err := t.tripService.GetTrip(ID)
 	if err != nil {
 		c.Error(err)
 		return

@@ -7,10 +7,10 @@ type ClientErrors struct {
 	Code         int
 }
 
-func NewError(errorMessage string, Code int) *ClientErrors {
+func NewError(errorMessage string, code int) *ClientErrors {
 	return &ClientErrors{
 		ErrorMessage: errorMessage,
-		Code:         Code,
+		Code:         code,
 	}
 }
 

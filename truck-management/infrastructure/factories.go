@@ -41,10 +41,14 @@ func LocationServiceFactory(db *gorm.DB) *application.LocationService {
 	)
 }
 
+func TripUpdaterFactory() *domain.TripUpdater {
+	return domain.NewTripUpdater()
+}
+
 func TripServiceFactory(db *gorm.DB) *application.TripService {
 	return application.NewTripService(
 		NewTripRepository(db),
 		TruckServiceFactory(db),
-		domain.TripUpdater{},
+		TripUpdaterFactory(),
 	)
 }

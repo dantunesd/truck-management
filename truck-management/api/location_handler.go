@@ -9,26 +9,26 @@ import (
 )
 
 type LocationHandler struct {
-	service *application.LocationService
+	locationService *application.LocationService
 }
 
-func NewLocationHandler(s *application.LocationService) *LocationHandler {
+func NewLocationHandler(locationService *application.LocationService) *LocationHandler {
 	return &LocationHandler{
-		service: s,
+		locationService: locationService,
 	}
 }
 
-func (h *LocationHandler) CreateLocation(c *gin.Context) {
+func (l *LocationHandler) CreateLocation(c *gin.Context) {
 	ID, _ := strconv.Atoi(c.Param("id"))
 
-	var location application.CreateLocationInput
+	var input application.CreateLocationInput
 
-	if err := c.ShouldBindJSON(&location); err != nil {
+	if err := c.ShouldBindJSON(&input); err != nil {
 		c.Error(NewBadRequest(err.Error()))
 		return
 	}
 
-	result, err := h.service.CreateLocation(ID, location)
+	result, err := l.locationService.CreateLocation(ID, input)
 	if err != nil {
 		c.Error(err)
 		return
@@ -37,10 +37,10 @@ func (h *LocationHandler) CreateLocation(c *gin.Context) {
 	c.JSON(http.StatusCreated, result)
 }
 
-func (h *LocationHandler) GetLastLocation(c *gin.Context) {
+func (l *LocationHandler) GetLastLocation(c *gin.Context) {
 	ID, _ := strconv.Atoi(c.Param("id"))
 
-	result, err := h.service.GetLastLocation(ID)
+	result, err := l.locationService.GetLastLocation(ID)
 	if err != nil {
 		c.Error(err)
 		return

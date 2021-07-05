@@ -20,13 +20,12 @@ func NewTripRepository(db *gorm.DB) *TripRepository {
 
 func (t *TripRepository) GetTrip(truckID int) (domain.Trip, error) {
 	var trip domain.Trip
-	result := t.db.Where("truck_id = ?", truckID).Find(&trip)
-	return trip, result.Error
+
+	return trip, t.db.Where("truck_id = ?", truckID).Find(&trip).Error
 }
 
-func (t *TripRepository) SaveTrip(trip *domain.Trip) error {
+func (t *TripRepository) UpsertTrip(trip *domain.Trip) error {
 	trip.UpdatedAt = time.Now().Format("2006-01-02 15:04:05")
-	return t.db.Clauses(clause.OnConflict{
-		UpdateAll: true,
-	}).Create(&trip).Error
+
+	return t.db.Clauses(clause.OnConflict{UpdateAll: true}).Create(&trip).Error
 }

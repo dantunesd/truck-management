@@ -2,15 +2,6 @@ package application
 
 import "truck-management/truck-management/domain"
 
-type ITripRepository interface {
-	GetTrip(truckID int) (domain.Trip, error)
-	SaveTrip(trip *domain.Trip) error
-}
-
-type ITripUpdater interface {
-	UpdateTrip(currentTrip domain.Trip, location domain.Location) domain.Trip
-}
-
 type TripService struct {
 	tripRepository ITripRepository
 	truckService   ITruckService
@@ -41,5 +32,5 @@ func (t *TripService) UpdateTrip(location domain.Location) error {
 
 	updatedTrip := t.tripUpdater.UpdateTrip(currentTrip, location)
 
-	return t.tripRepository.SaveTrip(&updatedTrip)
+	return t.tripRepository.UpsertTrip(&updatedTrip)
 }
