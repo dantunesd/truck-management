@@ -31,7 +31,7 @@ func TestLocations(t *testing.T) {
 			http.MethodGet,
 			``,
 			http.StatusNotFound,
-			`{"title":"location not found","status":404}`,
+			`{"title":"last location not found","status":404}`,
 		},
 		{
 			"Should return 404 when getting a location for an inexistent truck",

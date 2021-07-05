@@ -31,7 +31,7 @@ func TestTrips(t *testing.T) {
 			http.MethodGet,
 			``,
 			http.StatusNotFound,
-			`{"title":"trip not found","status":404}`,
+			`{"title":"trip summary not found","status":404}`,
 		},
 		{
 			"Should return 404 when getting a trip summary for an inexistent truck",
