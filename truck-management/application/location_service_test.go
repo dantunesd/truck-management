@@ -11,6 +11,7 @@ func TestLocationService_CreateLocation(t *testing.T) {
 	type fields struct {
 		locationRepository ILocationRepository
 		truckService       ITruckService
+		tripService        ITripService
 	}
 	type args struct {
 		truckID  int
@@ -26,13 +27,19 @@ func TestLocationService_CreateLocation(t *testing.T) {
 		{
 			name: "should return an error when GetTruck returns any error",
 			fields: fields{
+
+				locationRepository: &LocationRepositoryMock{
+					CreateLocationMock: func(truckID int, location *domain.Location) error {
+						return nil
+					},
+				},
 				truckService: TruckServiceMock{
 					GetTruckMock: func(ID int) (*domain.Truck, error) {
 						return &domain.Truck{}, errors.New("truck not found")
 					},
 				},
-				locationRepository: &LocationRepositoryMock{
-					CreateLocationMock: func(truckID int, location *domain.Location) error {
+				tripService: TripServiceMock{
+					UpdateTripMock: func(location domain.Location) error {
 						return nil
 					},
 				},
@@ -46,14 +53,44 @@ func TestLocationService_CreateLocation(t *testing.T) {
 		{
 			name: "should return an error when CreateLocation returns any error",
 			fields: fields{
+				locationRepository: &LocationRepositoryMock{
+					CreateLocationMock: func(truckID int, location *domain.Location) error {
+						return errors.New("failed to create truck")
+					},
+				},
 				truckService: TruckServiceMock{
 					GetTruckMock: func(ID int) (*domain.Truck, error) {
 						return &domain.Truck{}, nil
 					},
 				},
+				tripService: TripServiceMock{
+					UpdateTripMock: func(location domain.Location) error {
+						return nil
+					},
+				},
+			},
+			args: args{
+				location: domain.Location{},
+			},
+			want:    domain.Location{},
+			wantErr: true,
+		},
+		{
+			name: "should return an error when UpdateTrip returns any error",
+			fields: fields{
 				locationRepository: &LocationRepositoryMock{
 					CreateLocationMock: func(truckID int, location *domain.Location) error {
-						return errors.New("failed to create truck")
+						return nil
+					},
+				},
+				truckService: TruckServiceMock{
+					GetTruckMock: func(ID int) (*domain.Truck, error) {
+						return &domain.Truck{}, nil
+					},
+				},
+				tripService: TripServiceMock{
+					UpdateTripMock: func(location domain.Location) error {
+						return errors.New("failed to update trip")
 					},
 				},
 			},
@@ -66,16 +103,22 @@ func TestLocationService_CreateLocation(t *testing.T) {
 		{
 			name: "should return LocationEntity when creating with success",
 			fields: fields{
-				truckService: TruckServiceMock{
-					GetTruckMock: func(ID int) (*domain.Truck, error) {
-						return &domain.Truck{}, nil
-					},
-				},
+
 				locationRepository: &LocationRepositoryMock{
 					CreateLocationMock: func(truckID int, location *domain.Location) error {
 						location.ID = 1
 						location.TruckID = truckID
 						location.CreatedAt = timeNow
+						return nil
+					},
+				},
+				truckService: TruckServiceMock{
+					GetTruckMock: func(ID int) (*domain.Truck, error) {
+						return &domain.Truck{}, nil
+					},
+				},
+				tripService: TripServiceMock{
+					UpdateTripMock: func(location domain.Location) error {
 						return nil
 					},
 				},
@@ -109,7 +152,7 @@ func TestLocationService_CreateLocation(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			l := NewLocationService(tt.fields.locationRepository, tt.fields.truckService)
+			l := NewLocationService(tt.fields.locationRepository, tt.fields.truckService, tt.fields.tripService)
 			got, err := l.CreateLocation(tt.args.truckID, tt.args.location)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("LocationService.CreateLocation() error = %v, wantErr %v", err, tt.wantErr)
@@ -256,4 +299,12 @@ type TruckServiceMock struct {
 
 func (t TruckServiceMock) GetTruck(ID int) (*domain.Truck, error) {
 	return t.GetTruckMock(ID)
+}
+
+type TripServiceMock struct {
+	UpdateTripMock func(location domain.Location) error
+}
+
+func (t TripServiceMock) UpdateTrip(location domain.Location) error {
+	return t.UpdateTripMock(location)
 }

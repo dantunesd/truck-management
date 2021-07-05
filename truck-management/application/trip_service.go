@@ -25,3 +25,7 @@ func (t *TripService) GetTrip(truckID int) (*domain.Trip, error) {
 
 	return t.tripRepository.GetTrip(truckID)
 }
+
+func (t *TripService) UpdateTrip(location domain.Location) error {
+	return nil
+}

@@ -118,6 +118,42 @@ func TestTripService_GetTrip(t *testing.T) {
 	}
 }
 
+func TestTripService_UpdateTrip(t *testing.T) {
+	type fields struct {
+		tripRepository ITripRepository
+		truckService   ITruckService
+	}
+	type args struct {
+		location domain.Location
+	}
+	tests := []struct {
+		name    string
+		fields  fields
+		args    args
+		wantErr bool
+	}{
+		{
+			name:   "should return nil",
+			fields: fields{},
+			args: args{
+				location: domain.Location{},
+			},
+			wantErr: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			tr := &TripService{
+				tripRepository: tt.fields.tripRepository,
+				truckService:   tt.fields.truckService,
+			}
+			if err := tr.UpdateTrip(tt.args.location); (err != nil) != tt.wantErr {
+				t.Errorf("TripService.UpdateTrip() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}
+
 type TripRepositoryMock struct {
 	GetTripMock func(truckID int) (*domain.Trip, error)
 }

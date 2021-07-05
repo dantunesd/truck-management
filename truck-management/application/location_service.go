@@ -11,15 +11,21 @@ type ITruckService interface {
 	GetTruck(ID int) (*domain.Truck, error)
 }
 
+type ITripService interface {
+	UpdateTrip(location domain.Location) error
+}
+
 type LocationService struct {
 	locationRepository ILocationRepository
 	truckService       ITruckService
+	tripService        ITripService
 }
 
-func NewLocationService(repository ILocationRepository, truckService ITruckService) *LocationService {
+func NewLocationService(repository ILocationRepository, truckService ITruckService, tripService ITripService) *LocationService {
 	return &LocationService{
 		locationRepository: repository,
 		truckService:       truckService,
+		tripService:        tripService,
 	}
 }
 
@@ -28,7 +34,11 @@ func (l *LocationService) CreateLocation(truckID int, location domain.Location) 
 		return location, err
 	}
 
-	return location, l.locationRepository.CreateLocation(truckID, &location)
+	if err := l.locationRepository.CreateLocation(truckID, &location); err != nil {
+		return location, err
+	}
+
+	return location, l.tripService.UpdateTrip(location)
 }
 
 func (l *LocationService) GetLastLocation(truckID int) (*domain.Location, error) {

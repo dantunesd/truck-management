@@ -36,6 +36,7 @@ func LocationServiceFactory(db *gorm.DB) *application.LocationService {
 	return application.NewLocationService(
 		NewLocationRepository(db),
 		TruckServiceFactory(db),
+		TripServiceFactory(db),
 	)
 }
 
