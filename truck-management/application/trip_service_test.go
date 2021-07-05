@@ -75,8 +75,8 @@ func TestTripService_GetTrip(t *testing.T) {
 						return &domain.Trip{
 							ID:           1,
 							TruckID:      1,
-							Origin:       90,
-							Destination:  90,
+							Origin:       "90",
+							Destination:  "90",
 							State:        domain.ONGOING,
 							Odometer:     100,
 							EngineHours:  2,
@@ -92,8 +92,8 @@ func TestTripService_GetTrip(t *testing.T) {
 			want: &domain.Trip{
 				ID:           1,
 				TruckID:      1,
-				Origin:       90,
-				Destination:  90,
+				Origin:       "90",
+				Destination:  "90",
 				State:        domain.ONGOING,
 				Odometer:     100,
 				EngineHours:  2,

@@ -10,8 +10,8 @@ const (
 type Trip struct {
 	ID           int       `json:"id,omitempty"`
 	TruckID      int       `json:"truck_id,omitempty"`
-	Origin       int       `json:"origin,omitempty"`
-	Destination  int       `json:"destination,omitempty"`
+	Origin       string    `json:"origin,omitempty"`
+	Destination  string    `json:"destination,omitempty"`
 	State        TripState `json:"state,omitempty"`
 	Odometer     int       `json:"odometer,omitempty"`
 	EngineHours  int       `json:"engine_hours,omitempty"`

@@ -51,8 +51,8 @@ INSERT INTO locations VALUES ('3', '1', 'INSERTED 3', 'ON', '100', '1100', '1000
 CREATE TABLE IF NOT EXISTS `truck_management`.`trips` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `truck_id` INT NOT NULL,
-  `origin` INT NOT NULL,
-  `destination` INT NOT NULL,
+  `origin` VARCHAR(50) NOT NULL,
+  `destination` VARCHAR(50) NOT NULL,
   `state` VARCHAR(10) NOT NULL,
   `odometer` INT NOT NULL,
   `engine_hours` INT NOT NULL,
