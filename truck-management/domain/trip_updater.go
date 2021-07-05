@@ -1,42 +1,29 @@
 package domain
 
-import "fmt"
-
 type TripUpdater struct{}
 
 func (t TripUpdater) UpdateTrip(currentTrip Trip, location Location) Trip {
-	updatedTrip := Trip{
-		ID:          currentTrip.ID,
-		Destination: fmt.Sprintf("%d %d", location.Latitude, location.Longitude),
-		State:       getState(location.EngineState),
+	if currentTrip.IsNewTrip() {
+		return Trip{
+			ID:           currentTrip.ID,
+			Destination:  location.GetLatitudeAndLongitude(),
+			State:        location.GetTripState(),
+			TruckID:      location.TruckID,
+			Origin:       location.GetLatitudeAndLongitude(),
+			Odometer:     location.Odometer,
+			EngineHours:  location.EngineHours,
+			AverageSpeed: location.GetAverageSpeed(),
+		}
 	}
 
-	if isANewTrip(currentTrip) {
-		updatedTrip.TruckID = location.TruckID
-		updatedTrip.Origin = fmt.Sprintf("%d %d", location.Latitude, location.Longitude)
-		updatedTrip.Odometer = location.Odometer
-		updatedTrip.EngineHours = location.EngineHours
-		updatedTrip.AverageSpeed = location.Odometer / location.EngineHours
-
-		return updatedTrip
+	return Trip{
+		ID:           currentTrip.ID,
+		Destination:  location.GetLatitudeAndLongitude(),
+		State:        location.GetTripState(),
+		TruckID:      currentTrip.TruckID,
+		Origin:       currentTrip.Origin,
+		Odometer:     currentTrip.Odometer + location.Odometer,
+		EngineHours:  currentTrip.EngineHours + location.EngineHours,
+		AverageSpeed: (currentTrip.Odometer + location.Odometer) / (currentTrip.EngineHours + location.EngineHours),
 	}
-
-	updatedTrip.TruckID = currentTrip.TruckID
-	updatedTrip.Origin = currentTrip.Origin
-	updatedTrip.Odometer = currentTrip.Odometer + location.Odometer
-	updatedTrip.EngineHours = currentTrip.EngineHours + location.EngineHours
-	updatedTrip.AverageSpeed = updatedTrip.Odometer / updatedTrip.EngineHours
-
-	return updatedTrip
-}
-
-func isANewTrip(trip Trip) bool {
-	return trip.ID == 0 || trip.State == FINISHED
-}
-
-func getState(engine EngineState) TripState {
-	if engine == ON {
-		return ONGOING
-	}
-	return FINISHED
 }

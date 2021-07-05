@@ -15,7 +15,7 @@ func TestTruckService_CreateTruck(t *testing.T) {
 		truckRepository ITruckRepository
 	}
 	type args struct {
-		newTruck domain.Truck
+		truck domain.Truck
 	}
 	tests := []struct {
 		name    string
@@ -34,7 +34,7 @@ func TestTruckService_CreateTruck(t *testing.T) {
 				},
 			},
 			args: args{
-				newTruck: domain.Truck{},
+				truck: domain.Truck{},
 			},
 			want:    domain.Truck{},
 			wantErr: true,
@@ -52,7 +52,7 @@ func TestTruckService_CreateTruck(t *testing.T) {
 				},
 			},
 			args: args{
-				newTruck: domain.Truck{
+				truck: domain.Truck{
 					LicensePlate: "ABC1234",
 					EldID:        "00001234",
 					CarrierID:    "CARRIER-ID",
@@ -82,7 +82,7 @@ func TestTruckService_CreateTruck(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			c := NewTruckService(tt.fields.truckRepository)
-			got, err := c.CreateTruck(tt.args.newTruck)
+			got, err := c.CreateTruck(tt.args.truck)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("TruckService.CreateTruck() error = %v, wantErr %v", err, tt.wantErr)
 				return

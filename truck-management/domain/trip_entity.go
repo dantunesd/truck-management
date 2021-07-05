@@ -18,3 +18,7 @@ type Trip struct {
 	AverageSpeed int       `json:"average_speed,omitempty"`
 	UpdatedAt    string    `json:"updated_at,omitempty"`
 }
+
+func (t Trip) IsNewTrip() bool {
+	return t.ID == 0 || t.State == FINISHED
+}

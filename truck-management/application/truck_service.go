@@ -15,24 +15,24 @@ type TruckService struct {
 	truckRepository ITruckRepository
 }
 
-func NewTruckService(repository ITruckRepository) *TruckService {
+func NewTruckService(truckRepository ITruckRepository) *TruckService {
 	return &TruckService{
-		truckRepository: repository,
+		truckRepository: truckRepository,
 	}
 }
 
-func (c *TruckService) CreateTruck(newTruck domain.Truck) (domain.Truck, error) {
-	return newTruck, c.truckRepository.CreateTruck(&newTruck)
+func (t *TruckService) CreateTruck(truck domain.Truck) (domain.Truck, error) {
+	return truck, t.truckRepository.CreateTruck(&truck)
 }
 
-func (c *TruckService) GetTruck(ID int) (*domain.Truck, error) {
-	return c.truckRepository.GetTruck(ID)
+func (t *TruckService) GetTruck(ID int) (*domain.Truck, error) {
+	return t.truckRepository.GetTruck(ID)
 }
 
-func (c *TruckService) UpdateTruck(ID int, truck domain.Truck) error {
-	return c.truckRepository.UpdateTruck(ID, &truck)
+func (t *TruckService) UpdateTruck(ID int, truck domain.Truck) error {
+	return t.truckRepository.UpdateTruck(ID, &truck)
 }
 
-func (c *TruckService) DeleteTruck(ID int) error {
-	return c.truckRepository.DeleteTruck(ID)
+func (t *TruckService) DeleteTruck(ID int) error {
+	return t.truckRepository.DeleteTruck(ID)
 }
