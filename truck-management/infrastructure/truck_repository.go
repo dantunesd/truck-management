@@ -42,7 +42,7 @@ func (t *TruckRepository) GetTruck(ID int) (domain.Truck, error) {
 	}
 
 	if isNotFound(result) {
-		return truck, NotFoundError
+		return truck, TruckNotFoundError
 	}
 
 	return truck, nil

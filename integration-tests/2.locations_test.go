@@ -26,12 +26,12 @@ func TestLocations(t *testing.T) {
 			`{"id":3,"truck_id":1,"eld_id":"INSERTED 3","engine_state":"ON","current_speed":100,"latitude":1100,"longitude":1000,"engine_hours":1,"odometer":100,"created_at":"2021-07-04 23:45:56"}`,
 		},
 		{
-			"Should return 200 when getting the last location of an existing truck without locations",
+			"Should return 404 when getting the last location of an existing truck without locations",
 			"http://app:3000/trucks/3/locations/last",
 			http.MethodGet,
 			``,
-			http.StatusOK,
-			`{}`,
+			http.StatusNotFound,
+			`{"title":"location not found","status":404}`,
 		},
 		{
 			"Should return 404 when getting a location for an inexistent truck",

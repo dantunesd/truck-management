@@ -26,12 +26,12 @@ func TestTrips(t *testing.T) {
 			`{"id":1,"truck_id":4,"origin":"90 80","destination":"90 80","state":"ONGOING","odometer":100,"engine_hours":5,"average_speed":100,"updated_at":"2021-07-05 00:41:37"}`,
 		},
 		{
-			"Should return 200 when getting the trip summary of an existing truck without trip",
+			"Should return 404 when getting the trip summary of an existing truck without trip",
 			"http://app:3000/trucks/3/trips/summary",
 			http.MethodGet,
 			``,
-			http.StatusOK,
-			`{}`,
+			http.StatusNotFound,
+			`{"title":"trip not found","status":404}`,
 		},
 		{
 			"Should return 404 when getting a trip summary for an inexistent truck",

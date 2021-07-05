@@ -53,7 +53,7 @@ func TestTripService_GetTrip(t *testing.T) {
 				},
 				tripRepository: &TripRepositoryMock{
 					GetTripMock: func(truckID int) (domain.Trip, error) {
-						return domain.Trip{}, errors.New("not found")
+						return domain.Trip{}, errors.New("generic error")
 					},
 				},
 			},
@@ -139,7 +139,7 @@ func TestTripService_UpdateTrip(t *testing.T) {
 			fields: fields{
 				tripRepository: &TripRepositoryMock{
 					GetTripMock: func(truckID int) (domain.Trip, error) {
-						return domain.Trip{}, errors.New("not found")
+						return domain.Trip{}, errors.New("generic error")
 					},
 				},
 			},

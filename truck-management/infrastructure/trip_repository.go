@@ -21,7 +21,17 @@ func NewTripRepository(db *gorm.DB) *TripRepository {
 func (t *TripRepository) GetTrip(truckID int) (domain.Trip, error) {
 	var trip domain.Trip
 
-	return trip, t.db.Where("truck_id = ?", truckID).Find(&trip).Error
+	result := t.db.Where("truck_id = ?", truckID).Find(&trip)
+
+	if result.Error != nil {
+		return trip, result.Error
+	}
+
+	if isNotFound(result) {
+		return trip, TripNotFoundError
+	}
+
+	return trip, nil
 }
 
 func (t *TripRepository) UpsertTrip(trip *domain.Trip) error {

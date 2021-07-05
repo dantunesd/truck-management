@@ -7,7 +7,9 @@ import (
 	"gorm.io/gorm"
 )
 
-var NotFoundError = api.NewNotFound("truck not found")
+var TruckNotFoundError = api.NewNotFound("truck not found")
+var TripNotFoundError = api.NewNotFound("trip not found")
+var LocationNotFoundError = api.NewNotFound("location not found")
 var ConflictError = api.NewConflict("license plate or eld_id is already registered")
 
 func isDuplicated(result *gorm.DB) bool {

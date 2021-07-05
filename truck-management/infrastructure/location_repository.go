@@ -27,5 +27,15 @@ func (t *LocationRepository) CreateLocation(truckID int, location *domain.Locati
 func (t *LocationRepository) GetLastLocation(truckID int) (domain.Location, error) {
 	var location domain.Location
 
-	return location, t.db.Where("truck_id = ?", truckID).Order("id DESC").Limit(1).Find(&location).Error
+	result := t.db.Where("truck_id = ?", truckID).Order("id DESC").Limit(1).Find(&location)
+
+	if result.Error != nil {
+		return location, result.Error
+	}
+
+	if isNotFound(result) {
+		return location, LocationNotFoundError
+	}
+
+	return location, nil
 }

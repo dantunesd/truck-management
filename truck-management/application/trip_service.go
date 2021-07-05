@@ -1,6 +1,9 @@
 package application
 
-import "truck-management/truck-management/domain"
+import (
+	"strings"
+	"truck-management/truck-management/domain"
+)
 
 type TripService struct {
 	tripRepository ITripRepository
@@ -26,7 +29,7 @@ func (t *TripService) GetTrip(truckID int) (domain.Trip, error) {
 
 func (t *TripService) UpdateTrip(location domain.Location) error {
 	currentTrip, err := t.tripRepository.GetTrip(location.TruckID)
-	if err != nil {
+	if err != nil && !strings.Contains(err.Error(), "not found") {
 		return err
 	}
 
