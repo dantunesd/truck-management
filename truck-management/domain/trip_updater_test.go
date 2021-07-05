@@ -16,7 +16,7 @@ func TestTripUpdater_UpdateTrip(t *testing.T) {
 		want Trip
 	}{
 		{
-			"should return an ONGOING Trip when receiving a new trip and the EngineState is ON",
+			"should return an ONGOING Trip when receiving a empty trip and the EngineState is ON",
 			args{
 				trip: Trip{
 					ID:      0,
@@ -44,7 +44,7 @@ func TestTripUpdater_UpdateTrip(t *testing.T) {
 			},
 		},
 		{
-			"should return a FINISHED Trip when the receiving a new trip and the EngineState is OFF ",
+			"should return a FINISHED Trip when receiving a empty and the EngineState is OFF ",
 			args{
 				trip: Trip{
 					ID:      0,
@@ -72,7 +72,7 @@ func TestTripUpdater_UpdateTrip(t *testing.T) {
 			},
 		},
 		{
-			"should return an ONGOING Trip when the current trip is finished and the EngineState is ON ",
+			"should return an ONGOING Trip when the current trip is finished and the EngineState is ON",
 			args{
 				trip: Trip{
 					ID:           1,
@@ -142,7 +142,7 @@ func TestTripUpdater_UpdateTrip(t *testing.T) {
 			},
 		},
 		{
-			"should return an ONGOING Trip when the current trip is ongoing and the EngineState is ON ",
+			"should return an ONGOING Trip when the current trip is ongoing and the EngineState is ON",
 			args{
 				trip: Trip{
 					ID:           1,

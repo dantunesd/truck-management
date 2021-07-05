@@ -17,7 +17,7 @@ func Test_isDuplicated(t *testing.T) {
 		want bool
 	}{
 		{
-			"should return true when exists error",
+			"should return true when exists an error",
 			args{
 				result: &gorm.DB{
 					Error: errors.New("Duplicate entry"),
@@ -26,7 +26,7 @@ func Test_isDuplicated(t *testing.T) {
 			true,
 		},
 		{
-			"should return false when not exists error",
+			"should return false when doesnt exist an error",
 			args{
 				result: &gorm.DB{},
 			},
@@ -52,7 +52,7 @@ func Test_isNotFound(t *testing.T) {
 		want bool
 	}{
 		{
-			"should return true when is rows was not affected",
+			"should return true when 0 rows was affected",
 			args{
 				result: &gorm.DB{
 					RowsAffected: 0,
@@ -61,7 +61,7 @@ func Test_isNotFound(t *testing.T) {
 			true,
 		},
 		{
-			"should return false when rows was affected",
+			"should return false when some rows was affected",
 			args{
 				result: &gorm.DB{
 					RowsAffected: 1,

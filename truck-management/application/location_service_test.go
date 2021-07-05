@@ -25,7 +25,7 @@ func TestLocationService_CreateLocation(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name: "should return an error when GetTruck returns any error",
+			name: "should return an error when GetTruck fails",
 			fields: fields{
 				locationRepository: &LocationRepositoryMock{
 					CreateLocationMock: func(truckID int, location *domain.Location) error {
@@ -50,7 +50,7 @@ func TestLocationService_CreateLocation(t *testing.T) {
 			wantErr: true,
 		},
 		{
-			name: "should return an error when CreateLocation returns any error",
+			name: "should return an error when CreateLocation fails",
 			fields: fields{
 				locationRepository: &LocationRepositoryMock{
 					CreateLocationMock: func(truckID int, location *domain.Location) error {
@@ -75,7 +75,7 @@ func TestLocationService_CreateLocation(t *testing.T) {
 			wantErr: true,
 		},
 		{
-			name: "should return an error when UpdateTrip returns any error",
+			name: "should return an error when UpdateTrip fails",
 			fields: fields{
 				locationRepository: &LocationRepositoryMock{
 					CreateLocationMock: func(truckID int, location *domain.Location) error {
@@ -180,7 +180,7 @@ func TestLocationService_GetLastLocation(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name: "should return an error when GetTruck returns any error",
+			name: "should return an error when GetTruck fails",
 			fields: fields{
 				truckService: TruckServiceMock{
 					GetTruckMock: func(ID int) (domain.Truck, error) {
@@ -200,7 +200,7 @@ func TestLocationService_GetLastLocation(t *testing.T) {
 			wantErr: true,
 		},
 		{
-			name: "should return an error when GetLastLocation returns any error",
+			name: "should return an error when GetLastLocation fails",
 			fields: fields{
 				truckService: TruckServiceMock{
 					GetTruckMock: func(ID int) (domain.Truck, error) {

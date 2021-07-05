@@ -42,7 +42,7 @@ func TestTrucks(t *testing.T) {
 			`{"title":"license plate or eld_id is already registered","status":409}`,
 		},
 		{
-			"Should return 400 when creating a truck without required fields",
+			"Should return 400 when creating a truck without the required fields",
 			"http://app:3000/trucks",
 			http.MethodPost,
 			`{}`,
@@ -50,7 +50,7 @@ func TestTrucks(t *testing.T) {
 			`{"title":"Key: 'TruckCreateInput.LicensePlate' Error:Field validation for 'LicensePlate' failed on the 'required' tag\nKey: 'TruckCreateInput.EldID' Error:Field validation for 'EldID' failed on the 'required' tag\nKey: 'TruckCreateInput.CarrierID' Error:Field validation for 'CarrierID' failed on the 'required' tag","status":400}`,
 		},
 		{
-			"Should return 200 when getting an existent truck",
+			"Should return 200 when getting an existing truck",
 			"http://app:3000/trucks/1",
 			http.MethodGet,
 			``,
@@ -74,7 +74,7 @@ func TestTrucks(t *testing.T) {
 			`{"title":"id must be numeric","status":400}`,
 		},
 		{
-			"Should return 204 when updating an existent truck",
+			"Should return 204 when updating an existing truck",
 			"http://app:3000/trucks/1",
 			http.MethodPatch,
 			`{"license_plate":"NEWPLAT","eld_id":"NEW-ELD-ID","carrier_id":"NEW My Carrier","type":"NEW REEFERR"}`,
@@ -98,7 +98,7 @@ func TestTrucks(t *testing.T) {
 			`{"title":"id must be numeric","status":400}`,
 		},
 		{
-			"Should return 204 when updating a truck without fields",
+			"Should return 204 when updating a truck without the required fields",
 			"http://app:3000/trucks/1",
 			http.MethodPatch,
 			`{}`,
@@ -106,7 +106,7 @@ func TestTrucks(t *testing.T) {
 			``,
 		},
 		{
-			"Should return 204 when deleting an existent truck",
+			"Should return 204 when deleting an existing truck",
 			"http://app:3000/trucks/2",
 			http.MethodDelete,
 			``,

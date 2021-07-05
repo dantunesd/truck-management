@@ -15,7 +15,7 @@ func TestNewErrorResponse(t *testing.T) {
 		want ErrorResponse
 	}{
 		{
-			"should return code and message when receiving a client error",
+			"should return the same code and message when receiving a ClientError",
 			args{
 				err: &ClientErrors{
 					ErrorMessage: "client error",
@@ -28,7 +28,7 @@ func TestNewErrorResponse(t *testing.T) {
 			},
 		},
 		{
-			"should return code and message when receiving a generic error",
+			"should return 500 and internal server error when receiving a generic error",
 			args{
 				err: errors.New("generic"),
 			},

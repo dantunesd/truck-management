@@ -25,7 +25,7 @@ func TestTruckService_CreateTruck(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name: "should return an error when CreateTruck returns any error",
+			name: "should return an error when CreateTruck fails",
 			fields: fields{
 				truckRepository: &TruckRepositoryMock{
 					CreateTruckMock: func(*domain.Truck) error {
@@ -109,7 +109,7 @@ func TestTruckService_GetTruck(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name: "should return an error when GetTruck returns any error",
+			name: "should return an error when GetTruck fails",
 			fields: fields{
 				truckRepository: &TruckRepositoryMock{
 					GetTruckMock: func(ID int) (domain.Truck, error) {
@@ -176,7 +176,7 @@ func TestTruckService_DeleteTruck(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name: "should return an error when DeleteTruck returns any error",
+			name: "should return an error when DeleteTruck fails",
 			fields: fields{
 				truckRepository: &TruckRepositoryMock{
 					DeleteTruckMock: func(ID int) error {
@@ -231,7 +231,7 @@ func TestTruckService_UpdateTruck(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name: "should return an error when UpdateTruck returns any error",
+			name: "should return an error when UpdateTruck fails",
 			fields: fields{
 				truckRepository: &TruckRepositoryMock{
 					GetTruckMock: func(ID int) (domain.Truck, error) {
@@ -249,7 +249,7 @@ func TestTruckService_UpdateTruck(t *testing.T) {
 			wantErr: true,
 		},
 		{
-			name: "should return an error when GetTruck returns any error",
+			name: "should return an error when GetTruck fails",
 			fields: fields{
 				truckRepository: &TruckRepositoryMock{
 					GetTruckMock: func(ID int) (domain.Truck, error) {

@@ -34,7 +34,7 @@ func TestLocations(t *testing.T) {
 			`{"title":"last location not found","status":404}`,
 		},
 		{
-			"Should return 404 when getting a location for an inexistent truck",
+			"Should return 404 when getting a location of an inexistent truck",
 			"http://app:3000/trucks/9999/locations/last",
 			http.MethodGet,
 			``,
@@ -42,7 +42,7 @@ func TestLocations(t *testing.T) {
 			`{"title":"truck not found","status":404}`,
 		},
 		{
-			"Should return 404 when getting a location for an invalid truck id",
+			"Should return 404 when getting a location of an invalid truck id",
 			"http://app:3000/trucks/invalid/locations/last",
 			http.MethodGet,
 			``,

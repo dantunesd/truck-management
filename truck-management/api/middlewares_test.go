@@ -18,18 +18,7 @@ func TestTruckIdHandler(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			"should haven't error in context when sending valid ID",
-			args{
-				c: &gin.Context{
-					Params: gin.Params{
-						gin.Param{},
-					},
-				},
-			},
-			true,
-		},
-		{
-			"should have error in context when doesnt have ID",
+			"should not abort with error when ID is valid",
 			args{
 				c: &gin.Context{
 					Params: gin.Params{
@@ -43,7 +32,19 @@ func TestTruckIdHandler(t *testing.T) {
 			false,
 		},
 		{
-			"should have error in context when sending invalid ID",
+			"should abort with error when ID is not present",
+			args{
+				c: &gin.Context{
+					Params: gin.Params{
+						gin.Param{},
+					},
+				},
+			},
+			true,
+		},
+
+		{
+			"should abort with error when ID is invalid",
 			args{
 				c: &gin.Context{
 					Params: gin.Params{
@@ -84,14 +85,14 @@ func TestErrorHandler(t *testing.T) {
 		wantStatus int
 	}{
 		{
-			"should respond 500 when a generic error exists",
+			"should response 500 when exists a generic error in context",
 			args{
 				c: ginContextWithError,
 			},
 			500,
 		},
 		{
-			"should respond 200 when error doesnt exists",
+			"should response 500 when doesn't exist a generic error in context",
 			args{
 				c: ginContext,
 			},
@@ -129,7 +130,7 @@ func TestLogHandler(t *testing.T) {
 		args   args
 	}{
 		{
-			"should logs when a generic error exists",
+			"should log when exists an error in context",
 			fields{
 				logger: LoggerMock{},
 			},
@@ -138,7 +139,7 @@ func TestLogHandler(t *testing.T) {
 			},
 		},
 		{
-			"should not log when a error doesnt exists",
+			"should not log when doesn't exist an error in context",
 			fields{
 				logger: LoggerMock{},
 			},

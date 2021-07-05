@@ -15,7 +15,7 @@ func TestNewBadRequest(t *testing.T) {
 		want *ClientErrors
 	}{
 		{
-			"should return a client error with 400 code",
+			"should return a ClientError with 400 code",
 			args{
 				errorMessage: "error",
 			},
@@ -44,7 +44,7 @@ func TestNewConflict(t *testing.T) {
 		want *ClientErrors
 	}{
 		{
-			"should return a client error with 409 code",
+			"should return a ClientError with 409 code",
 			args{
 				errorMessage: "error",
 			},
@@ -73,7 +73,7 @@ func TestNewNotFound(t *testing.T) {
 		want *ClientErrors
 	}{
 		{
-			"should return a client error with 404 code",
+			"should return a ClientError with 404 code",
 			args{
 				errorMessage: "error",
 			},

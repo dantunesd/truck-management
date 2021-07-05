@@ -24,7 +24,7 @@ func TestTripService_GetTrip(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name: "should return an error when GetTruck returns any error",
+			name: "should return an error when GetTruck fails",
 			fields: fields{
 				truckService: TruckServiceMock{
 					GetTruckMock: func(ID int) (domain.Truck, error) {
@@ -44,7 +44,7 @@ func TestTripService_GetTrip(t *testing.T) {
 			wantErr: true,
 		},
 		{
-			name: "should return an error when GetTrip returns any error",
+			name: "should return an error when GetTrip fails",
 			fields: fields{
 				truckService: TruckServiceMock{
 					GetTruckMock: func(ID int) (domain.Truck, error) {
@@ -135,7 +135,7 @@ func TestTripService_UpdateTrip(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name: "should return an error when GetTrip returns any error",
+			name: "should return an error when GetTrip fails",
 			fields: fields{
 				tripRepository: &TripRepositoryMock{
 					GetTripMock: func(truckID int) (domain.Trip, error) {
@@ -149,7 +149,7 @@ func TestTripService_UpdateTrip(t *testing.T) {
 			wantErr: true,
 		},
 		{
-			name: "should return an error when UpsertTrip returns any error",
+			name: "should return an error when UpsertTrip fails",
 			fields: fields{
 				tripRepository: &TripRepositoryMock{
 					GetTripMock: func(truckID int) (domain.Trip, error) {
@@ -169,6 +169,28 @@ func TestTripService_UpdateTrip(t *testing.T) {
 				location: domain.Location{},
 			},
 			wantErr: true,
+		},
+		{
+			name: "should nil when upserting with success",
+			fields: fields{
+				tripRepository: &TripRepositoryMock{
+					GetTripMock: func(truckID int) (domain.Trip, error) {
+						return domain.Trip{}, nil
+					},
+					UpsertTripMock: func(trip *domain.Trip) error {
+						return nil
+					},
+				},
+				tripUpdater: TripUpdaterMock{
+					UpdateTripMock: func(currentTrip domain.Trip, location domain.Location) domain.Trip {
+						return domain.Trip{}
+					},
+				},
+			},
+			args: args{
+				location: domain.Location{},
+			},
+			wantErr: false,
 		},
 	}
 	for _, tt := range tests {
