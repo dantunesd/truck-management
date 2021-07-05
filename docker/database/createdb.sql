@@ -23,6 +23,7 @@ CREATE TABLE IF NOT EXISTS trucks (
 INSERT INTO trucks VALUES ('1', 'INSERTT', 'INSERTED ELD', 'INSERTT MY CARRIER', 'REEFERR', '23', 'blue', 'Maker', 'Model', '1900', '2021-07-04 21:34:26', '2021-07-04 21:34:26');
 INSERT INTO trucks VALUES ('2', 'TODELET', 'TO DELETE ELD', 'TO DELETE MY CARRIER', 'REEFERR', '23', 'blue', 'Maker', 'Model', '1900', '2021-07-04 21:34:26', '2021-07-04 21:34:26');
 INSERT INTO trucks VALUES ('3', 'TOLOCAT', 'TO LOCATION ELD', 'MY CARRIER', 'REEFERR', '23', 'blue', 'Maker', 'Model', '1900', '2021-07-04 21:34:26', '2021-07-04 21:34:26');
+INSERT INTO trucks VALUES ('4', 'TOTRIPP', 'TO TRIP ELD', 'MY CARRIER', 'REEFERR', '23', 'blue', 'Maker', 'Model', '1900', '2021-07-04 21:34:26', '2021-07-04 21:34:26');
 
 CREATE TABLE IF NOT EXISTS `truck_management`.`locations` (
   `id` INT NOT NULL AUTO_INCREMENT,
@@ -66,4 +67,4 @@ CREATE TABLE IF NOT EXISTS `truck_management`.`trips` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
 
-INSERT INTO trips VALUES ('1', '1', '90', '90', 'ONGOING', '100', '5', '100', '2021-07-05 00:41:37');
+INSERT INTO trips VALUES ('1', '4', '90 80', '90 80', 'ONGOING', '100', '5', '100', '2021-07-05 00:41:37');
