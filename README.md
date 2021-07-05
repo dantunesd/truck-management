@@ -4,7 +4,7 @@ This application is responsible for managing trucks
 
 ---
 
-# Pre requisites
+# Pre Requisites
 
 Before running this application, you must to install:
 

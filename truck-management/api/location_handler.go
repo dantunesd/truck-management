@@ -19,7 +19,7 @@ func NewLocationHandler(locationService *application.LocationService) *LocationH
 }
 
 func (l *LocationHandler) CreateLocation(c *gin.Context) {
-	ID, _ := strconv.Atoi(c.Param("id"))
+	ID, _ := strconv.Atoi(c.Param(TRUCK_ID))
 
 	var input application.CreateLocationInput
 
@@ -38,7 +38,7 @@ func (l *LocationHandler) CreateLocation(c *gin.Context) {
 }
 
 func (l *LocationHandler) GetLastLocation(c *gin.Context) {
-	ID, _ := strconv.Atoi(c.Param("id"))
+	ID, _ := strconv.Atoi(c.Param(TRUCK_ID))
 
 	result, err := l.locationService.GetLastLocation(ID)
 	if err != nil {

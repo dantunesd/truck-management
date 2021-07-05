@@ -19,7 +19,7 @@ func NewTripHandler(tripService *application.TripService) *TripHandler {
 }
 
 func (t *TripHandler) GetTripSummary(c *gin.Context) {
-	ID, _ := strconv.Atoi(c.Param("id"))
+	ID, _ := strconv.Atoi(c.Param(TRUCK_ID))
 
 	result, err := t.tripService.GetTrip(ID)
 	if err != nil {
