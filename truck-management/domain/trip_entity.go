@@ -8,15 +8,15 @@ const (
 )
 
 type Trip struct {
-	ID           int       `json:"id,omitempty"`
-	TruckID      int       `json:"truck_id,omitempty"`
-	Origin       string    `json:"origin,omitempty"`
-	Destination  string    `json:"destination,omitempty"`
-	State        TripState `json:"state,omitempty"`
-	Odometer     int       `json:"odometer,omitempty"`
-	EngineHours  int       `json:"engine_hours,omitempty"`
-	AverageSpeed int       `json:"average_speed,omitempty"`
-	UpdatedAt    string    `json:"updated_at,omitempty"`
+	ID           int       `json:"id"`
+	TruckID      int       `json:"truck_id"`
+	Origin       string    `json:"origin"`
+	Destination  string    `json:"destination"`
+	State        TripState `json:"state"`
+	Odometer     int       `json:"odometer"`
+	EngineHours  int       `json:"engine_hours"`
+	AverageSpeed int       `json:"average_speed"`
+	UpdatedAt    string    `json:"updated_at"`
 }
 
 func (t *Trip) IsNewTrip() bool {

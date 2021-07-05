@@ -60,9 +60,9 @@ type TruckUpdateInput struct {
 type CreateLocationInput struct {
 	EldID        string             `json:"eld_id" binding:"required,ascii,max=20"`
 	EngineState  domain.EngineState `json:"engine_state" binding:"required,ascii,oneof=ON OFF"`
-	CurrentSpeed int                `json:"current_speed" binding:"required,numeric,min=0,max=500"`
-	Latitude     int                `json:"latitude" binding:"required,numeric,min=0"`
-	Longitude    int                `json:"longitude" binding:"required,numeric,min=0"`
-	EngineHours  int                `json:"engine_hours" binding:"required,numeric,min=0"`
-	Odometer     int                `json:"odometer" binding:"required,numeric,min=0"`
+	CurrentSpeed int                `json:"current_speed" binding:"numeric"`
+	Latitude     int                `json:"latitude" binding:"required,numeric"`
+	Longitude    int                `json:"longitude" binding:"required,numeric"`
+	EngineHours  int                `json:"engine_hours" binding:"required,numeric"`
+	Odometer     int                `json:"odometer" binding:"required,numeric"`
 }

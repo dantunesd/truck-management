@@ -10,16 +10,16 @@ const (
 )
 
 type Location struct {
-	ID           int         `json:"id,omitempty"`
-	TruckID      int         `json:"truck_id,omitempty"`
-	EldID        string      `json:"eld_id,omitempty"`
-	EngineState  EngineState `json:"engine_state,omitempty"`
-	CurrentSpeed int         `json:"current_speed,omitempty"`
-	Latitude     int         `json:"latitude,omitempty"`
-	Longitude    int         `json:"longitude,omitempty"`
-	EngineHours  int         `json:"engine_hours,omitempty"`
-	Odometer     int         `json:"odometer,omitempty"`
-	CreatedAt    string      `json:"created_at,omitempty"`
+	ID           int         `json:"id"`
+	TruckID      int         `json:"truck_id"`
+	EldID        string      `json:"eld_id"`
+	EngineState  EngineState `json:"engine_state"`
+	CurrentSpeed int         `json:"current_speed"`
+	Latitude     int         `json:"latitude"`
+	Longitude    int         `json:"longitude"`
+	EngineHours  int         `json:"engine_hours"`
+	Odometer     int         `json:"odometer"`
+	CreatedAt    string      `json:"created_at"`
 }
 
 func (l *Location) GetLatitudeAndLongitude() string {
