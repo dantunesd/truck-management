@@ -1,9 +1,11 @@
 package infrastructure
 
 import (
+	"time"
 	"truck-management/truck-management/domain"
 
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 type TripRepository struct {
@@ -23,5 +25,8 @@ func (t *TripRepository) GetTrip(truckID int) (*domain.Trip, error) {
 }
 
 func (t *TripRepository) SaveTrip(trip *domain.Trip) error {
-	return nil
+	trip.UpdatedAt = time.Now().Format("2006-01-02 15:04:05")
+	return t.db.Clauses(clause.OnConflict{
+		UpdateAll: true,
+	}).Create(&trip).Error
 }
