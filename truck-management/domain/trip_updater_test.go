@@ -177,41 +177,6 @@ func TestTripUpdater_UpdateTrip(t *testing.T) {
 			},
 		},
 		{
-			"should return an FINISHED Trip when the current trip is ongoing and the EngineState is ON with engine hours 0",
-			args{
-				trip: Trip{
-					ID:           1,
-					TruckID:      1,
-					Origin:       "92 63",
-					Destination:  "92 63",
-					State:        FINISHED,
-					Odometer:     200,
-					EngineHours:  2,
-					AverageSpeed: 100,
-				},
-				location: Location{
-					ID:           1,
-					TruckID:      1,
-					EngineState:  ON,
-					CurrentSpeed: 0,
-					Latitude:     100,
-					Longitude:    110,
-					EngineHours:  0,
-					Odometer:     1,
-				},
-			},
-			Trip{
-				ID:           1,
-				TruckID:      1,
-				Origin:       "92 63",
-				Destination:  "92 63",
-				State:        ONGOING,
-				Odometer:     1,
-				EngineHours:  0,
-				AverageSpeed: 1,
-			},
-		},
-		{
 			"should return a FINISHED Trip when the current trip is ongoing and the EngineState is OFF ",
 			args{
 				trip: Trip{
