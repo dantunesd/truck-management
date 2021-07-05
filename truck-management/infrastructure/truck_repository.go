@@ -70,9 +70,5 @@ func (t *TruckRepository) UpdateTruck(ID int, truck *domain.Truck) error {
 		return result.Error
 	}
 
-	if isNotFound(result) {
-		return NotFoundError
-	}
-
 	return nil
 }

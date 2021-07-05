@@ -15,7 +15,7 @@ func TestTruckService_CreateTruck(t *testing.T) {
 		truckRepository ITruckRepository
 	}
 	type args struct {
-		truck domain.Truck
+		truck TruckCreateInput
 	}
 	tests := []struct {
 		name    string
@@ -34,7 +34,7 @@ func TestTruckService_CreateTruck(t *testing.T) {
 				},
 			},
 			args: args{
-				truck: domain.Truck{},
+				truck: TruckCreateInput{},
 			},
 			want:    domain.Truck{},
 			wantErr: true,
@@ -52,7 +52,7 @@ func TestTruckService_CreateTruck(t *testing.T) {
 				},
 			},
 			args: args{
-				truck: domain.Truck{
+				TruckCreateInput{
 					LicensePlate: "ABC1234",
 					EldID:        "00001234",
 					CarrierID:    "CARRIER-ID",
@@ -222,7 +222,7 @@ func TestTruckService_UpdateTruck(t *testing.T) {
 	}
 	type args struct {
 		ID    int
-		truck domain.Truck
+		truck TruckUpdateInput
 	}
 	tests := []struct {
 		name    string
@@ -234,21 +234,27 @@ func TestTruckService_UpdateTruck(t *testing.T) {
 			name: "should return an error when UpdateTruck returns any error",
 			fields: fields{
 				truckRepository: &TruckRepositoryMock{
+					GetTruckMock: func(ID int) (domain.Truck, error) {
+						return domain.Truck{}, nil
+					},
 					UpdateTruckMock: func(ID int, truck *domain.Truck) error {
-						return errors.New("failed to create truck")
+						return errors.New("failed to update truck")
 					},
 				},
 			},
 			args: args{
 				ID:    1,
-				truck: domain.Truck{},
+				truck: TruckUpdateInput{},
 			},
 			wantErr: true,
 		},
 		{
-			name: "should return nil when updating with success",
+			name: "should return an error when GetTruck returns any error",
 			fields: fields{
 				truckRepository: &TruckRepositoryMock{
+					GetTruckMock: func(ID int) (domain.Truck, error) {
+						return domain.Truck{}, errors.New("failed to get truck")
+					},
 					UpdateTruckMock: func(ID int, truck *domain.Truck) error {
 						return nil
 					},
@@ -256,7 +262,25 @@ func TestTruckService_UpdateTruck(t *testing.T) {
 			},
 			args: args{
 				ID:    1,
-				truck: domain.Truck{},
+				truck: TruckUpdateInput{},
+			},
+			wantErr: true,
+		},
+		{
+			name: "should return nil when updating with success",
+			fields: fields{
+				truckRepository: &TruckRepositoryMock{
+					GetTruckMock: func(ID int) (domain.Truck, error) {
+						return domain.Truck{}, nil
+					},
+					UpdateTruckMock: func(ID int, truck *domain.Truck) error {
+						return nil
+					},
+				},
+			},
+			args: args{
+				ID:    1,
+				truck: TruckUpdateInput{},
 			},
 			wantErr: false,
 		},

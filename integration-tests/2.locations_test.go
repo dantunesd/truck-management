@@ -79,7 +79,7 @@ func TestLocations(t *testing.T) {
 			http.MethodPost,
 			`{}`,
 			http.StatusBadRequest,
-			`{"title":"Key: 'Location.EldID' Error:Field validation for 'EldID' failed on the 'required' tag\nKey: 'Location.EngineState' Error:Field validation for 'EngineState' failed on the 'required' tag\nKey: 'Location.CurrentSpeed' Error:Field validation for 'CurrentSpeed' failed on the 'required' tag\nKey: 'Location.Latitude' Error:Field validation for 'Latitude' failed on the 'required' tag\nKey: 'Location.Longitude' Error:Field validation for 'Longitude' failed on the 'required' tag\nKey: 'Location.EngineHours' Error:Field validation for 'EngineHours' failed on the 'required' tag\nKey: 'Location.Odometer' Error:Field validation for 'Odometer' failed on the 'required' tag","status":400}`,
+			`{"title":"Key: 'CreateLocationInput.EldID' Error:Field validation for 'EldID' failed on the 'required' tag\nKey: 'CreateLocationInput.EngineState' Error:Field validation for 'EngineState' failed on the 'required' tag\nKey: 'CreateLocationInput.CurrentSpeed' Error:Field validation for 'CurrentSpeed' failed on the 'required' tag\nKey: 'CreateLocationInput.Latitude' Error:Field validation for 'Latitude' failed on the 'required' tag\nKey: 'CreateLocationInput.Longitude' Error:Field validation for 'Longitude' failed on the 'required' tag\nKey: 'CreateLocationInput.EngineHours' Error:Field validation for 'EngineHours' failed on the 'required' tag\nKey: 'CreateLocationInput.Odometer' Error:Field validation for 'Odometer' failed on the 'required' tag","status":400}`,
 		},
 	}
 	for _, tt := range tests {

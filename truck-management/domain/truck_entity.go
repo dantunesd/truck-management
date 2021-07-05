@@ -2,15 +2,15 @@ package domain
 
 type Truck struct {
 	ID           int    `json:"id"`
-	LicensePlate string `json:"license_plate" binding:"required,alphanum,min=7,max=7"`
-	EldID        string `json:"eld_id" binding:"required,ascii,max=20"`
-	CarrierID    string `json:"carrier_id" binding:"required,ascii,max=50"`
-	Type         string `json:"type" binding:"ascii,max=20"`
-	Size         int    `json:"size" binding:"numeric"`
-	Color        string `json:"color" binding:"ascii,max=20"`
-	Make         string `json:"make" binding:"ascii,max=20"`
-	Model        string `json:"model" binding:"ascii,max=20"`
-	Year         int    `json:"year" binding:"numeric"`
+	LicensePlate string `json:"license_plate"`
+	EldID        string `json:"eld_id"`
+	CarrierID    string `json:"carrier_id"`
+	Type         string `json:"type"`
+	Size         int    `json:"size"`
+	Color        string `json:"color"`
+	Make         string `json:"make"`
+	Model        string `json:"model"`
+	Year         int    `json:"year"`
 	CreatedAt    string `json:"created_at"`
 	UpdatedAt    string `json:"updated_at"`
 }

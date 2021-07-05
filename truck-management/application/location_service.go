@@ -29,7 +29,27 @@ func NewLocationService(locationRepository ILocationRepository, truckService ITr
 	}
 }
 
-func (l *LocationService) CreateLocation(truckID int, location domain.Location) (domain.Location, error) {
+type CreateLocationInput struct {
+	EldID        string             `json:"eld_id" binding:"required,ascii,max=20"`
+	EngineState  domain.EngineState `json:"engine_state" binding:"required,ascii,oneof=ON OFF"`
+	CurrentSpeed int                `json:"current_speed" binding:"required,numeric,min=0,max=500"`
+	Latitude     int                `json:"latitude" binding:"required,numeric,min=0"`
+	Longitude    int                `json:"longitude" binding:"required,numeric,min=0"`
+	EngineHours  int                `json:"engine_hours" binding:"required,numeric,min=0"`
+	Odometer     int                `json:"odometer" binding:"required,numeric,min=0"`
+}
+
+func (l *LocationService) CreateLocation(truckID int, input CreateLocationInput) (domain.Location, error) {
+	location := domain.Location{
+		EldID:        input.EldID,
+		EngineState:  input.EngineState,
+		CurrentSpeed: input.CurrentSpeed,
+		Latitude:     input.Latitude,
+		Longitude:    input.Longitude,
+		EngineHours:  input.EngineHours,
+		Odometer:     input.Odometer,
+	}
+
 	if _, err := l.truckService.GetTruck(truckID); err != nil {
 		return location, err
 	}

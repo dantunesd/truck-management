@@ -15,7 +15,7 @@ func TestLocationService_CreateLocation(t *testing.T) {
 	}
 	type args struct {
 		truckID  int
-		location domain.Location
+		location CreateLocationInput
 	}
 	tests := []struct {
 		name    string
@@ -44,7 +44,7 @@ func TestLocationService_CreateLocation(t *testing.T) {
 				},
 			},
 			args: args{
-				location: domain.Location{},
+				location: CreateLocationInput{},
 			},
 			want:    domain.Location{},
 			wantErr: true,
@@ -69,7 +69,7 @@ func TestLocationService_CreateLocation(t *testing.T) {
 				},
 			},
 			args: args{
-				location: domain.Location{},
+				location: CreateLocationInput{},
 			},
 			want:    domain.Location{},
 			wantErr: true,
@@ -94,7 +94,7 @@ func TestLocationService_CreateLocation(t *testing.T) {
 				},
 			},
 			args: args{
-				location: domain.Location{},
+				location: CreateLocationInput{},
 			},
 			want:    domain.Location{},
 			wantErr: true,
@@ -124,7 +124,7 @@ func TestLocationService_CreateLocation(t *testing.T) {
 			},
 			args: args{
 				truckID: 5,
-				location: domain.Location{
+				location: CreateLocationInput{
 					EldID:        "id",
 					EngineState:  "ON",
 					CurrentSpeed: 100,

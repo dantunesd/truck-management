@@ -4,7 +4,6 @@ import (
 	"net/http"
 	"strconv"
 	"truck-management/truck-management/application"
-	"truck-management/truck-management/domain"
 
 	"github.com/gin-gonic/gin"
 )
@@ -20,7 +19,7 @@ func NewTruckHandler(s *application.TruckService) *TruckHandler {
 }
 
 func (h *TruckHandler) CreateTruck(c *gin.Context) {
-	var truck domain.Truck
+	var truck application.TruckCreateInput
 
 	if err := c.ShouldBindJSON(&truck); err != nil {
 		c.Error(NewBadRequest(err.Error()))
@@ -60,7 +59,7 @@ func (h *TruckHandler) DeleteTruck(c *gin.Context) {
 }
 
 func (h *TruckHandler) UpdateTruck(c *gin.Context) {
-	var truck domain.Truck
+	var truck application.TruckUpdateInput
 
 	if err := c.ShouldBindJSON(&truck); err != nil {
 		c.Error(NewBadRequest(err.Error()))

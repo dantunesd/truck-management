@@ -4,7 +4,6 @@ import (
 	"net/http"
 	"strconv"
 	"truck-management/truck-management/application"
-	"truck-management/truck-management/domain"
 
 	"github.com/gin-gonic/gin"
 )
@@ -22,7 +21,7 @@ func NewLocationHandler(s *application.LocationService) *LocationHandler {
 func (h *LocationHandler) CreateLocation(c *gin.Context) {
 	ID, _ := strconv.Atoi(c.Param("id"))
 
-	var location domain.Location
+	var location application.CreateLocationInput
 
 	if err := c.ShouldBindJSON(&location); err != nil {
 		c.Error(NewBadRequest(err.Error()))
