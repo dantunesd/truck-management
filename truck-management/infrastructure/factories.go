@@ -38,3 +38,10 @@ func LocationServiceFactory(db *gorm.DB) *application.LocationService {
 		TruckServiceFactory(db),
 	)
 }
+
+func TripServiceFactory(db *gorm.DB) *application.TripService {
+	return application.NewTripService(
+		NewTripRepository(db),
+		TruckServiceFactory(db),
+	)
+}

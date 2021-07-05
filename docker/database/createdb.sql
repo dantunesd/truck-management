@@ -47,3 +47,23 @@ CREATE TABLE IF NOT EXISTS `truck_management`.`locations` (
 INSERT INTO locations VALUES ('1', '1', 'INSERTED 1', 'ON', '100', '1100', '1000', '1', '100', '2021-07-04 23:45:56');
 INSERT INTO locations VALUES ('2', '1', 'INSERTED 2', 'ON', '100', '1100', '1000', '1', '100', '2021-07-04 23:45:56');
 INSERT INTO locations VALUES ('3', '1', 'INSERTED 3', 'ON', '100', '1100', '1000', '1', '100', '2021-07-04 23:45:56');
+
+CREATE TABLE IF NOT EXISTS `truck_management`.`trips` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `truck_id` INT NOT NULL,
+  `origin` INT NOT NULL,
+  `destination` INT NOT NULL,
+  `state` VARCHAR(10) NOT NULL,
+  `odometer` INT NOT NULL,
+  `engine_hours` INT NOT NULL,
+  `average_speed` INT NOT NULL,
+  `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  INDEX `fk_trips_1_idx` (`truck_id`),
+  CONSTRAINT `fk_trips_1`
+    FOREIGN KEY (`truck_id`)
+    REFERENCES `truck_management`.`trucks` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+INSERT INTO trips VALUES ('1', '1', '90', '90', 'ONGOING', '100', '5', '100', '2021-07-05 00:41:37');

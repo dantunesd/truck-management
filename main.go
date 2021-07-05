@@ -19,10 +19,12 @@ func main() {
 		logger.Fatal(err)
 	}
 
-	ts := infrastructure.TruckServiceFactory(db)
-	ls := infrastructure.LocationServiceFactory(db)
-
-	handler := api.CreateHandler(logger, ts, ls)
+	handler := api.CreateHandler(
+		logger,
+		infrastructure.TruckServiceFactory(db),
+		infrastructure.LocationServiceFactory(db),
+		infrastructure.TripServiceFactory(db),
+	)
 
 	logger.Info("starting webserver")
 

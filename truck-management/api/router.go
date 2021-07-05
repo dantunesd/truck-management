@@ -11,10 +11,11 @@ type ILogger interface {
 	Error(args ...interface{})
 }
 
-func CreateHandler(logger ILogger, ts *application.TruckService, ls *application.LocationService) http.Handler {
+func CreateHandler(logger ILogger, ts *application.TruckService, ls *application.LocationService, trs *application.TripService) http.Handler {
 
 	truckHandler := NewTruckHandler(ts)
 	locationHandler := NewLocationHandler(ls)
+	tripHandler := NewTripHandler(trs)
 
 	gin.SetMode("release")
 	handler := gin.New()
@@ -30,6 +31,8 @@ func CreateHandler(logger ILogger, ts *application.TruckService, ls *application
 
 	handler.POST("/trucks/:id/locations", TruckIdHandler, locationHandler.CreateLocation)
 	handler.GET("/trucks/:id/locations/last", TruckIdHandler, locationHandler.GetLastLocation)
+
+	handler.GET("/trucks/:id/trips/summary", TruckIdHandler, tripHandler.GetTrip)
 
 	return handler
 }

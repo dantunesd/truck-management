@@ -66,7 +66,7 @@ func TestTrucks(t *testing.T) {
 			`{"title":"truck not found","status":404}`,
 		},
 		{
-			"Should return 400 when getting a truck with an invalid ID",
+			"Should return 400 when getting a truck with an invalid truck id",
 			"http://app:3000/trucks/invalid",
 			http.MethodGet,
 			``,
@@ -90,7 +90,7 @@ func TestTrucks(t *testing.T) {
 			`{"title":"truck not found","status":404}`,
 		},
 		{
-			"Should return 404 when updating a truck with an invalid ID",
+			"Should return 404 when updating a truck with an invalid truck id",
 			"http://app:3000/trucks/invalid",
 			http.MethodPatch,
 			``,
@@ -122,7 +122,7 @@ func TestTrucks(t *testing.T) {
 			``,
 		},
 		{
-			"Should return 400 when deleting a truck with an invalid ID",
+			"Should return 400 when deleting a truck with an invalid truck id",
 			"http://app:3000/trucks/invalid",
 			http.MethodDelete,
 			``,
