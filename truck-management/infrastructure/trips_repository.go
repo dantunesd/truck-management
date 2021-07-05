@@ -21,3 +21,7 @@ func (t *TripRepository) GetTrip(truckID int) (*domain.Trip, error) {
 	result := t.db.Where("truck_id = ?", truckID).Find(&trip)
 	return &trip, result.Error
 }
+
+func (t *TripRepository) SaveTrip(trip *domain.Trip) error {
+	return nil
+}

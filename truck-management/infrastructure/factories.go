@@ -2,6 +2,7 @@ package infrastructure
 
 import (
 	"truck-management/truck-management/application"
+	"truck-management/truck-management/domain"
 
 	"github.com/kelseyhightower/envconfig"
 	"github.com/sirupsen/logrus"
@@ -44,5 +45,6 @@ func TripServiceFactory(db *gorm.DB) *application.TripService {
 	return application.NewTripService(
 		NewTripRepository(db),
 		TruckServiceFactory(db),
+		domain.TripUpdater{},
 	)
 }

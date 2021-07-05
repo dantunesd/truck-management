@@ -11,6 +11,7 @@ func TestTripService_GetTrip(t *testing.T) {
 	type fields struct {
 		tripRepository ITripRepository
 		truckService   ITruckService
+		TripUpdater    ITripUpdater
 	}
 	type args struct {
 		truckID int
@@ -105,7 +106,7 @@ func TestTripService_GetTrip(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			tr := NewTripService(tt.fields.tripRepository, tt.fields.truckService)
+			tr := NewTripService(tt.fields.tripRepository, tt.fields.truckService, tt.fields.TripUpdater)
 			got, err := tr.GetTrip(tt.args.truckID)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("TripService.GetTrip() error = %v, wantErr %v", err, tt.wantErr)
@@ -122,6 +123,7 @@ func TestTripService_UpdateTrip(t *testing.T) {
 	type fields struct {
 		tripRepository ITripRepository
 		truckService   ITruckService
+		tripUpdater    ITripUpdater
 	}
 	type args struct {
 		location domain.Location
@@ -133,20 +135,49 @@ func TestTripService_UpdateTrip(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name:   "should return nil",
-			fields: fields{},
+			name: "should return an error when GetTrip returns any error",
+			fields: fields{
+				tripRepository: &TripRepositoryMock{
+					GetTripMock: func(truckID int) (*domain.Trip, error) {
+						return &domain.Trip{}, errors.New("not found")
+					},
+				},
+			},
 			args: args{
 				location: domain.Location{},
 			},
-			wantErr: false,
+			wantErr: true,
+		},
+		{
+			name: "should return an error when SaveTrip returns any error",
+			fields: fields{
+				tripRepository: &TripRepositoryMock{
+					GetTripMock: func(truckID int) (*domain.Trip, error) {
+						return &domain.Trip{}, nil
+					},
+					SaveTripMock: func(trip *domain.Trip) error {
+						return errors.New("failed to update")
+					},
+				},
+				tripUpdater: TripUpdaterMock{
+					UpdateTripMock: func(currentTrip domain.Trip, location domain.Location) domain.Trip {
+						return domain.Trip{}
+					},
+				},
+			},
+			args: args{
+				location: domain.Location{},
+			},
+			wantErr: true,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			tr := &TripService{
-				tripRepository: tt.fields.tripRepository,
-				truckService:   tt.fields.truckService,
-			}
+			tr := NewTripService(
+				tt.fields.tripRepository,
+				tt.fields.truckService,
+				tt.fields.tripUpdater,
+			)
 			if err := tr.UpdateTrip(tt.args.location); (err != nil) != tt.wantErr {
 				t.Errorf("TripService.UpdateTrip() error = %v, wantErr %v", err, tt.wantErr)
 			}
@@ -155,9 +186,21 @@ func TestTripService_UpdateTrip(t *testing.T) {
 }
 
 type TripRepositoryMock struct {
-	GetTripMock func(truckID int) (*domain.Trip, error)
+	GetTripMock  func(truckID int) (*domain.Trip, error)
+	SaveTripMock func(trip *domain.Trip) error
 }
 
 func (t TripRepositoryMock) GetTrip(truckID int) (*domain.Trip, error) {
 	return t.GetTripMock(truckID)
+}
+func (t TripRepositoryMock) SaveTrip(trip *domain.Trip) error {
+	return t.SaveTripMock(trip)
+}
+
+type TripUpdaterMock struct {
+	UpdateTripMock func(currentTrip domain.Trip, location domain.Location) domain.Trip
+}
+
+func (t TripUpdaterMock) UpdateTrip(currentTrip domain.Trip, location domain.Location) domain.Trip {
+	return t.UpdateTripMock(currentTrip, location)
 }
