@@ -1,8 +1,18 @@
 # Trucks Management
 
-This application is responsible for managing trucks
+This application is responsible for managing trucks, locations and trip summary.
+
+# Overview
+
+A truck has an unique license plate and an eld identification. In other words, there can't be another truck with the same license plate or eld identification coexisting. Furthermore, the truck is associated to a carrier identification too.
+
+All trucks' locations is associated with the truck, so, it's required to truck exists.
+
+After each location registered, automatically the trip summary is updated too.
 
 ---
+
+
 
 # Pre Requisites
 
