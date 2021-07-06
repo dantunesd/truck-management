@@ -15,6 +15,7 @@ import (
 func LoggerFactory() *logrus.Logger {
 	logger := logrus.New()
 	logger.SetFormatter(&ecslogrus.Formatter{})
+	logger.ReportCaller = true
 	return logger
 }
 
