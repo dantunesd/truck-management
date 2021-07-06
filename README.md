@@ -68,7 +68,7 @@ make integration-test
 
 # API Documentation
 
-Here you can find an [OpenAPI spec file](https://github.com/loadsmart-recruiting/dantunesd/blob/main/docs/trucks-management-swagger.yaml) with all resources. Try it out in [editor.swagger](https://editor.swagger.io/)
+Here you can find an [OpenAPI spec file](https://github.com/loadsmart-recruiting/dantunesd/blob/main/docs/trucks-management-swagger.yaml) with all resources. Try it out in [Swagger Editor](https://editor.swagger.io/)
 
 Also a postman collection can be [found here](https://github.com/loadsmart-recruiting/dantunesd/blob/main/docs/trucks-management.postman_collection.json). Download it and import into your Postman.
 
