@@ -1,0 +1,326 @@
+openapi: 3.0.0
+info:
+  title: trucks-management
+  contact: {}
+  version: "1.0"
+servers:
+  - url: http://localhost:3000
+    variables: {}
+paths:
+  /trucks:
+    post:
+      tags:
+        - Misc
+      summary: Create a Truck
+      operationId: CreateaTruck
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateaTruckRequest"
+            example:
+              license_plate: ABC1234
+              eld_id: eld-id-1
+              carrier_id: carrier-id-1
+              type: REEFERR
+              size: 23
+              color: blue
+              make: Maker
+              model: Model
+              year: 1900
+        required: true
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+  /trucks/{id}:
+    get:
+      tags:
+        - Misc
+      summary: Get a Truck
+      operationId: GetaTruck
+      parameters:
+        - name: id
+          in: path
+          description: ""
+          required: true
+          style: simple
+          schema:
+            type: integer
+            format: int32
+            example: 1
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+    patch:
+      tags:
+        - Misc
+      summary: Update a Truck
+      operationId: UpdateaTruck
+      parameters:
+        - name: id
+          in: path
+          description: ""
+          required: true
+          style: simple
+          schema:
+            type: integer
+            format: int32
+            example: 1
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateaTruckRequest"
+            example:
+              license_plate: DEF4567
+              eld_id: eld-id-2
+              carrier_id: carrier-id-2
+              type: REEFERR
+              size: 23
+              color: blue
+              make: Maker
+              model: Model
+              year: 1900
+        required: true
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+    delete:
+      tags:
+        - Misc
+      summary: Delete a Truck
+      operationId: DeleteaTruck
+      parameters:
+        - name: id
+          in: path
+          description: ""
+          required: true
+          style: simple
+          schema:
+            type: integer
+            format: int32
+            example: 1
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+  /trucks/{id}/locations:
+    post:
+      tags:
+        - Misc
+      summary: Create a location
+      operationId: Createalocation
+      parameters:
+        - name: id
+          in: path
+          description: ""
+          required: true
+          style: simple
+          schema:
+            type: integer
+            format: int32
+            example: 1
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatealocationRequest"
+            example:
+              eld_id: eld-id-1
+              engine_state: ON
+              current_speed: 100
+              latitude: 90
+              longitude: 100
+              engine_hours: 2
+              odometer: 100
+        required: true
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+  /trucks/{id}/locations/last:
+    get:
+      tags:
+        - Misc
+      summary: Get last location
+      operationId: Getlastlocation
+      parameters:
+        - name: id
+          in: path
+          description: ""
+          required: true
+          style: simple
+          schema:
+            type: integer
+            format: int32
+            example: 1
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+  /trucks/{id}/trips/summary:
+    get:
+      tags:
+        - Misc
+      summary: Get Trip Summary
+      operationId: GetTripSummary
+      parameters:
+        - name: id
+          in: path
+          description: ""
+          required: true
+          style: simple
+          schema:
+            type: integer
+            format: int32
+            example: 1
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+components:
+  schemas:
+    CreateaTruckRequest:
+      title: CreateaTruckRequest
+      required:
+        - license_plate
+        - eld_id
+        - carrier_id
+        - type
+        - size
+        - color
+        - make
+        - model
+        - year
+      type: object
+      properties:
+        license_plate:
+          type: string
+        eld_id:
+          type: string
+        carrier_id:
+          type: string
+        type:
+          type: string
+        size:
+          type: integer
+          format: int32
+        color:
+          type: string
+        make:
+          type: string
+        model:
+          type: string
+        year:
+          type: integer
+          format: int32
+      example:
+        license_plate: ABC1234
+        eld_id: eld-id-1
+        carrier_id: carrier-id-1
+        type: REEFERR
+        size: 23
+        color: blue
+        make: Maker
+        model: Model
+        year: 1900
+    UpdateaTruckRequest:
+      title: UpdateaTruckRequest
+      required:
+        - license_plate
+        - eld_id
+        - carrier_id
+        - type
+        - size
+        - color
+        - make
+        - model
+        - year
+      type: object
+      properties:
+        license_plate:
+          type: string
+        eld_id:
+          type: string
+        carrier_id:
+          type: string
+        type:
+          type: string
+        size:
+          type: integer
+          format: int32
+        color:
+          type: string
+        make:
+          type: string
+        model:
+          type: string
+        year:
+          type: integer
+          format: int32
+      example:
+        license_plate: DEF4567
+        eld_id: eld-id-2
+        carrier_id: carrier-id-2
+        type: REEFERR
+        size: 23
+        color: blue
+        make: Maker
+        model: Model
+        year: 1900
+    CreatealocationRequest:
+      title: CreatealocationRequest
+      required:
+        - eld_id
+        - engine_state
+        - current_speed
+        - latitude
+        - longitude
+        - engine_hours
+        - odometer
+      type: object
+      properties:
+        eld_id:
+          type: string
+        engine_state:
+          type: string
+        current_speed:
+          type: integer
+          format: int32
+        latitude:
+          type: integer
+          format: int32
+        longitude:
+          type: integer
+          format: int32
+        engine_hours:
+          type: integer
+          format: int32
+        odometer:
+          type: integer
+          format: int32
+      example:
+        eld_id: eld-id-1
+        engine_state: ON
+        current_speed: 100
+        latitude: 90
+        longitude: 100
+        engine_hours: 2
+        odometer: 100
+tags:
+  - name: Truck Management
+    description: ""

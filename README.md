@@ -55,3 +55,9 @@ make integration-test
 ```
 
 ---
+
+# Documentation
+
+A postman collection with all resources can be [found here](https://github.com/loadsmart-recruiting/dantunesd/blob/main/docs/trucks-management.postman_collection.json). Download it and import into your Postman.
+
+---
