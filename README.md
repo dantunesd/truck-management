@@ -64,6 +64,31 @@ Also a postman collection can be [found here](https://github.com/loadsmart-recru
 
 ---
 
+# Folder Structure
+
+## Top level directory structure
+
+    .
+    ├── .github                   # Github actions
+    ├── docker                    # Docker stuff
+    ├── docs                      # Documentation 
+    ├── integration-tests         # Automated integration tests
+    ├── truck-management          # source files 
+    └── main.go                   # entrypoint of the application
+
+## Truck Management directory structure
+
+    .
+    ├── ...
+    ├── truck-management        # Source Files
+    │   ├── api                 # Routers, handlers, middlewares etc
+    │   ├── application         # Services related to application flow, etc 
+    │   ├── domain              # Entities, domain services, etc
+    │   └── infrastructure      # Repositories, drivers, configs, factories, etc
+    └── ...
+
+---
+
 # Logs
 
 All logs are logged in the stdout following the [ECS Logging standards](https://www.elastic.co/guide/en/ecs-logging/overview/current/intro.html).
