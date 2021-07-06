@@ -56,8 +56,22 @@ make integration-test
 
 ---
 
-# Documentation
+# API Documentation
 
-A postman collection with all resources can be [found here](https://github.com/loadsmart-recruiting/dantunesd/blob/main/docs/trucks-management.postman_collection.json). Download it and import into your Postman.
+Here you can find an [OpenAPI spec file](https://github.com/loadsmart-recruiting/dantunesd/blob/main/docs/trucks-management-swagger.yaml) with all resources. Try it out in [editor.swagger](https://editor.swagger.io/)
+
+Also a postman collection can be [found here](https://github.com/loadsmart-recruiting/dantunesd/blob/main/docs/trucks-management.postman_collection.json). Download it and import into your Postman.
+
+---
+
+# Logs
+
+All logs are logged in the stdout following the [ECS Logging standards](https://www.elastic.co/guide/en/ecs-logging/overview/current/intro.html).
+
+---
+
+# Github Actions
+
+[Here you can find the CI](https://github.com/loadsmart-recruiting/dantunesd/actions/workflows/ci.yaml) of this application, running unit tests and integration tests for every commit done
 
 ---
