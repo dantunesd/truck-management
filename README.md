@@ -83,8 +83,9 @@ Also a postman collection can be [found here](https://github.com/loadsmart-recru
     ├── docker                    # Docker stuff
     ├── docs                      # Documentation 
     ├── integration-tests         # Automated integration tests
-    ├── truck-management          # source files 
-    └── main.go                   # entrypoint of the application
+    ├── truck-management          # Source files 
+    ├── main.go                   # Entrypoint of the application
+    └── ...
 
 ## Truck Management directory structure
 
