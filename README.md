@@ -27,6 +27,13 @@ Now run the following command to start application and its dependencies:
 ```bash
 make start
 ```
+
+Run the following bellow to see the application's logs:
+
+```bash
+make logs
+```
+
 ---
 
 # Unit Tests

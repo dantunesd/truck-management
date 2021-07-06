@@ -1,4 +1,4 @@
-.PHONY: start down unit-test integration-test
+.PHONY: start down unit-test integration-test logs
 
 create-network:
 	docker network create app
@@ -20,3 +20,6 @@ wait-start:
 		sleep 1; \
 		echo "waiting..."; \
 	done; \
+
+logs: 
+	docker-compose logs -f app

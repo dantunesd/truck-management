@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS `truck_management`.`locations` (
   CONSTRAINT `fk_locations_1`
     FOREIGN KEY (`truck_id`)
     REFERENCES `truck_management`.`trucks` (`id`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION);
 
 INSERT INTO locations VALUES ('1', '1', 'INSERTED 1', 'ON', '100', '1100', '1000', '1', '100', '2021-07-04 23:45:56');
@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS `truck_management`.`trips` (
   CONSTRAINT `fk_trips_1`
     FOREIGN KEY (`truck_id`)
     REFERENCES `truck_management`.`trucks` (`id`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION);
 
 INSERT INTO trips VALUES ('1', '4', '90 80', '90 80', 'ONGOING', '100', '5', '100', '2021-07-05 00:41:37');
