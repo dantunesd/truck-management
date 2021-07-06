@@ -26,6 +26,7 @@ func CreateHandler(
 	handler := gin.New()
 
 	handler.Use(gin.Recovery())
+	handler.Use(CorsHandler)
 	handler.Use(ErrorHandler)
 	handler.Use(LogHandler(logger))
 

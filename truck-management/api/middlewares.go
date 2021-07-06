@@ -34,6 +34,19 @@ func ErrorHandler(c *gin.Context) {
 	}
 }
 
+func CorsHandler(c *gin.Context) {
+	c.Header("Access-Control-Allow-Origin", "*")
+	c.Header("Access-Control-Allow-Methods", "*")
+	c.Header("Access-Control-Allow-Headers", "*")
+
+	if c.Request.Method == "OPTIONS" {
+		c.Status(200)
+		return
+	}
+
+	c.Next()
+}
+
 func getContextError(c *gin.Context) error {
 	errors := c.Errors.ByType(gin.ErrorTypeAny)
 	if len(errors) > 0 {
